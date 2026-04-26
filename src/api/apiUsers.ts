@@ -39,9 +39,10 @@ export const apiUsers = {
         .json()
         .catch(() => ({ message: "Erreur réseau" }));
 
-      // Le back-end peut retourner { message } ou { errors }
+      // Le back-end peut retourner { message } ou { errors } ou { errors, debug }
       const msg = error.message || error.errors || "Erreur lors de la requête";
-      throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+      const debugInfo = error.debug ? ` (${error.debug})` : '';
+      throw new Error((typeof msg === 'string' ? msg : JSON.stringify(msg)) + debugInfo);
     }
 
     if (response.status === 204) return null;
