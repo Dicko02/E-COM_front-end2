@@ -95,7 +95,7 @@ export const CustomerTrends: React.FC<CustomerTrendsProps> = ({
               strokeWidth={2}
               dot={{ fill: '#f59e0b', r: 4 }}
               activeDot={{ r: 6 }}
-              name="Clients 2025"
+              name={`Clients ${new Date().getFullYear()}`}
               isAnimationActive={true}
             />
 
@@ -120,13 +120,13 @@ export const CustomerTrends: React.FC<CustomerTrendsProps> = ({
             <p className="text-2xl font-bold text-amber-500">
               {chartData.reduce((sum, m) => sum + m.newCustomers, 0)}
             </p>
-            <p className="text-xs text-slate-500 mt-1">Nouveaux clients 2025</p>
+            <p className="text-xs text-slate-500 mt-1">Nouveaux clients {new Date().getFullYear()}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-emerald-400">
               +{Math.round(((chartData.reduce((sum, m) => sum + m.newCustomers, 0) / chartData.reduce((sum, m) => sum + m.lastYear, 0) - 1) * 100))}%
             </p>
-            <p className="text-xs text-slate-500 mt-1">Croissance vs 2024</p>
+            <p className="text-xs text-slate-500 mt-1">Croissance vs {new Date().getFullYear() - 1}</p>
           </div>
         </div>
       )}

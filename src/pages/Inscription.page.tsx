@@ -343,7 +343,7 @@ export const InscriptionPage = () => {
         {/* Footer */}
         <footer className="mt-12 text-center">
           <p className="text-amber-500/20 text-xs uppercase tracking-widest font-medium">
-             2024 L'EXCELLENCE E-COMMERCE. TOUS DROITS RÉSERVÉS.
+             © {new Date().getFullYear()} Wayne Enterprize. Tous droits réservés.
           </p>
         </footer>
       </div>

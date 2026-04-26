@@ -102,7 +102,7 @@ export const exportDashboardPDF = async (
         { align: 'center' }
       );
       pdf.text(
-        'LUXE © 2025 - Tous droits réservés',
+        `Wayne Enterprize © ${new Date().getFullYear()} - Tous droits réservés`,
         105,
         pdf.internal.pageSize.getHeight() - 5,
         { align: 'center' }
@@ -127,7 +127,7 @@ export const exportDashboardStats = async (stats: Record<string, any>) => {
     // Header
     pdf.setFontSize(16);
     pdf.setTextColor(245, 158, 11);
-    pdf.text('LUXE Dashboard - Rapport Statistiques', 105, 20, { align: 'center' });
+    pdf.text('Wayne Enterprize Dashboard - Rapport Statistiques', 105, 20, { align: 'center' });
 
     pdf.setFontSize(10);
     pdf.setTextColor(100, 116, 139);
@@ -150,7 +150,7 @@ export const exportDashboardStats = async (stats: Record<string, any>) => {
     pdf.setFontSize(8);
     pdf.setTextColor(100, 116, 139);
     pdf.text(
-      'LUXE © 2025 - Tous droits réservés',
+      `Wayne Enterprize © ${new Date().getFullYear()} - Tous droits réservés`,
       105,
       pdf.internal.pageSize.getHeight() - 10,
       { align: 'center' }
