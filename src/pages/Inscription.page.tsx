@@ -56,7 +56,7 @@ export const InscriptionPage = () => {
         email: formData.email,
         password: formData.password,
         number: formData.number,
-        code: formData.code,
+        // Note: 'code' n'est pas envoyé — c'est un champ interne généré par le back-end
         role: isAdmin ? 'admin' : 'client'
       };
 
