@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables Wayne Enterprize ──────────────────────────────────────────── */
+:root {
+  --primary:       #22c55e;   /* vert */
+  --primary-dark:  #15803d;
+  --primary-glow:  rgba(34, 197, 94, 0.35);
+  --bg:            #050a05;
+  --surface:       #0d1a0d;
+  --border:        rgba(34, 197, 94, 0.2);
+
+  color-scheme: dark;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: #f0fff4;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Liens ───────────────────────────────────────────────────────────────── */
+a {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover { color: #f0fff4; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+/* ── Glass effect ────────────────────────────────────────────────────────── */
+.glass-effect {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* ── Nav link underline ──────────────────────────────────────────────────── */
+.nav-link { position: relative; transition: color 0.3s ease; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0; height: 1px;
+  bottom: -4px; left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ── Glow effects ────────────────────────────────────────────────────────── */
+.green-glow  { text-shadow: 0 0 20px var(--primary-glow); }
+.green-border-glow { box-shadow: 0 0 20px var(--primary-glow); }
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes progress-shrink {
+  from { width: 100%; }
+  to   { width: 0%;   }
+}
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+}
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Classes utilitaires Wayne Enterprize ────────────────────────────────── */
+.bg-wayne-dark    { background-color: #050a05; }
+.bg-wayne-surface { background-color: #0d1a0d; }
+.bg-wayne-card    { background-color: rgba(13,26,13,0.8); }
+.bg-wayne-hero    { background: radial-gradient(ellipse at center, rgba(34,197,94,0.08) 0%, transparent 70%); }
+.bg-wayne-cta     { background: linear-gradient(to bottom, rgba(34,197,94,0.05), transparent); }
+.bg-wayne-about   { background-color: rgba(13,26,13,0.4); }
+.bg-wayne-header  { background-color: rgba(5,10,5,0.92); }
+.bg-wayne-mobile  { background-color: rgba(5,10,5,0.98); }
+.bg-wayne-why     { background-color: rgba(13,26,13,0.6); }
+.bg-wayne-ideal   { background-color: rgba(34,197,94,0.04); }
+.bg-wayne-quote   { background-color: rgba(34,197,94,0.04); }
+.bg-wayne-stats   { background-color: rgba(34,197,94,0.04); }
+@layer utilities {
+  .animate-slideIn    { animation: slideIn    0.3s ease-out; }
+  .animate-fadeIn     { animation: fadeIn     0.4s ease-out; }
+  .animate-fadeInUp   { animation: fadeInUp   0.5s ease-out both; }
+  .animate-fadeInDown { animation: fadeInDown 0.4s ease-out both; }
+  .animate-scaleIn    { animation: scaleIn    0.3s ease-out; }
+  .animate-pulse-green { animation: pulseGreen 2s infinite; }
+  .animate-ticker     { animation: ticker 20s linear infinite; }
+
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* Skeleton loader */
+  .skeleton {
+    background: linear-gradient(90deg, #0d1a0d 25%, #1a2e1a 50%, #0d1a0d 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Toast progress bar */
+  .toast-progress { animation: progress-shrink 5000ms linear forwards; }
+
+  /* Scrollbar hide */
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}

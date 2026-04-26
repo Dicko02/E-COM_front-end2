@@ -1,0 +1,36 @@
+# Robots.txt for LUXE E-commerce
+
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Disallow sensitive routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# Allow specific crawler directives
+User-agent: Googlebot
+Allow: /
+Allow: /sitemap.xml
+
+User-agent: Bingbot
+Allow: /
+Allow: /sitemap.xml
+
+# Specify sitemap location
+Sitemap: https://www.luxestore.com/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
+Request-rate: 1/1s
+
+# Block bad bots
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+# Cache settings
+Cache-control: public, max-age=86400
