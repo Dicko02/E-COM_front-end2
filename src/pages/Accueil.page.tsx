@@ -192,7 +192,7 @@ export const AccueilPage = () => {
             <img
               src="/formations.jpeg"
               alt="Wayne Mentorship — Bronze, Gold, Platinum"
-              className="max-w-lg mx-auto rounded-sm border border-green-500/20 w-full"
+              className="max-w-sm mx-auto rounded-sm border border-green-500/20 w-full"
             />
             <p className="text-slate-500 text-sm mt-6">
               Les formations seront disponibles très bientôt.{' '}
@@ -216,7 +216,7 @@ export const AccueilPage = () => {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="relative">
-            <div className="w-full max-w-md mx-auto aspect-[3/4] rounded-sm overflow-hidden border-2 border-green-500/30">
+            <div className="w-full max-w-[300px] mx-auto aspect-[3/4] rounded-sm overflow-hidden border-2 border-green-500/30">
               <img
                 src="/photo-wayne.jpg"
                 alt="Wayne — Fondateur Wayne Enterprize"
@@ -226,7 +226,7 @@ export const AccueilPage = () => {
                 }}
               />
             </div>
-            <div className="absolute -bottom-4 -right-4 bg-green-500 text-black px-4 py-2 rounded-sm font-black text-xs uppercase tracking-widest">
+            <div className="absolute bottom-4 right-1/2 translate-x-1/2 md:translate-x-0 md:-right-4 md:-bottom-4 bg-green-500 text-black px-4 py-2 rounded-sm font-black text-xs uppercase tracking-widest whitespace-nowrap">
               Fondateur & Mentor
             </div>
           </div>
