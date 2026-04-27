@@ -18,11 +18,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const isOutOfStock = product.nombreDisponible === 0;
 
   return (
-    <div className="group cursor-pointer flex flex-col h-full max-w-[220px] mx-auto animate-fadeIn">
+    <div className="group cursor-pointer flex flex-col h-full max-w-xs mx-auto animate-fadeIn">
       <a href={`/produits/${product._id}`} className="block">
 
-        {/* Image */}
-        <div className="aspect-square bg-slate-900 rounded-sm overflow-hidden mb-3 relative border border-amber-500/10 group-hover:border-amber-500/40 transition-all duration-500">
+        {/* Image - Professional constrained size matching e-commerce standards */}
+        <div className="aspect-square bg-slate-900 rounded-sm overflow-hidden mb-3 relative border border-amber-500/10 group-hover:border-amber-500/40 transition-all duration-500 w-full max-w-sm mx-auto">
 
           {product.image ? (
             <img

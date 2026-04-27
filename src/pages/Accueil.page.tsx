@@ -216,11 +216,11 @@ export const AccueilPage = () => {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="relative">
-            <div className="w-full max-w-xs mx-auto aspect-[3/4] rounded-sm overflow-hidden border-2 border-green-500/30">
+            <div className="w-full max-w-md mx-auto aspect-[3/4] rounded-sm overflow-hidden border-2 border-green-500/30">
               <img
                 src="/photo-wayne.jpg"
                 alt="Wayne — Fondateur Wayne Enterprize"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-[center_20%]"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80';
                 }}

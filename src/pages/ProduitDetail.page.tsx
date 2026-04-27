@@ -104,12 +104,14 @@ export const ProduitDetailPage: React.FC = () => {
             )}
 
             {/* Main Image */}
-            <div className="flex-1 rounded-lg overflow-hidden bg-slate-900/30 border border-amber-500/20 relative group aspect-square max-w-sm max-h-80">
-              <img 
-                src={allImages[selectedImage] || '/placeholder.jpg'} 
-                alt={product.nom}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
-              />
+            <div className="flex-1 rounded-lg overflow-hidden bg-slate-900/30 border border-amber-500/20 relative group">
+              <div className="w-full aspect-[4/5] max-w-lg mx-auto">
+                <img 
+                  src={allImages[selectedImage] || '/placeholder.jpg'} 
+                  alt={product.nom}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
+                />
+              </div>
               {product.nombreDisponible === 0 && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                   <span className="text-2xl font-bold text-red-500 uppercase tracking-wider">Rupture de Stock</span>
