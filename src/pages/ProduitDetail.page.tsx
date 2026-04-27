@@ -81,47 +81,54 @@ export const ProduitDetailPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-slate-900/40 border border-amber-500/20 rounded-3xl p-8 backdrop-blur">
           {/* Galerie - 2 colonnes */}
-          <div className="lg:col-span-2 flex gap-3 max-w-2xl">
-            {/* Thumbnails */}
+          <div className="lg:col-span-2 flex gap-4 max-w-2xl">
+            
+            {/* Thumbnails (Vignettes) */}
             {allImages.length > 1 && (
-              <div className="flex flex-col gap-2 overflow-y-auto scrollbar-hide w-16">
+              <div className="flex flex-col gap-3 overflow-y-auto scrollbar-hide w-16">
                 {allImages.map((img: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index ? 'border-amber-500' : 'border-amber-500/20 hover:border-amber-500/50'
-                    }`}
-                  >
+                    // Utilisation de ta classe .image-thumbnail
+                    className={`image-thumbnail flex-shrink-0 border-2 transition-all ${
+                      selectedImage === index ? 'border-amber-500' : 'border-amber-500/20'
+                    } rounded-xl overflow-hidden`} >
                     <img 
                       src={img || '/placeholder.jpg'} 
                       alt={`${product.nom} ${index + 1}`} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform"
-                    />
+                      className="w-full h-full object-cover"/>
                   </button>
                 ))}
               </div>
             )}
 
-            {/* Main Image */}
-            <div className="flex-1 rounded-lg overflow-hidden bg-slate-900/30 border border-amber-500/20 relative group">
-              <div className="w-full aspect-[4/5] max-w-lg mx-auto">
+            {/* Main Image (Image Principale) */}
+            <div className="flex-1 relative group">
+              {/* 1. On utilise .product-image-container de ton CSS
+                  2. On réduit max-w-lg à max-w-sm (384px max)
+                  3. On force l'arrondi avec rounded-3xl
+              */}
+              <div className="product-image-container max-w-sm mx-auto rounded-3xl overflow-hidden border border-amber-500/20 relative">
                 <img 
                   src={allImages[selectedImage] || '/placeholder.jpg'} 
                   alt={product.nom}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
+                  // On ajoute !important ou on s'assure que h-full domine
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
+                
+                {/* Overlays (Stock & Promo) */}
+                {product.nombreDisponible === 0 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-xl font-bold text-red-500 uppercase tracking-widest">Rupture</span>
+                  </div>
+                )}
+                {discount > 0 && product.nombreDisponible > 0 && (
+                  <div className="absolute top-4 left-4 bg-amber-500 text-black px-3 py-1 rounded-full font-bold text-xs">
+                    -{discount}%
+                  </div>
+                )}
               </div>
-              {product.nombreDisponible === 0 && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-red-500 uppercase tracking-wider">Rupture de Stock</span>
-                </div>
-              )}
-              {discount > 0 && product.nombreDisponible > 0 && (
-                <div className="absolute top-6 left-6 bg-amber-500 text-black px-4 py-2 rounded-full font-bold uppercase tracking-widest text-sm">
-                  -{discount}%
-                </div>
-              )}
             </div>
           </div>
 
@@ -164,8 +171,7 @@ export const ProduitDetailPage: React.FC = () => {
                   type="button"
                   aria-label="Diminuer la quantité"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-amber-500/20 transition-colors text-amber-500"
-                >
+                  className="w-10 h-10 flex items-center justify-center hover:bg-amber-500/20 transition-colors text-amber-500">
                   <Minus size={18} />
                 </button>
                 <span className="flex-1 text-center font-bold text-lg">{quantity}</span>
@@ -174,8 +180,7 @@ export const ProduitDetailPage: React.FC = () => {
                   aria-label="Augmenter la quantité"
                   onClick={() => setQuantity(Math.min(product.nombreDisponible, quantity + 1))}
                   disabled={quantity >= product.nombreDisponible}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-amber-500/20 transition-colors text-amber-500 disabled:opacity-30 disabled:cursor-not-allowed"
-                >
+                  className="w-10 h-10 flex items-center justify-center hover:bg-amber-500/20 transition-colors text-amber-500 disabled:opacity-30 disabled:cursor-not-allowed">
                   <Plus size={18} />
                 </button>
               </div>
@@ -184,15 +189,13 @@ export const ProduitDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleAddToCart}
                 disabled={product.nombreDisponible === 0}
-                className="w-full bg-amber-500 hover:bg-white text-black py-4 font-bold uppercase tracking-widest text-sm rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+                className="w-full bg-amber-500 hover:bg-white text-black py-4 font-bold uppercase tracking-widest text-sm rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 Ajouter au Panier
               </button>
 
               <a 
                 href="/panier"
-                className="block w-full text-center border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 font-bold uppercase tracking-widest text-sm rounded-lg transition-all"
-              >
+                className="block w-full text-center border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 font-bold uppercase tracking-widest text-sm rounded-lg transition-all">
                 Voir le Panier
               </a>
             </div>

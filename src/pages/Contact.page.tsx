@@ -64,7 +64,7 @@ export const ContactPage = () => {
             </div>
             <p className="text-slate-400">
               <a href="mailto:wayne@med.com" className="text-amber-500 hover:underline">
-                wayne@med.com
+                tradewithwayne1@gmail.com
               </a>
             </p>
             <p className="text-xs text-slate-500 mt-2">Réponse dans les 24 heures</p>
@@ -76,8 +76,8 @@ export const ContactPage = () => {
               <h3 className="text-xl font-bold text-white">Téléphone</h3>
             </div>
             <p className="text-slate-400">
-              <a href="tel:+33XXXXXXXXX" className="text-amber-500 hover:underline">
-                +33 (0) X XX XX XX XX
+              <a href="tel:+221XXXXXXXXX" className="text-amber-500 hover:underline">
+                +221 77 193 88 74
               </a>
             </p>
             <p className="text-xs text-slate-500 mt-2">Lun-Ven: 9h-18h</p>
@@ -89,9 +89,9 @@ export const ContactPage = () => {
               <h3 className="text-xl font-bold text-white">Adresse</h3>
             </div>
             <p className="text-slate-400 text-sm">
-              [ADRESSE PHYSIQUE À REMPLIR]<br/>
-              [CODE POSTAL] [VILLE]<br/>
-              France
+              Mermoz 2ème Porte<br/>
+              Dakar<br/>
+              Sénégal
             </p>
           </div>
         </div>

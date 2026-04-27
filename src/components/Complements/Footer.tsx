@@ -6,9 +6,6 @@ export const Footer = () => (
         {/* Brand */}
         <div className="space-y-4 md:col-span-1">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-green-500 rounded-sm flex items-center justify-center">
-              <span className="text-black font-black text-lg font-serif">W</span>
-            </div>
             <div>
               <p className="text-white font-black text-sm tracking-widest uppercase leading-none">Wayne</p>
               <p className="text-green-400 font-bold text-[9px] tracking-[0.3em] uppercase">Enterprize</p>
@@ -46,25 +43,6 @@ export const Footer = () => (
               </a>
             ))}
           </div>
-        </div>
-
-        {/* Formations */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300">Formations</h3>
-          <ul className="space-y-2">
-            {[
-              { label: '🟢 Module Bronze — 150$', href: '/produits' },
-              { label: '🟡 Module Gold — 300$',   href: '/produits' },
-              { label: '🔥 Module Platinum — 400$', href: '/produits' },
-            ].map(({ label, href }) => (
-              <li key={label}>
-                <a href={href} className="text-xs text-slate-500 hover:text-green-400 transition-colors flex items-center gap-1 group">
-                  <span className="w-0 group-hover:w-2 h-px bg-green-500 transition-all duration-300 inline-block" />
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Support */}
@@ -128,7 +106,7 @@ export const Footer = () => (
       {/* Disclaimer */}
       <div className="py-4 border-t border-green-500/10">
         <p className="text-[9px] text-slate-700 text-center leading-relaxed max-w-3xl mx-auto">
-          ⚠️ Le trading comporte un niveau élevé de risque. Ne tradez jamais avec de l'argent que vous ne pouvez pas vous permettre de perdre.
+          Le trading comporte un niveau élevé de risque. Ne tradez jamais avec de l'argent que vous ne pouvez pas vous permettre de perdre.
           Les performances passées ne garantissent pas les résultats futurs. Formez-vous avant d'investir.
         </p>
       </div>
