@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import { Loading } from '../components/Complements/Loading';
 import { useParams } from 'react-router-dom';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const ProduitDetailPage: React.FC = () => {
   const { id: productId } = useParams<{ id: string }>();
@@ -64,7 +65,10 @@ export const ProduitDetailPage: React.FC = () => {
     );
   }
 
-  const allImages = [product.image, ...(product.images || [])].filter(Boolean);
+  const allImages = [product.image, ...(product.images || [])]
+    .filter(Boolean)
+    .map(img => getImageUrl(img)); // On applique l'URL complète ici
+  
   const discount = product.ancienPrix ? Math.round(((product.ancienPrix - product.prix) / product.ancienPrix) * 100) : 0;
 
   return (
