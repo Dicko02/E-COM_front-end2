@@ -220,7 +220,7 @@ export const AccueilPage = () => {
               <img
                 src="/photo-wayne.jpg"
                 alt="Wayne"
-                className="product-image"
+                className="portrait-image"
               />
             </div>
             <div className="absolute bottom-6 right-1/2 translate-x-1/2 md:translate-x-0 md:-right-4 md:-bottom-4 bg-green-500 text-black px-4 py-2 rounded-sm font-black text-xs uppercase whitespace-nowrap">
