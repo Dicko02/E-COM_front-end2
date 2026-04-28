@@ -216,11 +216,11 @@ export const AccueilPage = () => {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="relative">
-            <div className="portrait-image-container">
+            <div className="w-full max-w-[220px] mx-auto aspect-[3/4] rounded-[2rem] overflow-hidden border-2 border-green-500/30 bg-slate-900">
               <img
                 src="/photo-wayne.jpg"
                 alt="Wayne"
-                className="portrait-image"
+                className="w-full h-full object-cover object-[center_20%]"
               />
             </div>
             <div className="absolute bottom-6 right-1/2 translate-x-1/2 md:translate-x-0 md:-right-4 md:-bottom-4 bg-green-500 text-black px-4 py-2 rounded-sm font-black text-xs uppercase whitespace-nowrap">

@@ -10,7 +10,10 @@ interface ProductImageProps {
 export const ProductImage: React.FC<ProductImageProps> = ({ image, nom, className = '' }) => {
   return (
     // <div className={`w-full h-full aspect-square bg-slate-900 rounded-lg overflow-hidden border border-amber-500/10 ${className}`}>
-    <div className={`w-full aspect-square bg-slate-900 rounded-2xl overflow-hidden border border-amber-500/10 max-w-[280px] mx-auto ${className}`}>
+    <div className={`w-full aspect-square bg-slate-900 overflow-hidden border border-amber-500/10 max-w-[300px] mx-auto ${className}`}
+    style={
+      { borderRadius: '24px' }
+    }>
       {image ? (
         <img
           src={image.startsWith('blob:') || image.startsWith('http') ? image : getImageUrl(image)}
