@@ -88,12 +88,12 @@ export const Footer = () => (
       {/* Modes de paiement */}
       <div className="py-6 border-t border-green-500/10">
         <p className="text-[10px] text-slate-600 uppercase tracking-widest text-center mb-4">Modes de paiement acceptés</p>
-        <div className="flex items-center justify-center gap-3 flex-wrap">
+        <div className="flex items-center justify-center flex-wrap" style={{ gap: '12px' }}>
           {[
-            { label: 'Wave',                  color: 'bg-blue-600',    text: 'Wave' },
-            { label: 'Orange Money',          color: 'bg-orange-500',  text: 'Orange Money' },
-            { label: 'Stripe / Carte',        color: 'bg-slate-700',   text: 'Stripe' },
-            { label: 'Paiement à la livraison', color: 'bg-green-700', text: 'Livraison' },
+            { label: 'Wave',                    color: 'bg-blue-600',   text: 'Wave' },
+            { label: 'Orange Money',            color: 'bg-orange-500', text: 'Orange Money' },
+            { label: 'Stripe / Carte',          color: 'bg-slate-700',  text: 'Stripe' },
+            { label: 'Paiement à la livraison', color: 'bg-green-700',  text: 'Livraison' },
           ].map(({ label, color, text }) => (
             <div key={label} title={label}
               className={`${color} text-white text-[9px] font-black px-3 py-1.5 rounded-sm uppercase tracking-widest`}>
