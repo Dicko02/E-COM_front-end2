@@ -2,84 +2,69 @@
    IMAGE SIZING AND LAYOUT UTILITIES
    ======================================== */
 
-/* Professional e-commerce image constraints
-   Based on Jumia.sn best practices:
-   - Images are SMALL and CONSTRAINED within cards
-   - Aspect ratio: 1:1 (square) for products
-   - No full-screen or oversized images
-*/
-
-/* Product Image Container - Professional Card Size */
+/* Conteneur principal pour les fiches produits et Wayne */
 .product-image-container {
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   width: 100%;
-  max-width: 280px;
-  height: auto;
-  overflow: hidden;
-  border-radius: 0.125rem;
-  background-color: #1e1b4b;
+  max-width: 320px; /* Taille optimale e-commerce */
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden; /* INDISPENSABLE pour les bords arrondis */
+  border-radius: 1.5rem; /* Équivalent à rounded-3xl */
+  background-color: #0f172a;
+  position: relative;
+  border: 1px solid rgba(245, 158, 11, 0.2); /* Bordure discrète ambre */
 }
 
+/* L'image à l'intérieur du conteneur */
 .product-image {
   width: 100%;
-  height: 100%;
+  height: 100% !important; /* Force l'image à remplir le conteneur */
   object-fit: cover;
   object-position: center;
   display: block;
+  transition: transform 0.5s ease;
 }
 
-/* Small Thumbnail - Admin Lists & Carts */
+/* Pour l'image de Wayne (Ratio Portrait) */
+.portrait-image-container {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  border-radius: 2rem; /* Très arrondi */
+  background-color: #0f172a;
+  border: 2px solid rgba(34, 197, 94, 0.3); /* Bordure verte */
+}
+
+/* Vignettes (Thumbnails) */
 .image-thumbnail {
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   width: 64px;
   height: 64px;
-  object-fit: cover;
-  border-radius: 0.125rem;
+  overflow: hidden;
+  border-radius: 0.75rem; /* Arrondi doux */
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
-.image-thumbnail-sm {
-  aspect-ratio: 1;
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
-  border-radius: 0.125rem;
-}
-
-/* Cart Item Images - Compact */
-.cart-image {
-  aspect-ratio: 1;
+.image-thumbnail img {
   width: 100%;
-  max-width: 120px;
-  height: auto;
+  height: 100%;
   object-fit: cover;
-  border-radius: 0.125rem;
-  background-color: #0f172a;
 }
 
-/* Order Item Images - Detail Pages */
-.order-image {
-  aspect-ratio: 1;
-  width: 100%;
-  max-width: 150px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 0.125rem;
-  background-color: #0f172a;
-}
-
-/* Formation/Hero Images - Should be larger but still constrained */
-.hero-image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 0.25rem;
-}
-
-/* Prevent image distortion and oversizing */
+/* Correction globale pour empêcher les images de disparaître */
 img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Classe utilitaire pour forcer l'affichage si besoin */
+.force-show-image {
+  min-height: 200px;
+  height: 100%;
 }

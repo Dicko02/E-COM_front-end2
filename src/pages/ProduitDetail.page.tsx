@@ -80,51 +80,48 @@ export const ProduitDetailPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-slate-900/40 border border-amber-500/20 rounded-3xl p-8 backdrop-blur">
-          {/* Galerie - 2 colonnes */}
-          <div className="lg:col-span-2 flex gap-3 max-w-2xl">
+          {/* Galerie */}
+          <div className="lg:col-span-2 flex gap-4 max-w-2xl">
             {/* Thumbnails */}
             {allImages.length > 1 && (
-              <div className="flex flex-col gap-2 overflow-y-auto scrollbar-hide w-16">
+              <div className="flex flex-col gap-3 overflow-y-auto scrollbar-hide w-16">
                 {allImages.map((img: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index ? 'border-amber-500' : 'border-amber-500/20 hover:border-amber-500/50'
+                    className={`image-thumbnail flex-shrink-0 ${
+                      selectedImage === index ? 'border-amber-500' : 'border-amber-500/20'
                     }`}
                   >
-                    <img 
-                      src={img || '/placeholder.jpg'} 
-                      alt={`${product.nom} ${index + 1}`} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform"
-                    />
+                    <img src={img || '/placeholder.jpg'} alt="Miniature" />
                   </button>
                 ))}
               </div>
             )}
 
             {/* Main Image */}
-            <div className="flex-1 rounded-lg overflow-hidden bg-slate-900/30 border border-amber-500/20 relative group"
-              style={{ borderRadius: '24px' }}
-            >
-              <div className="w-full aspect-[4/5] max-w-lg mx-auto">
+            <div className="flex-1 relative group">
+              <div className="product-image-container">
                 <img 
                   src={allImages[selectedImage] || '/placeholder.jpg'} 
                   alt={product.nom}
-                  className="w-full !h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
-                  style={{ height: '100%', minHeight: '300px' }}
+                  className="product-image group-hover:scale-110"
                 />
+                
+                {/* Badge de Rupture de Stock */}
+                {product.nombreDisponible === 0 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-xl font-bold text-red-500 uppercase">Rupture</span>
+                  </div>
+                )}
+
+                {/* AJOUTE CE BLOC ICI : Badge de Promotion */}
+                {discount > 0 && product.nombreDisponible > 0 && (
+                  <div className="absolute top-4 left-4 bg-amber-500 text-black px-3 py-1.5 rounded-full font-black uppercase tracking-tighter text-xs shadow-xl z-10">
+                    -{discount}%
+                  </div>
+                )}
               </div>
-              {product.nombreDisponible === 0 && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-red-500 uppercase tracking-wider">Rupture de Stock</span>
-                </div>
-              )}
-              {discount > 0 && product.nombreDisponible > 0 && (
-                <div className="absolute top-6 left-6 bg-amber-500 text-black px-4 py-2 rounded-full font-bold uppercase tracking-widest text-sm">
-                  -{discount}%
-                </div>
-              )}
             </div>
           </div>
 
