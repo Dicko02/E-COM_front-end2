@@ -192,7 +192,7 @@ export const AccueilPage = () => {
             <img
               src="/formations.jpeg"
               alt="Wayne Mentorship — Bronze, Gold, Platinum"
-              className="max-w-[300px] mx-auto rounded-sm border border-green-500/20 w-full"
+              className="max-w-[400px] mx-auto rounded-sm border border-green-500/20 w-full"
             />
             <p className="text-slate-500 text-sm mt-6">
               Les formations seront disponibles très bientôt.{' '}
@@ -216,7 +216,11 @@ export const AccueilPage = () => {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="relative">
-            <div className="w-full max-w-[220px] mx-auto aspect-[3/4] rounded-[2rem] overflow-hidden border-2 border-green-500/30 bg-slate-900">
+            <div className="w-full max-w-[400px] mx-auto aspect-[3/4] rounded-[2rem] overflow-hidden border-2 border-green-500/30 bg-slate-900"
+              style={
+                { borderRadius: '20px' }
+              }
+            >
               <img
                 src="/photo-wayne.jpg"
                 alt="Wayne"
