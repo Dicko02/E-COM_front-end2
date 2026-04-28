@@ -5,7 +5,7 @@ import { useToast } from '../context/ToastContext';
 import { commandeApi } from '../api/Commande/commande.api';
 import { Loading } from '../components/Complements/Loading';
 import { Badge } from '../components/Complements/Badge';
-import { getImageUrl } from '../utils/imageUrl';
+import { ProductImage } from '../components/Produit/ProductImage';
 
 export const CommandesPage = () => {
   const { user } = useAuth();
@@ -147,12 +147,8 @@ export const CommandesPage = () => {
                 <div className="border-t border-amber-500/10 pt-4 space-y-3">
                   {order.items.slice(0, 2).map((item: any, index: number) => (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-slate-800 rounded-sm overflow-hidden flex-shrink-0 border border-amber-500/10">
-                        <img
-                          src={getImageUrl(item.produitId?.image)}
-                          alt={item.produitId?.nom || 'Produit'}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-12 h-12 flex-shrink-0">
+                        <ProductImage image={item.produitId?.image} nom={item.produitId?.nom || 'Produit'} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white truncate">{item.produitId?.nom || 'Produit'}</p>

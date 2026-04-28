@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { produitApi } from '../../api/Produit/produit.api';
 import { categorieApi } from '../../api/Categorie/categorie.api';
-import { getImageUrl } from '../../utils/imageUrl';
+import { ProductImage } from '../Produit/ProductImage';
 
 export const Header = () => {
   const { user, logout } = useAuth();
@@ -116,8 +116,8 @@ export const Header = () => {
                   {searchResults.map((p: any) => (
                     <a key={p._id} href={`/produits/${p._id}`} onClick={() => setSearchOpen(false)}
                       className="flex items-center gap-4 p-3 rounded-sm hover:bg-green-500/10 transition-colors group">
-                      <div className="w-10 h-10 bg-slate-800 rounded-sm overflow-hidden flex-shrink-0 border border-green-500/10">
-                        {p.image && <img src={getImageUrl(p.image)} alt={p.nom} className="w-full h-full object-cover" />}
+                      <div className="w-10 h-10 flex-shrink-0">
+                        <ProductImage image={p.image} nom={p.nom} className="rounded-sm border border-green-500/10" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white group-hover:text-green-400 truncate">{p.nom}</p>

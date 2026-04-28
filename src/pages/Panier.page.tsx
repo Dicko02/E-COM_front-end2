@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { commandeApi } from '../api/Commande/commande.api';
 import { EmptyState } from '../components/Complements/EmptyState';
-import { getImageUrl } from '../utils/imageUrl';
+import { ProductImage } from '../components/Produit/ProductImage';
 
 export const PanierPage = () => {
   const { cart, totalPrice, updateQuantity, removeFromCart, clearCart, loadCart } = useCart();
@@ -112,12 +112,8 @@ export const PanierPage = () => {
                 className="group flex flex-col sm:flex-row gap-6 p-6 rounded-sm bg-slate-900/30 border border-amber-500/20 hover:border-amber-500/40 transition-all shadow-lg hover:shadow-amber-500/10"
               >
                 {/* Image produit */}
-                <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-sm bg-slate-800">
-                  <img 
-                    src={getImageUrl(item.product.image)}
-                    alt={item.product.nom}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <div className="w-24 h-24 flex-shrink-0">
+                  <ProductImage image={item.product.image} nom={item.product.nom} />
                 </div>
 
                 {/* Détails produit */}

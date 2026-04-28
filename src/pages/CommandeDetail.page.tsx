@@ -5,7 +5,7 @@ import { Loading } from '../components/Complements/Loading';
 import { Badge } from '../components/Complements/Badge';
 import { ArrowLeft, Package, Truck, CheckCircle, Clock, XCircle, MapPin } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { getImageUrl } from '../utils/imageUrl';
+import { ProductImage } from '../components/Produit/ProductImage';
 
 export const CommandeDetailPage: React.FC = () => {
   const { id: orderId } = useParams<{ id: string }>();
@@ -169,12 +169,8 @@ export const CommandeDetailPage: React.FC = () => {
           <div className="space-y-4">
             {order.items && order.items.map((item: any, index: number) => (
               <div key={index} className="flex items-center gap-4 pb-4 border-b border-amber-500/10 last:border-0 last:pb-0">
-                <div className="w-16 h-16 bg-slate-800 rounded-sm overflow-hidden flex-shrink-0 border border-amber-500/10">
-                  <img
-                    src={getImageUrl(item.produitId?.image)}
-                    alt={item.produitId?.nom || 'Produit'}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-16 h-16 flex-shrink-0">
+                  <ProductImage image={item.produitId?.image} nom={item.produitId?.nom || 'Produit'} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-white truncate">{item.produitId?.nom || 'Produit'}</p>

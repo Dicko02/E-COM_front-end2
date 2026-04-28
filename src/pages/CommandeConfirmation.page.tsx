@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { CheckCircle, Package, ArrowRight, Home, ShoppingBag } from 'lucide-react';
 import { commandeApi } from '../api/Commande/commande.api';
 import { useParams } from 'react-router-dom';
-import { getImageUrl } from '../utils/imageUrl';
+import { ProductImage } from '../components/Produit/ProductImage';
 
 export const CommandeConfirmationPage: React.FC = () => {
   const { id: orderId } = useParams<{ id: string }>();
@@ -63,14 +63,8 @@ export const CommandeConfirmationPage: React.FC = () => {
               <div className="mt-4 pt-4 border-t border-amber-500/10 space-y-3">
                 {order.items.map((item: any, idx: number) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-800 rounded-sm overflow-hidden flex-shrink-0 border border-amber-500/10">
-                      {item.produitId?.image && (
-                        <img
-                          src={getImageUrl(item.produitId.image)}
-                          alt={item.produitId?.nom}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
+                    <div className="w-10 h-10 flex-shrink-0">
+                      <ProductImage image={item.produitId?.image} nom={item.produitId?.nom || 'Produit'} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate">

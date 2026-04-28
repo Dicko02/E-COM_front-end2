@@ -5,7 +5,7 @@ import { categorieApi } from '../../api/Categorie/categorie.api';
 import { useToast } from '../../context/ToastContext';
 import { Loading } from '../../components/Complements/Loading';
 import { useParams } from 'react-router-dom';
-import { getImageUrl } from '../../utils/imageUrl';
+import { ProductImage } from '../../components/Produit/ProductImage';
 
 
 export const EditProduitPage: React.FC = () => {
@@ -49,7 +49,7 @@ export const EditProduitPage: React.FC = () => {
         nombreDisponible: data.nombreDisponible || '',
       });
       // Construire l'URL complète de l'image existante
-      setImagePreview(data.image ? getImageUrl(data.image) : '');
+      setImagePreview(data.image || '');
     } catch {
       toast.error('Erreur chargement produit');
     } finally {
@@ -151,8 +151,8 @@ export const EditProduitPage: React.FC = () => {
           <div>
             <label className="block text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Image du produit</label>
             {imagePreview && (
-              <div className="mb-4 w-32 h-32 bg-black/40 rounded-sm overflow-hidden border border-amber-500/20 p-1">
-                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover rounded-xs" />
+              <div className="mb-4 w-32 h-32">
+                <ProductImage image={imagePreview} nom={formData.nom} />
               </div>
             )}
             <div className="relative">

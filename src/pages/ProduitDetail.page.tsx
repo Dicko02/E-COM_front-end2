@@ -5,7 +5,8 @@ import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import { Loading } from '../components/Complements/Loading';
 import { useParams } from 'react-router-dom';
-import { getImageUrl } from '../utils/imageUrl';
+import { ProductImage } from '../components/Produit/ProductImage';
+import { ProductBadges } from '../components/Produit/ProductBadges';
 
 export const ProduitDetailPage: React.FC = () => {
   const { id: productId } = useParams<{ id: string }>();
@@ -65,10 +66,7 @@ export const ProduitDetailPage: React.FC = () => {
     );
   }
 
-  const allImages = [product.image, ...(product.images || [])]
-    .filter(Boolean)
-    .map(img => getImageUrl(img)); // On applique l'URL complète ici
-  
+  const allImages = [product.image, ...(product.images || [])].filter(Boolean);
   const discount = product.ancienPrix ? Math.round(((product.ancienPrix - product.prix) / product.ancienPrix) * 100) : 0;
 
   return (
@@ -93,39 +91,29 @@ export const ProduitDetailPage: React.FC = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`image-thumbnail flex-shrink-0 ${
+                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                       selectedImage === index ? 'border-amber-500' : 'border-amber-500/20'
                     }`}
                   >
-                    <img src={img || '/placeholder.jpg'} alt="Miniature" />
+                    <ProductImage image={img} nom={`${product.nom} ${index + 1}`} />
                   </button>
                 ))}
               </div>
             )}
 
-            {/* Main Image */}
+            {/* Image principale */}
             <div className="flex-1 relative group">
-              <div className="product-image-container">
-                <img 
-                  src={allImages[selectedImage] || '/placeholder.jpg'} 
-                  alt={product.nom}
-                  className="product-image group-hover:scale-110"
-                />
-                
-                {/* Badge de Rupture de Stock */}
-                {product.nombreDisponible === 0 && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                    <span className="text-xl font-bold text-red-500 uppercase">Rupture</span>
-                  </div>
-                )}
+              <ProductImage image={allImages[selectedImage]} nom={product.nom} className="rounded-2xl" />
 
-                {/* AJOUTE CE BLOC ICI : Badge de Promotion */}
-                {discount > 0 && product.nombreDisponible > 0 && (
-                  <div className="absolute top-4 left-4 bg-amber-500 text-black px-3 py-1.5 rounded-full font-black uppercase tracking-tighter text-xs shadow-xl z-10">
-                    -{discount}%
-                  </div>
-                )}
+              <div className="absolute top-3 left-3">
+                <ProductBadges discount={discount} nombreDisponible={product.nombreDisponible} />
               </div>
+
+              {product.nombreDisponible === 0 && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-2xl">
+                  <span className="text-xl font-bold text-red-500 uppercase">Rupture</span>
+                </div>
+              )}
             </div>
           </div>
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, Download, Plus, Edit, Trash2, TrendingUp, AlertTriangle } from 'lucide-react';
 import { produitApi } from '../../api/Produit/produit.api';
 import { categorieApi } from '../../api/Categorie/categorie.api';
-import { getImageUrl } from '../../utils/imageUrl';
+import { ProductImage } from '../../components/Produit/ProductImage';
 import { useToast } from '../../context/ToastContext';
 
 interface Product {
@@ -214,19 +214,8 @@ export const ProduitsAdminPage = () => {
                     <tr key={product._id} className="hover:bg-amber-500/5 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
-                          {/* Conteneur : Change w-16 et h-16 pour ajuster la taille à ta guise */}
-                          <div className="w-16 h-16 min-w-[64px] rounded-sm bg-slate-800 border border-amber-500/10 overflow-hidden flex-shrink-0">
-                            {product.image ? (
-                              <img 
-                                src={getImageUrl(product.image)} 
-                                alt={product.nom} 
-                                className="w-full h-full object-cover" 
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-500/5">
-                                📦
-                              </div>
-                            )}
+                          <div className="w-16 h-16 min-w-[64px] flex-shrink-0">
+                            <ProductImage image={product.image} nom={product.nom} />
                           </div>
                           <div className="min-w-0">
                             <p className="font-bold text-slate-100 truncate max-w-[200px]" title={product.nom}>
