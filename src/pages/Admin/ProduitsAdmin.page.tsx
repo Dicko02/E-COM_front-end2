@@ -55,7 +55,7 @@ export const ProduitsAdminPage = () => {
           prix: p.prix || 0,
           ancienPrix: p.ancienPrix,
           stock: p.nombreDisponible || 0,
-          image: p.image,
+          image: p.imageUrl,
           // ✅ Enrichir categorie: si c'est un ID, chercher dans la map
           categorie: typeof p.categorie === 'string' 
             ? categoryMap[p.categorie] || { name: 'N/A', _id: p.categorie }

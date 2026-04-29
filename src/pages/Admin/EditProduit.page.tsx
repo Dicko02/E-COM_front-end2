@@ -37,6 +37,7 @@ export const EditProduitPage: React.FC = () => {
 
   // Charger le produit
   const loadProduct = useCallback(async () => {
+
     try {
       console.log('Loading product with ID:', productId);
       const data = await produitApi.getById(productId!);
@@ -48,8 +49,9 @@ export const EditProduitPage: React.FC = () => {
         ancienPrix: data.ancienPrix || '',
         nombreDisponible: data.nombreDisponible || '',
       });
+
       // Construire l'URL complète de l'image existante
-      setImagePreview(data.image || '');
+      setImagePreview(data.imageUrl || data.image || '');
     } catch {
       toast.error('Erreur chargement produit');
     } finally {

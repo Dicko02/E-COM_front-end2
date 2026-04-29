@@ -66,7 +66,7 @@ export const ProduitDetailPage: React.FC = () => {
     );
   }
 
-  const allImages = [product.image, ...(product.images || [])].filter(Boolean);
+  const allImages = [product.imageUrl, ...(product.imageUrls || [])].filter(Boolean);
   const discount = product.ancienPrix ? Math.round(((product.ancienPrix - product.prix) / product.ancienPrix) * 100) : 0;
 
   return (
