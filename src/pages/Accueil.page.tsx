@@ -114,13 +114,13 @@ export const AccueilPage = () => {
           </div>
 
           {/* Stats */}
-          <div className="flex justify-center mt-16 flex-wrap">
+          <div className="flex justify-center mt-16 flex-wrap" style={{ gap: '2.5rem' }}>
             {[
               { value: '3',    label: 'Modules' },
               { value: 'SMC',  label: 'Stratégie' },
               { value: '100%', label: 'Transparence' },
             ].map(({ value, label }) => (
-              <div key={label} className="text-center px-8 sm:px-12">
+              <div key={label} className="text-center">
                 <p className="text-3xl font-black text-green-400">{value}</p>
                 <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">{label}</p>
               </div>

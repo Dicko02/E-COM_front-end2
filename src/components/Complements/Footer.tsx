@@ -92,7 +92,6 @@ export const Footer = () => (
           {[
             { label: 'Wave',                    color: 'bg-blue-600',   text: 'Wave' },
             { label: 'Orange Money',            color: 'bg-orange-500', text: 'Orange Money' },
-            { label: 'Stripe / Carte',          color: 'bg-slate-700',  text: 'Stripe' },
             { label: 'Paiement à la livraison', color: 'bg-green-700',  text: 'Livraison' },
           ].map(({ label, color, text }) => (
             <div key={label} title={label}
