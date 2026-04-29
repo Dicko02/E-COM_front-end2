@@ -20,7 +20,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="group cursor-pointer flex flex-col h-full max-w-xs mx-auto animate-fadeIn">
       <a href={`/produits/${product._id}`} className="block">
         <div className="relative mb-3">
-          <ProductImage image={product.image} nom={product.nom} />
+          {/* On utilise imageUrl qui est déjà formatée par le backend */}
+          <ProductImage image={product.imageUrl} nom={product.nom} />
 
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 rounded-lg" />
 
