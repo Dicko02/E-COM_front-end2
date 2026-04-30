@@ -1,293 +1,175 @@
-# E-Commerce Front-End - Architecture & Guide de Modification
+# 📱 E-Commerce Front-End — Wayne Enterprize
 
-## 📋 Vue d'ensemble du projet
+> Application React e-commerce avec interface client et dashboard admin
 
-**Stack:** React 18 + TypeScript + Tailwind CSS v4 + Vite + React Router DOM
-
-**Structure:** Application e-commerce avec interface client et tableau de bord admin
-
-**Thème:** Luxury dark mode (noir #0a0a0a, accents ambre #f2b90d)
-
-**Date d'analyse:** 7 Décembre 2025
+**Stack :** React 19 + TypeScript + Tailwind CSS v4 + Vite + React Router DOM  
+**Thème :** Wayne Enterprize (Vert #10b981 / Noir #0a0a0a / Blanc)  
+**Build Status :** ✅ 0 erreur TypeScript  
+**Date de mise à jour :** 29 Avril 2026
 
 ---
 
-## ⚠️ RAPPORT D'ANALYSE - DONNÉES FICTIVES DU DASHBOARD
+## 📋 TABLE DES MATIÈRES
 
-### 🔴 PROBLÈME PRINCIPAL
-Le dashboard admin utilise actuellement **90% de données fictives** générées aléatoirement. Les graphiques ne reflètent pas les données réelles de votre base de données.
-
-### 📍 Fichiers problématiques
-- `src/components/DashBoard/utils/generateMockData.ts` - Génère les fausses données
-- `src/pages/Admin/Dashboard.page.tsx` - Ne passe pas les vraies données aux composants
-
-### 📊 Composants dashboard affectés
-1. **RevenueChart** - Revenus mensuels (données: ❌ fictives)
-2. **CategoryChart** - Ventes par catégorie (données: ❌ fictives)
-3. **TopProducts** - Top 5 produits (données: ⚠️ semi-réelles - pas de vraies ventes)
-4. **OrderStatus** - État des commandes (données: ⚠️ partiellement réelles)
-5. **CustomerTrends** - Tendances clients (données: ❌ fictives)
+1. [Vue d'ensemble](#-vue-densemble)
+2. [Structure des fichiers](#-structure-des-fichiers)
+3. [Système de Design](#-système-de-design)
+4. [Architecture Technique](#-architecture-technique)
+5. [Composants Principaux](#-composants-principaux)
+6. [Pages](#-pages)
+7. [Contextes Globaux](#-contextes-globaux)
+8. [API Client](#-api-client)
+9. [Conventions de Code](#-conventions-de-code)
+10. [Dépannage](#-dépannage)
 
 ---
 
-## 🔧 PLAN D'ACTION - RENDRE LES DONNÉES RÉELLES
+## 🎯 VUE D'ENSEMBLE
 
-### ✅ ÉTAPE 1: BACKEND - Créer les endpoints manquants
+### Fonctionnalités Principales
 
-Vous devez créer **5 nouveaux endpoints** dans votre API:
+**Interface Client :**
+- ✅ Page d'accueil avec hero + formations dynamiques
+- ✅ Catalogue produits avec filtres + recherche en temps réel
+- ✅ Panier d'achat avec gestion quantités
+- ✅ Checkout avec paiement (Wave API à intégrer)
+- ✅ Suivi des commandes avec tracker visuel
+- ✅ Authentification (inscription, connexion, vérification email)
+- ✅ Page contact avec formulaire
+- ✅ Pages légales (Mentions, CGV, Confidentialité)
 
-#### 1️⃣ `/orders/stats/monthly-revenue` (GET)
-**Retourne:** Revenus mensuels avec comparaison objectifs
-```json
-{
-  "data": [
-    { "month": "Jan", "revenue": 4580, "target": 5000 },
-    { "month": "Feb", "revenue": 5200, "target": 5200 },
-    ...
-  ]
-}
-```
-**Logique:** Grouper les commandes par mois, sommer les prix * quantités
+**Dashboard Admin :**
+- ✅ Vue d'ensemble avec KPIs (revenus, commandes, clients, produits)
+- ✅ Graphiques : Revenus mensuels, Ventes par catégorie, Top produits
+- ✅ Gestion produits (CRUD complet)
+- ✅ Gestion catégories (CRUD complet)
+- ✅ Gestion commandes (changement statut, détails)
+- ✅ Gestion clients (liste, détails)
+- ✅ Export PDF du dashboard
+- ✅ Thème sélectionnable (Vert/Bleu/Violet)
 
----
+### Technologies Utilisées
 
-#### 2️⃣ `/orders/stats/customer-trends` (GET)
-**Retourne:** Évolution des nouveaux clients mois par mois
-```json
-{
-  "data": [
-    { "month": "Jan", "newCustomers": 125, "lastYear": 98 },
-    { "month": "Feb", "newCustomers": 140, "lastYear": 112 },
-    ...
-  ]
-}
-```
-**Logique:** Compter les utilisateurs créés par mois (année courante vs année précédente)
-
----
-
-#### 3️⃣ `/products/stats/by-category` (GET)
-**Retourne:** Distribution des ventes par catégorie
-```json
-{
-  "data": [
-    { "name": "Montres", "value": 35, "totalRevenue": 45000 },
-    { "name": "Bijouterie", "value": 28, "totalRevenue": 36400 },
-    ...
-  ]
-}
-```
-**Logique:** Grouper les commandes par catégorie, calculer le % et revenu total
+| Technologie | Version | Utilisation |
+|-------------|---------|-------------|
+| React | 19 | Framework UI |
+| TypeScript | 5 | Typage statique |
+| Vite | 7 | Build tool |
+| Tailwind CSS | 4.1.17 | Styling |
+| React Router DOM | 7 | Routing |
+| Recharts | 2.15 | Graphiques dashboard |
+| Lucide React | latest | Icônes |
+| jsPDF | 2.5.2 | Export PDF |
 
 ---
 
-#### 4️⃣ `/products/stats/top-products` (GET)
-**Retourne:** Top 5 produits les plus vendus avec vraies données
-```json
-{
-  "data": [
-    { "id": "1", "name": "Montre Premium", "sales": 142, "price": 899 },
-    { "id": "2", "name": "Collier Or", "sales": 98, "price": 1299 },
-    ...
-  ]
-}
-```
-**Logique:** Compter les occurrences de chaque produit dans les commandes, trier par quantité
-
----
-
-#### 5️⃣ `/orders/stats/status-breakdown` (GET)
-**Retourne:** Répartition des statuts et totaux
-```json
-{
-  "pending": 12,
-  "completed": 156,
-  "cancelled": 3,
-  "total": 171
-}
-```
-**Logique:** Compter les commandes par statut
-
----
-
-### ✅ ÉTAPE 2: FRONTEND - Ajouter les appels API
-
-Modifier `src/api/Commande/commande.api.ts` et `src/api/Produit/produit.api.ts`:
-
-```typescript
-// Dans commande.api.ts - AJOUTER
-getMonthlyRevenue: async () => {
-  return apiUsers.request('/orders/stats/monthly-revenue');
-},
-
-getCustomerTrends: async () => {
-  return apiUsers.request('/orders/stats/customer-trends');
-},
-
-getStatusBreakdown: async () => {
-  return apiUsers.request('/orders/stats/status-breakdown');
-},
-
-// Dans produit.api.ts - AJOUTER
-getByCategory: async () => {
-  return apiUsers.request('/products/stats/by-category');
-},
-
-getTopProducts: async () => {
-  return apiUsers.request('/products/stats/top-products');
-},
-```
-
----
-
-### ✅ ÉTAPE 3: FRONTEND - Mettre à jour Dashboard.page.tsx
-
-Remplacer les données fictives par les vraies données:
-
-```typescript
-// Ajouter au useEffect existant:
-const [revenueData, setRevenueData] = useState([]);
-const [customerData, setCustomerData] = useState([]);
-const [categoryData, setCategoryData] = useState([]);
-const [topProdsData, setTopProdsData] = useState([]);
-const [statusData, setStatusData] = useState(null);
-
-// Dans le fetch parallèle:
-const [orderStats, totalUsers, totalProducts, revenueChartData, 
-        trendData, categoryStats, topProds, statusBreak] = await Promise.all([
-  commandeApi.getStats(),
-  userApi.total(),
-  produitApi.getTotalProducts(),
-  commandeApi.getMonthlyRevenue(),      // ← NOUVEAU
-  commandeApi.getCustomerTrends(),      // ← NOUVEAU
-  produitApi.getByCategory(),           // ← NOUVEAU
-  produitApi.getTopProducts(),          // ← NOUVEAU
-  commandeApi.getStatusBreakdown(),     // ← NOUVEAU
-]);
-
-// Passer les données aux composants:
-<RevenueChart data={revenueChartData} loading={false} />
-<CategoryChart data={categoryData} loading={false} />
-<TopProducts products={topProdsData} loading={false} />
-<CustomerTrends data={trendData} loading={false} />
-<OrderStatus orders={statusBreak} loading={false} />
-```
-
----
-
-### ✅ ÉTAPE 4: CLEANUP - Nettoyer après
-Une fois fonctionnel:
-1. Supprimer `src/components/DashBoard/utils/generateMockData.ts`
-2. Nettoyer l'import dans les composants qui ne l'utiliseront plus
-
----
-
-## 📋 AUDIT DU PROJET - PARTIES INUTILES
-
-### 🟡 À OPTIMISER / À SUPPRIMER
-
-| Fichier/Composant | Status | Raison | Action |
-|-------------------|--------|--------|--------|
-| `generateMockData.ts` | ❌ Inutile | Données fictives une fois les APIs prêtes | **Supprimer** |
-| `QuickActions.tsx` lien "Rapports" | ⚠️ Incomplet | Pointe vers #reports qui n'existe pas | Créer page rapports OU supprimer |
-| `ThemeSelector` (DashBoard) | ⚠️ Partiel | Thème changé en session seulement (pas persisté) | Persister dans localStorage |
-| `CartContext` panier | ⚠️ Basique | Gestion coté client seulement, pas de sync BD | Améliorer synchronisation API |
-| `Notifications.tsx` | ✅ Utile | Système notification fonctionnel | Garder |
-| `ExportPDF.ts` | ✅ Utile | Export dashboard en PDF | Garder |
-
-### 🟢 FICHIERS UTILISÉS & NÉCESSAIRES
-- ✅ Tous les fichiers API (`api/*.api.ts`) - Essentiels
-- ✅ Tous les contexts (`context/*.tsx`) - Authentification, Panier, Toasts
-- ✅ Tous les composants Complements - Réutilisables
-- ✅ Toutes les pages Admin - Gestion
-
----
-
-## 📊 ÉTAT ACTUEL DES DONNÉES
-
-### Données RÉELLES disponibles
-| Source | Endpoint | Implémentation |
-|--------|----------|-----------------|
-| Orders | `/orders/all` | ✅ Implémenté |
-| Commandes Stats | `/orders/stats/overview` | ✅ Implémenté |
-| Produits | `/produits/getAllProduits` | ✅ Implémenté |
-| Utilisateurs | `/users/total` | ✅ Implémenté |
-| Catégories | À vérifier | ? |
-
-### Données FICTIVES générées
-| Composant | Données | Source |
-|-----------|---------|--------|
-| RevenueChart | Mois (Jan-Dec) + revenus aléatoires | `generateMockData.ts` |
-| CustomerTrends | Mois + clients aléatoires | `generateMockData.ts` |
-| CategoryChart | 4 catégories prédéfinies | `generateMockData.ts` |
-| TopProducts | 5 produits fictifs | `generateMockData.ts` |
-| OrderStatus | Statuts générés | `generateMockData.ts` |
-
----
-
----
-
-## 📁 Structure des fichiers
+## 📁 STRUCTURE DES FICHIERS
 
 ```
-src/
-├── api/                          # Appels API backend
-│   ├── Auth/auth.api.ts
-│   ├── Categorie/categorie.api.ts
-│   ├── Commande/commande.api.ts
-│   ├── Produit/produit.api.ts
-│   └── User/user.api.ts
+E-COM_front-end2/
+├── public/                         # Assets statiques
+│   ├── formations.jpeg             # Image formations
+│   ├── logo.jpeg                   # Logo Wayne Enterprize
+│   ├── logo.svg
+│   ├── photo-wayne.jpg
+│   ├── robots.txt                  # SEO
+│   └── sitemap.xml                 # SEO
 │
-├── components/
-│   ├── Complements/              # Composants réutilisables
-│   │   ├── Badge.tsx             # Badges colorés (success/warning/error)
-│   │   ├── Button.tsx            # Boutons stylisés
-│   │   ├── Card.tsx              # Cartes conteneurs
-│   │   ├── ConfirmDialog.tsx      # Modales de confirmation
-│   │   ├── EmptyState.tsx         # État vide (pas de données)
-│   │   ├── Footer.tsx
-│   │   ├── Header.tsx
-│   │   ├── Loading.tsx           # Spinner de chargement
-│   │   ├── Modal.tsx             # Modales génériques
-│   │   ├── Toast.tsx             # Notifications
-│   │   └── (autres composants)
-│   ├── DashBoard/                # Composants admin
-│   │   └── StatCard.tsx          # Cartes KPI
-│   ├── Produit/
-│   │   └── ProductCard.tsx       # Cartes produit
-│   └── User/
-│       ├── FormConnexion.tsx
-│       └── FormInscription.tsx
+├── src/
+│   ├── api/                        # Clients API
+│   │   ├── apiUsers.ts             # Client HTTP de base
+│   │   ├── Auth/auth.api.ts        # Authentification
+│   │   ├── Categorie/categorie.api.ts
+│   │   ├── Chart/chart.api.ts      # Panier
+│   │   ├── Commande/commande.api.ts
+│   │   ├── Mail/mail.api.ts        # Contact
+│   │   ├── Produit/produit.api.ts
+│   │   └── User/user.api.ts
+│   │
+│   ├── components/
+│   │   ├── Complements/            # Composants réutilisables
+│   │   │   ├── Badge.tsx           # Badges colorés (success/warning/error)
+│   │   │   ├── Button.tsx          # Boutons stylisés
+│   │   │   ├── Card.tsx            # Cartes conteneurs
+│   │   │   ├── ConfirmDialog.tsx   # Modales de confirmation
+│   │   │   ├── CookieConsent.tsx   # Bannière cookies RGPD
+│   │   │   ├── EmptyState.tsx      # État vide (pas de données)
+│   │   │   ├── Footer.tsx          # Footer global
+│   │   │   ├── Header.tsx          # Header avec recherche
+│   │   │   ├── Loading.tsx         # Spinner de chargement
+│   │   │   ├── Modal.tsx           # Modales génériques
+│   │   │   ├── Sidebar.tsx         # Sidebar admin
+│   │   │   └── Toast.tsx           # Notifications
+│   │   │
+│   │   ├── DashBoard/              # Composants admin
+│   │   │   ├── CategoryChart.tsx   # Graphique ventes par catégorie
+│   │   │   ├── CustomerTrends.tsx  # Tendances clients
+│   │   │   ├── Notifications.tsx   # Notifications admin
+│   │   │   ├── OrderStatus.tsx     # Statuts commandes
+│   │   │   ├── QuickActions.tsx    # Actions rapides
+│   │   │   ├── RevenueChart.tsx    # Graphique revenus
+│   │   │   ├── StatCard.tsx        # Cartes KPI
+│   │   │   ├── ThemeSelector.tsx   # Sélecteur de thème
+│   │   │   ├── TopProducts.tsx     # Top 5 produits
+│   │   │   └── utils/
+│   │   │       ├── ExportPDF.ts    # Export dashboard en PDF
+│   │   │       ├── ThemeProvider.tsx
+│   │   │       └── useNotification.ts
+│   │   │
+│   │   ├── Produit/
+│   │   │   ├── ProductBadges.tsx   # Badges produit (Nouveau/Promo)
+│   │   │   ├── ProductCard.tsx     # Carte produit
+│   │   │   └── ProductImage.tsx    # Image produit avec fallback
+│   │   │
+│   │   └── User/
+│   │       ├── FormConnexion.tsx   # Formulaire connexion
+│   │       └── FormInscription.tsx # Formulaire inscription
+│   │
+│   ├── context/                    # État global
+│   │   ├── AuthContext.tsx         # Authentification (user, token, login, logout)
+│   │   ├── CartContext.tsx         # Panier d'achat
+│   │   └── ToastContext.tsx        # Notifications toast
+│   │
+│   ├── pages/                      # Pages principales
+│   │   ├── Accueil.page.tsx        # Page d'accueil
+│   │   ├── CGV.page.tsx            # Conditions générales de vente
+│   │   ├── CommandeDetail.page.tsx # Détail d'une commande
+│   │   ├── Commandes.page.tsx      # Liste commandes client
+│   │   ├── Connexion.page.tsx      # Page connexion
+│   │   ├── Contact.page.tsx        # Page contact
+│   │   ├── Inscription.page.tsx    # Page inscription
+│   │   ├── Legal.page.tsx          # Page légale générique
+│   │   ├── MentionsLegales.page.tsx
+│   │   ├── Panier.page.tsx         # Panier + Checkout
+│   │   ├── PolitiqueConfidentialite.page.tsx
+│   │   ├── ProduitDetail.page.tsx  # Détail produit
+│   │   ├── Produits.page.tsx       # Catalogue produits
+│   │   │
+│   │   └── Admin/                  # Pages dashboard admin
+│   │       ├── CategoriesAdmin.page.tsx
+│   │       ├── ClientsAdmin.page.tsx
+│   │       ├── CommandesAdmin.page.tsx
+│   │       ├── CreateProduit.page.tsx
+│   │       ├── Dashboard.page.tsx  # Vue d'ensemble
+│   │       ├── EditProduit.page.tsx
+│   │       └── ProduitsAdmin.page.tsx
+│   │
+│   ├── utils/
+│   │   └── PrivateRoute.tsx        # Protection routes admin
+│   │
+│   ├── App.tsx                     # Composant racine + routing
+│   ├── main.tsx                    # Point d'entrée
+│   └── input.css                   # Styles globaux + Tailwind
 │
-├── pages/                        # Pages principales
-│   ├── Accueil.page.tsx
-│   ├── Connexion.page.tsx
-│   ├── Inscription.page.tsx
-│   ├── Produits.page.tsx
-│   ├── ProduitDetail.page.tsx
-│   ├── Panier.page.tsx
-│   ├── Commandes.page.tsx
-│   ├── CommandeDetail.page.tsx
-│   └── Admin/                    # Pages dashboard admin
-│       ├── Dashboard.page.tsx
-│       ├── ProduitsAdmin.page.tsx
-│       ├── CreateProduit.page.tsx
-│       ├── EditProduit.page.tsx
-│       ├── CategoriesAdmin.page.tsx
-│       ├── CommandesAdmin.page.tsx
-│       └── ClientsAdmin.page.tsx
-│
-├── context/                      # État global
-│   ├── AuthContext.tsx           # Authentification
-│   ├── CartContext.tsx           # Panier d'achat
-│   └── ToastContext.tsx          # Notifications
-│
-├── utils/
-│   └── PrivateRoute.tsx          # Protection des routes (admin)
-│
-├── App.tsx                       # Composant racine + routing
-├── main.tsx                      # Point d'entrée
-└── input.css                     # Styles globaux + Tailwind
+├── .env                            # Variables d'environnement
+├── .env.production                 # Variables production
+├── eslint.config.js                # Configuration ESLint
+├── index.html                      # HTML de base
+├── package.json                    # Dépendances
+├── postcss.config.js               # Configuration PostCSS
+├── tailwind.config.cjs             # Configuration Tailwind
+├── tsconfig.json                   # Configuration TypeScript
+└── vite.config.ts                  # Configuration Vite
 ```
 
 ---

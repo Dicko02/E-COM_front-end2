@@ -1,8 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { authApi } from '../api/Auth/auth.api';
 
-// Définition du type User
 interface User {
   _id: string;
   email: string;
@@ -11,7 +10,6 @@ interface User {
   role: 'admin' | 'client';
 }
 
-// Définition du contexte d'authentification
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -27,10 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 1. Vérification de l'authentification (supporte un token forcé pour le login)
-  const checkAuth = async (forcedToken?: string) => {
+  // useCallback pour stabiliser la référence
+  const checkAuth = useCallback(async (forcedToken?: string) => {
     setLoading(true);
-    const token = forcedToken || localStorage.getItem("token");
+    const token = forcedToken || localStorage.getItem('token');
 
     if (!token) {
       setUser(null);
@@ -42,25 +40,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const me = await authApi.getMe();
       setUser(me);
     } catch (err: any) {
-      console.error("Auth check failed:", err);
-      localStorage.removeItem("token");
-      setUser(null);
+      // ✅ Ne déconnecter que sur un vrai rejet 401, pas sur une erreur réseau
+      if (err?.response?.status === 401) {
+        localStorage.removeItem('token');
+        setUser(null);
+      }
+      // Si erreur réseau, on laisse l'état intact — l'utilisateur reste connecté
     } finally {
-      setLoading(false); // Arrête le chargement quoi qu'il arrive
+      setLoading(false);
     }
-  };
-
-  // 2. IMPORTANT : Lancer checkAuth au montage de l'application
-  useEffect(() => {
-    checkAuth();
   }, []);
 
-  // 3. Connexion (passe le token directement pour éviter les délais du localStorage)
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   const login = async (email: string, password: string) => {
     try {
       const data = await authApi.login(email, password);
       if (data?.token) {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem('token', data.token);
         await checkAuth(data.token);
       }
       return data?.user;
@@ -70,12 +69,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // 4. Inscription
   const register = async (data: any) => {
     await authApi.register(data);
   };
 
-  // 5. Vérification du code
   const verifyCode = async (email: string, code: string) => {
     const data = await authApi.verifyCode(email, code);
     if (data?.token) {
@@ -86,12 +83,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // 6. Déconnexion
   const logout = async () => {
     try {
       await authApi.logout();
     } catch {
-      // Même en cas d'erreur, on veut quand même se déconnecter côté client
+      // On déconnecte côté client même si l'API échoue
     } finally {
       localStorage.removeItem('token');
       setUser(null);
@@ -108,8 +104,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
 };

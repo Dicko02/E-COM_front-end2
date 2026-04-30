@@ -11,7 +11,7 @@ interface CartItem {
 interface CartContextType {
   cart: CartItem[];
   totalPrice: number;
-  cartBump: boolean; // true pendant 600ms après un ajout — pour animer le compteur
+  cartBump: boolean;
   addToCart: (productId: string, quantity?: number) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
@@ -26,51 +26,48 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartBump, setCartBump] = useState(false);
   const { user } = useAuth();
-  
-  // 1. Extraire l'ID de manière stable
-  const clientId = user?._id;
 
-  // 2. loadCart stabilisé avec useCallback
+  const clientId = user?._id;
+  // FIX PRINCIPAL : détecter le rôle une fois
+  const isAdmin = user?.role === 'admin';
+
   const loadCart = useCallback(async () => {
-    if (!clientId) return;
+    // Bloquer si pas connecté OU si admin
+    if (!clientId || isAdmin) return;
 
     try {
-      // On lance les deux appels en parallèle pour plus de rapidité (comme pour le dashboard)
       const [cartData, totalData] = await Promise.all([
         chartApi.getCart(clientId),
         chartApi.getTotal(clientId)
       ]);
-      
       setCart(cartData.products || []);
       setTotalPrice(totalData.totalPrice || 0);
     } catch (error) {
       console.error('Erreur chargement panier:', error);
     }
-  }, [clientId]); // Dépend uniquement de clientId
+  }, [clientId, isAdmin]);
 
-  // 3. Effet de chargement initial
   useEffect(() => {
-    if (clientId) {
+    if (clientId && !isAdmin) {
       loadCart();
     } else {
-      // Si l'utilisateur se déconnecte, on vide l'état local du panier
+      // Vide le panier si déconnecté OU si admin
       setCart([]);
       setTotalPrice(0);
     }
-  }, [clientId, loadCart]);
+  }, [clientId, isAdmin, loadCart]);
 
   const addToCart = async (productId: string, quantity = 1) => {
+    // Redirection uniquement si vraiment pas connecté, pas si admin
     if (!user) {
-      // Rediriger vers la connexion plutôt qu'un alert bloquant
       window.location.href = '/connexion';
       return;
     }
-    if (!clientId) return;
-    
+    if (!clientId || isAdmin) return;
+
     try {
-      await chartApi.addToCart(clientId, productId, quantity); 
+      await chartApi.addToCart(clientId, productId, quantity);
       await loadCart();
-      // Déclencher l'animation du compteur
       setCartBump(true);
       setTimeout(() => setCartBump(false), 600);
     } catch (error) {
@@ -79,9 +76,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = async (productId: string, quantity: number) => {
-    if (!clientId) return;
+    if (!clientId || isAdmin) return;
     try {
-      await chartApi.updateQuantity(clientId, productId, quantity); 
+      await chartApi.updateQuantity(clientId, productId, quantity);
       await loadCart();
     } catch (error) {
       console.error('Erreur mise à jour panier:', error);
@@ -89,9 +86,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeFromCart = async (productId: string) => {
-    if (!clientId) return;
+    if (!clientId || isAdmin) return;
     try {
-      await chartApi.removeFromCart(clientId, productId); 
+      await chartApi.removeFromCart(clientId, productId);
       await loadCart();
     } catch (error) {
       console.error('Erreur suppression panier:', error);
@@ -99,11 +96,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const clearCart = async () => {
-    if (!clientId) return;
+    if (!clientId || isAdmin) return;
     try {
-      await chartApi.clearCart(clientId); 
+      await chartApi.clearCart(clientId);
       setCart([]);
-      setTotalPrice(0); // Correction ici : c'était setTotal(0)
+      setTotalPrice(0);
     } catch (error) {
       console.error('Erreur vidage panier:', error);
     }
@@ -118,8 +115,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
-  }
+  if (!context) throw new Error('useCart must be used within CartProvider');
   return context;
 };

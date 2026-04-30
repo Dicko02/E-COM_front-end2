@@ -11,37 +11,36 @@ interface Toast {
 }
 
 interface ToastContextType {
-  success: (message: string) => void;
-  error: (message: string) => void;
-  info: (message: string) => void;
-  warning: (message: string) => void;
+  // duration optionnelle exposée pour les cas où on veut garder un toast plus longtemps
+  success: (message: string, duration?: number) => void;
+  error: (message: string, duration?: number) => void;
+  info: (message: string, duration?: number) => void;
+  warning: (message: string, duration?: number) => void;
 }
 
 const ToastContext = createContext<ToastContextType | null>(null);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const toastCounter = useRef(0); // persistant entre les rendus
-
-  const addToast = (message: string, type: ToastType) => {
-    toastCounter.current += 1;
-    const id = toastCounter.current; // identifiant unique
-    setToasts(prev => [...prev, { id, message, type }]);
-
-    setTimeout(() => {
-      removeToast(id);
-    }, 5000);
-  };
+  const toastCounter = useRef(0);
 
   const removeToast = (id: number) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
+  // duration configurable, 5000ms par défaut
+  const addToast = (message: string, type: ToastType, duration = 5000) => {
+    toastCounter.current += 1;
+    const id = toastCounter.current;
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => removeToast(id), duration);
+  };
+
   const toast = {
-    success: (message: string) => addToast(message, 'success'),
-    error: (message: string) => addToast(message, 'error'),
-    info: (message: string) => addToast(message, 'info'),
-    warning: (message: string) => addToast(message, 'warning')
+    success: (message: string, duration?: number) => addToast(message, 'success', duration),
+    error:   (message: string, duration?: number) => addToast(message, 'error',   duration),
+    info:    (message: string, duration?: number) => addToast(message, 'info',    duration),
+    warning: (message: string, duration?: number) => addToast(message, 'warning', duration),
   };
 
   return (
@@ -54,8 +53,6 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
 export const useToast = () => {
   const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToast must be used within ToastProvider');
-  }
+  if (!context) throw new Error('useToast must be used within ToastProvider');
   return context;
 };
