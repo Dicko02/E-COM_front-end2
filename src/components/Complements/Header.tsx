@@ -53,15 +53,31 @@ export const Header = () => {
 
   return (
     <>
-      {/* ── Overlay recherche ────────────────────────────────────────── */}
+      {/* ── Overlay recherche (Positionné à droite) ─────────────────── */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[70] flex">
+        <div 
+          className="fixed inset-0 z-[70] flex"
+          style={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}
+        >
+          {/* Fond sombre */}
           <div
             className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           />
 
-          <div className="relative z-10 ml-auto w-full max-w-lg h-fit mt-16 mr-4 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60">
+          {/* Panneau de recherche — Calé sous le bouton recherche */}
+          <div 
+            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60"
+            style={{ 
+              marginTop: '64px', // Hauteur du header
+              marginRight: '16px', // Alignement avec le bord droit
+              width: '100%',
+              maxWidth: '450px', // Taille de la zone rouge souhaitée
+              height: 'fit-content'
+            }}
+          >
+            
+            {/* Barre de saisie */}
             <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
               <Search size={18} className="text-green-500 flex-shrink-0" />
               <input
@@ -85,7 +101,8 @@ export const Header = () => {
               </button>
             </div>
 
-            <div className="px-3 py-3">
+            {/* Résultats */}
+            <div className="px-3 py-3 max-h-[70vh] overflow-y-auto">
               {searchLoading && (
                 <p className="text-slate-500 text-xs py-4 text-center animate-pulse uppercase tracking-widest">
                   Recherche en cours...
@@ -112,12 +129,18 @@ export const Header = () => {
                           {p.categorie?.name}
                         </p>
                       </div>
-                      <span className="text-green-400 font-bold text-sm whitespace-nowrap flex-shrink-0">
+                      <span className="text-green-400 font-bold text-sm">
                         {p.prix?.toFixed(2)}€
                       </span>
                     </a>
                   ))}
                 </div>
+              )}
+
+              {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
+                <p className="text-slate-500 text-sm py-4 text-center">
+                  Aucun résultat pour «&nbsp;<span className="text-white">{searchQuery}</span>&nbsp;»
+                </p>
               )}
             </div>
           </div>
@@ -127,16 +150,13 @@ export const Header = () => {
       {/* ── Topbar ─────────────────────────────────────────────────── */}
       <header 
         className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4"
-        style={{ display: 'flex', width: '100%' }}
       >
-
-        {/* Espace gauche (Sidebar) */}
+        {/* Espace gauche */}
         <div style={{ width: '56px', flexShrink: 0 }} />
 
-        {/* Logo - On utilise flex: 1 pour qu'il prenne toute la place et centre son contenu */}
+        {/* Logo centré */}
         <a 
           href="/" 
-          className="group"
           style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
           <div className="text-center">
@@ -145,21 +165,17 @@ export const Header = () => {
           </div>
         </a>
 
-        {/* Actions droite - On force le bloc tout à droite avec marginLeft: 'auto' */}
+        {/* Actions droite */}
         <div 
           className="flex items-center gap-1"
-          style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', minWidth: '56px' }}
+          style={{ marginLeft: 'auto', flexShrink: 0 }}
         >
-          {/* Panier */}
           {!isAdmin && (
             <a
               href="/panier"
-              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
+              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10"
             >
-              <ShoppingCart
-                size={18}
-                className={`transition-colors duration-200 ${cartBump ? 'text-green-400' : ''}`}
-              />
+              <ShoppingCart size={18} className={cartBump ? 'text-green-400' : ''} />
               {cart.length > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 min-w-[1.1rem] h-[1.1rem] bg-green-500 text-black text-[9px] font-black rounded-full flex items-center justify-center border-2 border-black">
                   {cart.length}
@@ -168,21 +184,19 @@ export const Header = () => {
             </a>
           )}
 
-          {/* Bouton recherche */}
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 group border border-transparent hover:border-green-500/20"
+            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
           >
             <Search size={18} />
-            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400">
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest">
               Rechercher
             </span>
           </button>
         </div>
       </header>
 
-      {/* Spacer pour le contenu sous le header */}
       <div className="h-16 flex-shrink-0" />
     </>
   );
