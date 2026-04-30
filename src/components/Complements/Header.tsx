@@ -78,7 +78,6 @@ export const Header = () => {
               />
               <button
                 type="button"
-                aria-label="Fermer la recherche"
                 onClick={() => setSearchOpen(false)}
                 className="text-slate-500 hover:text-white transition-colors p-1 flex-shrink-0"
               >
@@ -118,26 +117,7 @@ export const Header = () => {
                       </span>
                     </a>
                   ))}
-
-                  <a
-                    href={`/produits?search=${encodeURIComponent(searchQuery)}`}
-                    className="block text-center text-[10px] text-green-500 hover:text-white uppercase tracking-[0.2em] font-bold pt-3 pb-1 border-t border-green-500/10 mt-2 transition-colors"
-                  >
-                    Voir tous les résultats →
-                  </a>
                 </div>
-              )}
-
-              {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
-                <p className="text-slate-500 text-sm py-4 text-center">
-                  Aucun résultat pour «&nbsp;<span className="text-white">{searchQuery}</span>&nbsp;»
-                </p>
-              )}
-
-              {!searchQuery && (
-                <p className="text-slate-700 text-[10px] py-3 text-center uppercase tracking-widest">
-                  Entrée pour rechercher · Échap pour fermer
-                </p>
               )}
             </div>
           </div>
@@ -145,69 +125,64 @@ export const Header = () => {
       )}
 
       {/* ── Topbar ─────────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4">
+      <header 
+        className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4"
+        style={{ display: 'flex', width: '100%' }}
+      >
 
-        {/* Espace gauche — réservé au bouton ☰ de la Sidebar */}
-        <div className="w-14 flex-shrink-0" />
+        {/* Espace gauche (Sidebar) */}
+        <div style={{ width: '56px', flexShrink: 0 }} />
 
-        {/* Logo centré */}
-        <a href="/" className="flex-1 flex justify-center items-center group">
+        {/* Logo - On utilise flex: 1 pour qu'il prenne toute la place et centre son contenu */}
+        <a 
+          href="/" 
+          className="group"
+          style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        >
           <div className="text-center">
             <p className="text-white font-black text-sm tracking-[0.2em] uppercase leading-none">Wayne</p>
             <p className="text-green-400 font-bold text-[8px] tracking-[0.35em] uppercase">Enterprize</p>
           </div>
         </a>
 
-        {/* Actions droite */}
-        <div className="flex items-center gap-1 flex-shrink-0">
-          
-          {/* Panier — Maintenant placé AVANT la recherche pour que la recherche soit à l'extrémité */}
+        {/* Actions droite - On force le bloc tout à droite avec marginLeft: 'auto' */}
+        <div 
+          className="flex items-center gap-1"
+          style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', minWidth: '56px' }}
+        >
+          {/* Panier */}
           {!isAdmin && (
             <a
               href="/panier"
               className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
-              aria-label="Mon panier"
             >
               <ShoppingCart
                 size={18}
                 className={`transition-colors duration-200 ${cartBump ? 'text-green-400' : ''}`}
               />
               {cart.length > 0 && (
-                <span className={`
-                  absolute -top-0.5 -right-0.5
-                  min-w-[1.1rem] h-[1.1rem] px-[3px]
-                  bg-green-500 text-black
-                  text-[9px] font-black
-                  rounded-full
-                  flex items-center justify-center
-                  border-2 border-black
-                  transition-transform duration-300
-                  ${cartBump ? 'scale-125' : 'scale-100'}
-                `}>
-                  {cart.length > 99 ? '99+' : cart.length}
+                <span className="absolute -top-0.5 -right-0.5 min-w-[1.1rem] h-[1.1rem] bg-green-500 text-black text-[9px] font-black rounded-full flex items-center justify-center border-2 border-black">
+                  {cart.length}
                 </span>
               )}
             </a>
           )}
 
-          {/* Bouton recherche — Poussé au maximum à droite avec style inline */}
+          {/* Bouton recherche */}
           <button
             type="button"
-            aria-label="Rechercher"
             onClick={() => setSearchOpen(true)}
-            style={{ marginLeft: '4px' }}
             className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 group border border-transparent hover:border-green-500/20"
           >
-            <Search size={18} className="flex-shrink-0" />
-            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400 transition-colors">
+            <Search size={18} />
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400">
               Rechercher
             </span>
           </button>
-
         </div>
       </header>
 
-      {/* Spacer */}
+      {/* Spacer pour le contenu sous le header */}
       <div className="h-16 flex-shrink-0" />
     </>
   );
