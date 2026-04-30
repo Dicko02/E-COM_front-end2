@@ -53,31 +53,30 @@ export const Header = () => {
 
   return (
     <>
-      {/* ── Overlay recherche (Positionné à droite) ─────────────────── */}
+      {/* ── Overlay recherche (Ancré à droite) ─────────────────── */}
       {searchOpen && (
         <div 
-          className="fixed inset-0 z-[70] flex"
+          className="fixed inset-0 z-[70] flex" 
           style={{ justifyContent: 'flex-end', alignItems: 'flex-start' }}
         >
-          {/* Fond sombre */}
+          {/* Overlay sombre */}
           <div
             className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           />
 
-          {/* Panneau de recherche — Calé sous le bouton recherche */}
+          {/* Panneau de recherche — Positionné dans ta zone violette */}
           <div 
             className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60"
             style={{ 
-              marginTop: '64px', // Hauteur du header
-              marginRight: '16px', // Alignement avec le bord droit
+              marginTop: '64px', // Aligné sous le header
+              marginRight: '16px', // Espacement du bord droit
               width: '100%',
-              maxWidth: '450px', // Taille de la zone rouge souhaitée
+              maxWidth: '420px', // Largeur contrôlée pour rester à droite
               height: 'fit-content'
             }}
           >
-            
-            {/* Barre de saisie */}
+            {/* Barre de saisie interne */}
             <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
               <Search size={18} className="text-green-500 flex-shrink-0" />
               <input
@@ -89,23 +88,23 @@ export const Header = () => {
                   if (e.key === 'Enter' && searchQuery.trim())
                     window.location.href = `/produits?search=${encodeURIComponent(searchQuery)}`;
                 }}
-                placeholder="Rechercher une formation..."
+                placeholder="Rechercher..."
                 className="flex-1 bg-transparent text-white text-base outline-none placeholder-slate-600"
               />
               <button
                 type="button"
                 onClick={() => setSearchOpen(false)}
-                className="text-slate-500 hover:text-white transition-colors p-1 flex-shrink-0"
+                className="text-slate-500 hover:text-white transition-colors p-1"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Résultats */}
-            <div className="px-3 py-3 max-h-[70vh] overflow-y-auto">
+            <div className="px-3 py-3 max-h-[60vh] overflow-y-auto">
               {searchLoading && (
                 <p className="text-slate-500 text-xs py-4 text-center animate-pulse uppercase tracking-widest">
-                  Recherche en cours...
+                  Recherche...
                 </p>
               )}
 
@@ -122,10 +121,10 @@ export const Header = () => {
                         <ProductImage image={p.imageUrl} nom={p.nom} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white group-hover:text-green-400 truncate transition-colors">
+                        <p className="text-sm font-semibold text-white group-hover:text-green-400 truncate">
                           {p.nom}
                         </p>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-wider">
+                        <p className="text-[10px] text-slate-500 uppercase">
                           {p.categorie?.name}
                         </p>
                       </div>
@@ -136,27 +135,21 @@ export const Header = () => {
                   ))}
                 </div>
               )}
-
-              {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
-                <p className="text-slate-500 text-sm py-4 text-center">
-                  Aucun résultat pour «&nbsp;<span className="text-white">{searchQuery}</span>&nbsp;»
-                </p>
-              )}
             </div>
           </div>
         </div>
       )}
 
       {/* ── Topbar ─────────────────────────────────────────────────── */}
-      <header 
-        className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4"
-      >
-        {/* Espace gauche */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4">
+
+        {/* Espace gauche pour la Sidebar */}
         <div style={{ width: '56px', flexShrink: 0 }} />
 
-        {/* Logo centré */}
+        {/* Logo centré avec flex-1 pour pousser les boutons à droite */}
         <a 
           href="/" 
+          className="group"
           style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
           <div className="text-center">
@@ -165,15 +158,16 @@ export const Header = () => {
           </div>
         </a>
 
-        {/* Actions droite */}
+        {/* Actions droite (Panier et Recherche) */}
         <div 
           className="flex items-center gap-1"
-          style={{ marginLeft: 'auto', flexShrink: 0 }}
+          style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}
         >
+          {/* Panier */}
           {!isAdmin && (
             <a
               href="/panier"
-              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10"
+              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
             >
               <ShoppingCart size={18} className={cartBump ? 'text-green-400' : ''} />
               {cart.length > 0 && (
@@ -184,19 +178,21 @@ export const Header = () => {
             </a>
           )}
 
+          {/* Bouton recherche */}
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
             className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
           >
             <Search size={18} />
-            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest">
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500">
               Rechercher
             </span>
           </button>
         </div>
       </header>
 
+      {/* Spacer */}
       <div className="h-16 flex-shrink-0" />
     </>
   );
