@@ -9,15 +9,14 @@ export const Header = () => {
   const { user } = useAuth();
   const { cart, cartBump } = useCart();
 
-  const [searchOpen, setSearchOpen]     = useState(false);
-  const [searchQuery, setSearchQuery]   = useState('');
+  const [searchOpen, setSearchOpen]       = useState(false);
+  const [searchQuery, setSearchQuery]     = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const isAdmin  = user?.role === 'admin';
+  const isAdmin = user?.role === 'admin';
 
-  /* ── Recherche ────────────────────────────────────────────── */
   useEffect(() => {
     if (searchOpen) {
       setTimeout(() => searchInputRef.current?.focus(), 80);
@@ -54,72 +53,98 @@ export const Header = () => {
 
   return (
     <>
-      {/* ── Overlay recherche ─────────────────────────────────── */}
+      {/* ── Overlay recherche ──────────────────────────────────────────
+          Positionné depuis la droite pour ne pas chevaucher le bouton ☰
+          et laisser de l'espace à gauche.
+      ─────────────────────────────────────────────────────────────── */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[60] flex flex-col">
+        <div className="fixed inset-0 z-[70] flex">
+
+          {/* Zone sombre cliquable à gauche (ne contient pas le panneau) */}
           <div
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           />
-          <div className="relative z-10 bg-black/95 border-b border-green-500/20 px-6 py-6">
-            <div className="max-w-2xl mx-auto">
-              <div className="flex items-center gap-4">
-                <Search size={20} className="text-green-500 flex-shrink-0" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' && searchQuery.trim())
-                      window.location.href = `/produits?search=${encodeURIComponent(searchQuery)}`;
-                  }}
-                  placeholder="Rechercher une formation..."
-                  className="flex-1 bg-transparent text-white text-xl outline-none placeholder-slate-600"
-                />
-                <button type="button" aria-label="Fermer" onClick={() => setSearchOpen(false)}
-                  className="text-slate-400 hover:text-white transition-colors p-1">
-                  <X size={24} />
-                </button>
-              </div>
 
+          {/* Panneau de recherche — ancré à droite, largeur max raisonnable */}
+          <div className="relative z-10 ml-auto w-full max-w-lg h-fit mt-16 mr-4 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60">
+            
+            {/* Barre de saisie */}
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
+              <Search size={18} className="text-green-500 flex-shrink-0" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && searchQuery.trim())
+                    window.location.href = `/produits?search=${encodeURIComponent(searchQuery)}`;
+                }}
+                placeholder="Rechercher une formation..."
+                className="flex-1 bg-transparent text-white text-base outline-none placeholder-slate-600"
+              />
+              <button
+                type="button"
+                aria-label="Fermer la recherche"
+                onClick={() => setSearchOpen(false)}
+                className="text-slate-500 hover:text-white transition-colors p-1 flex-shrink-0"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Résultats */}
+            <div className="px-3 py-3">
               {searchLoading && (
-                <p className="text-slate-500 text-sm mt-4 animate-pulse">Recherche...</p>
+                <p className="text-slate-500 text-xs py-4 text-center animate-pulse uppercase tracking-widest">
+                  Recherche en cours...
+                </p>
               )}
 
               {!searchLoading && searchResults.length > 0 && (
-                <div className="mt-4 space-y-1">
+                <div className="space-y-0.5">
                   {searchResults.map((p: any) => (
-                    <a key={p._id} href={`/produits/${p._id}`}
+                    <a
+                      key={p._id}
+                      href={`/produits/${p._id}`}
                       onClick={() => setSearchOpen(false)}
-                      className="flex items-center gap-4 p-3 rounded-sm hover:bg-green-500/10 transition-colors group">
-                      <div className="w-10 h-10 flex-shrink-0">
-                        <ProductImage image={p.imageUrl} nom={p.nom} className="rounded-sm" />
+                      className="flex items-center gap-3 p-2.5 rounded-sm hover:bg-green-500/10 transition-colors group"
+                    >
+                      <div className="w-9 h-9 flex-shrink-0 rounded-sm overflow-hidden border border-green-500/10">
+                        <ProductImage image={p.imageUrl} nom={p.nom} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white group-hover:text-green-400 truncate">{p.nom}</p>
-                        <p className="text-xs text-slate-500">{p.categorie?.name}</p>
+                        <p className="text-sm font-semibold text-white group-hover:text-green-400 truncate transition-colors">
+                          {p.nom}
+                        </p>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-wider">
+                          {p.categorie?.name}
+                        </p>
                       </div>
-                      <span className="text-green-400 font-bold text-sm whitespace-nowrap">
+                      <span className="text-green-400 font-bold text-sm whitespace-nowrap flex-shrink-0">
                         {p.prix?.toFixed(2)}€
                       </span>
                     </a>
                   ))}
-                  <a href={`/produits?search=${encodeURIComponent(searchQuery)}`}
-                    className="block text-center text-xs text-green-400 hover:text-white uppercase tracking-widest font-bold pt-3 pb-1 transition-colors">
+
+                  <a
+                    href={`/produits?search=${encodeURIComponent(searchQuery)}`}
+                    className="block text-center text-[10px] text-green-500 hover:text-white uppercase tracking-[0.2em] font-bold pt-3 pb-1 border-t border-green-500/10 mt-2 transition-colors"
+                  >
                     Voir tous les résultats →
                   </a>
                 </div>
               )}
 
               {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
-                <p className="text-slate-500 text-sm mt-4">
-                  Aucun résultat pour "<span className="text-white">{searchQuery}</span>"
+                <p className="text-slate-500 text-sm py-4 text-center">
+                  Aucun résultat pour «&nbsp;<span className="text-white">{searchQuery}</span>&nbsp;»
                 </p>
               )}
 
               {!searchQuery && (
-                <p className="text-slate-600 text-xs mt-4 uppercase tracking-widest">
+                <p className="text-slate-700 text-[10px] py-3 text-center uppercase tracking-widest">
                   Entrée pour rechercher · Échap pour fermer
                 </p>
               )}
@@ -128,44 +153,50 @@ export const Header = () => {
         </div>
       )}
 
-      {/* ── Topbar ────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4">
+      {/* ── Topbar ─────────────────────────────────────────────────── */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/92 backdrop-blur-md border-b border-green-500/15 h-16 flex items-center px-4">
 
-        {/*
-          Espace gauche — réservé au bouton ☰ de la Sidebar (fixé lui-même en position: fixed).
-          On laisse 3.5rem pour ne pas chevaucher le bouton.
-        */}
+        {/* Espace gauche — réservé au bouton ☰ de la Sidebar */}
         <div className="w-14 flex-shrink-0" />
 
-        {/* ── Logo centré ───────────────────────────────────── */}
-        <a href="/" className="flex-1 flex justify-center items-center gap-2 group">
+        {/* Logo centré */}
+        <a href="/" className="flex-1 flex justify-center items-center group">
           <div className="text-center">
             <p className="text-white font-black text-sm tracking-[0.2em] uppercase leading-none">Wayne</p>
             <p className="text-green-400 font-bold text-[8px] tracking-[0.35em] uppercase">Enterprize</p>
           </div>
         </a>
 
-        {/* ── Actions droite ────────────────────────────────── */}
-        <div className="flex items-center gap-1 flex-shrink-0">
+        {/* Actions droite */}
+        <div className="flex items-center gap-0.5 flex-shrink-0">
 
-          {/* Recherche */}
-          <button type="button" aria-label="Rechercher" onClick={() => setSearchOpen(true)}
-            className="p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10">
-            <Search size={19} />
+          {/* Bouton recherche — plus visible */}
+          <button
+            type="button"
+            aria-label="Rechercher"
+            onClick={() => setSearchOpen(true)}
+            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 group border border-transparent hover:border-green-500/20"
+          >
+            <Search size={18} className="flex-shrink-0" />
+            {/* Label visible sur desktop */}
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400 transition-colors">
+              Rechercher
+            </span>
           </button>
 
           {/* Panier — masqué pour les admins */}
           {!isAdmin && (
-            <a href="/panier"
-              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10"
+            <a
+              href="/panier"
+              className="relative p-2.5 text-slate-400 hover:text-green-400 transition-colors rounded-sm hover:bg-green-500/10 border border-transparent hover:border-green-500/20"
               aria-label="Mon panier"
             >
               <ShoppingCart
-                size={19}
+                size={18}
                 className={`transition-colors duration-200 ${cartBump ? 'text-green-400' : ''}`}
               />
 
-              {/* Badge nombre d'articles */}
+              {/* Badge */}
               {cart.length > 0 && (
                 <span className={`
                   absolute -top-0.5 -right-0.5
@@ -174,7 +205,7 @@ export const Header = () => {
                   text-[9px] font-black
                   rounded-full
                   flex items-center justify-center
-                  border border-black
+                  border-2 border-black
                   transition-transform duration-300
                   ${cartBump ? 'scale-125' : 'scale-100'}
                 `}>
@@ -186,7 +217,7 @@ export const Header = () => {
         </div>
       </header>
 
-      {/* Spacer pour compenser la topbar fixe */}
+      {/* Spacer */}
       <div className="h-16 flex-shrink-0" />
     </>
   );
