@@ -53,23 +53,15 @@ export const Header = () => {
 
   return (
     <>
-      {/* ── Overlay recherche ──────────────────────────────────────────
-          Positionné depuis la droite pour ne pas chevaucher le bouton ☰
-          et laisser de l'espace à gauche.
-      ─────────────────────────────────────────────────────────────── */}
+      {/* ── Overlay recherche ────────────────────────────────────────── */}
       {searchOpen && (
         <div className="fixed inset-0 z-[70] flex">
-
-          {/* Zone sombre cliquable à gauche (ne contient pas le panneau) */}
           <div
             className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           />
 
-          {/* Panneau de recherche — ancré à droite, largeur max raisonnable */}
           <div className="relative z-10 ml-auto w-full max-w-lg h-fit mt-16 mr-4 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60">
-            
-            {/* Barre de saisie */}
             <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
               <Search size={18} className="text-green-500 flex-shrink-0" />
               <input
@@ -94,7 +86,6 @@ export const Header = () => {
               </button>
             </div>
 
-            {/* Résultats */}
             <div className="px-3 py-3">
               {searchLoading && (
                 <p className="text-slate-500 text-xs py-4 text-center animate-pulse uppercase tracking-widest">
@@ -168,23 +159,9 @@ export const Header = () => {
         </a>
 
         {/* Actions droite */}
-        <div className="flex items-center gap-0.5 flex-shrink-0">
-
-          {/* Bouton recherche — plus visible */}
-          <button
-            type="button"
-            aria-label="Rechercher"
-            onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 group border border-transparent hover:border-green-500/20"
-          >
-            <Search size={18} className="flex-shrink-0" />
-            {/* Label visible sur desktop */}
-            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400 transition-colors">
-              Rechercher
-            </span>
-          </button>
-
-          {/* Panier — masqué pour les admins */}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          
+          {/* Panier — Maintenant placé AVANT la recherche pour que la recherche soit à l'extrémité */}
           {!isAdmin && (
             <a
               href="/panier"
@@ -195,8 +172,6 @@ export const Header = () => {
                 size={18}
                 className={`transition-colors duration-200 ${cartBump ? 'text-green-400' : ''}`}
               />
-
-              {/* Badge */}
               {cart.length > 0 && (
                 <span className={`
                   absolute -top-0.5 -right-0.5
@@ -214,6 +189,21 @@ export const Header = () => {
               )}
             </a>
           )}
+
+          {/* Bouton recherche — Poussé au maximum à droite avec style inline */}
+          <button
+            type="button"
+            aria-label="Rechercher"
+            onClick={() => setSearchOpen(true)}
+            style={{ marginLeft: '4px' }}
+            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-green-400 transition-all rounded-sm hover:bg-green-500/10 group border border-transparent hover:border-green-500/20"
+          >
+            <Search size={18} className="flex-shrink-0" />
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-green-400 transition-colors">
+              Rechercher
+            </span>
+          </button>
+
         </div>
       </header>
 
