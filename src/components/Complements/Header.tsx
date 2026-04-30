@@ -161,7 +161,7 @@ export const Header = () => {
         {/* Actions droite (Panier et Recherche) */}
         <div 
           className="flex items-center gap-1"
-          style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}
+          style={{ marginLeft: 'auto', flexShrink: 0 }}
         >
           {/* Panier */}
           {!isAdmin && (
