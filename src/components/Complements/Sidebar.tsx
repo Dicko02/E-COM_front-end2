@@ -31,7 +31,7 @@ export const Sidebar = () => {
   if (!user) return null;
 
   const isAdmin  = user.role === 'admin';
-  const isClient = user.role === 'client';
+  // const isClient = user.role === 'client';
   const menuItems = isAdmin ? ADMIN_MENU : CLIENT_MENU;
 
   // Couleur d'accentuation selon rôle
