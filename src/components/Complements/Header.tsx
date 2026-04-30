@@ -13,11 +13,15 @@ export const Header = () => {
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [categories, setCategories] = useState<any[]>([]); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [categories, setCategories] = useState<any[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // ✅ Détecter le rôle une seule fois
+  const isAdmin  = user?.role === 'admin';
+  const isClient = user?.role === 'client';
 
   useEffect(() => {
     categorieApi.getAll().then((data: unknown[]) => setCategories(data)).catch(() => {});
@@ -61,7 +65,7 @@ export const Header = () => {
       setSearchLoading(true);
       try {
         const data = await produitApi.search({ q: searchQuery });
-        const r = Array.isArray(data) ? data : ((data as {products?: unknown[]})?.products || []);
+        const r = Array.isArray(data) ? data : ((data as { products?: unknown[] })?.products || []);
         setSearchResults(r.slice(0, 6));
       } catch { setSearchResults([]); }
       finally { setSearchLoading(false); }
@@ -110,20 +114,25 @@ export const Header = () => {
                   <X size={24} />
                 </button>
               </div>
-              {searchLoading && <p className="text-slate-500 text-sm mt-4 animate-pulse">Recherche...</p>}
+
+              {searchLoading && (
+                <p className="text-slate-500 text-sm mt-4 animate-pulse">Recherche...</p>
+              )}
+
               {!searchLoading && searchResults.length > 0 && (
                 <div className="mt-4 space-y-1">
                   {searchResults.map((p: any) => (
                     <a key={p._id} href={`/produits/${p._id}`} onClick={() => setSearchOpen(false)}
                       className="flex items-center gap-4 p-3 rounded-sm hover:bg-green-500/10 transition-colors group">
                       <div className="w-10 h-10 flex-shrink-0">
-                        <ProductImage image={p.image} nom={p.nom} className="rounded-sm border border-green-500/10" />
+                        {/* ✅ imageUrl au lieu de image */}
+                        <ProductImage image={p.imageUrl} nom={p.nom} className="rounded-sm border border-green-500/10" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white group-hover:text-green-400 truncate">{p.nom}</p>
                         <p className="text-xs text-slate-500">{p.categorie?.name}</p>
                       </div>
-                      <span className="text-green-400 font-bold text-sm whitespace-nowrap">{p.prix?.toFixed(2)}$</span>
+                      <span className="text-green-400 font-bold text-sm whitespace-nowrap">{p.prix?.toFixed(2)}€</span>
                     </a>
                   ))}
                   <a href={`/produits?search=${encodeURIComponent(searchQuery)}`}
@@ -132,11 +141,17 @@ export const Header = () => {
                   </a>
                 </div>
               )}
+
               {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
-                <p className="text-slate-500 text-sm mt-4">Aucun résultat pour "<span className="text-white">{searchQuery}</span>"</p>
+                <p className="text-slate-500 text-sm mt-4">
+                  Aucun résultat pour "<span className="text-white">{searchQuery}</span>"
+                </p>
               )}
+
               {!searchQuery && (
-                <p className="text-slate-600 text-xs mt-4 uppercase tracking-widest">Entrée pour rechercher · Échap pour fermer</p>
+                <p className="text-slate-600 text-xs mt-4 uppercase tracking-widest">
+                  Entrée pour rechercher · Échap pour fermer
+                </p>
               )}
             </div>
           </div>
@@ -149,15 +164,6 @@ export const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="/" className="group flex items-center space-x-2">
-              {/* <div className="w-9 h-9 bg-green-500 rounded-sm flex items-center justify-center group-hover:bg-green-400 transition-colors">
-                <img src="/logo.jpeg" alt="W" className="w-full h-full object-contain rounded-sm"
-                  onError={e => {
-                    const t = e.target as HTMLImageElement;
-                    t.style.display = 'none';
-                    t.parentElement!.innerHTML = '<span class="text-black font-black text-lg">W</span>';
-                  }}
-                />
-              </div> */}
               <div className="hidden sm:block">
                 <p className="text-white font-black text-sm tracking-widest uppercase leading-none">Wayne</p>
                 <p className="text-green-400 font-bold text-[9px] tracking-[0.3em] uppercase">Enterprize</p>
@@ -173,7 +179,8 @@ export const Header = () => {
             <a href="/produits" className="nav-link text-xs font-semibold uppercase tracking-[0.2em] text-slate-300 hover:text-green-400">
               Formations
             </a>
-            {user?.role === 'admin' && (
+            {/* ✅ Lien admin visible uniquement si admin */}
+            {isAdmin && (
               <a href="/admin/dashboard" className="nav-link text-xs font-semibold uppercase tracking-[0.2em] text-slate-300 hover:text-green-400">
                 Admin
               </a>
@@ -207,10 +214,19 @@ export const Header = () => {
                   <div className="p-4 space-y-3">
                     {user ? (
                       <>
-                        <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 truncate">{user.email}</div>
-                        {user.role === 'client' && (
+                        <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 truncate">
+                          {user.email}
+                        </div>
+                        {/* ✅ Mes commandes uniquement pour les clients */}
+                        {isClient && (
                           <a href="/commandes" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">
                             Mes Commandes
+                          </a>
+                        )}
+                        {/* ✅ Lien dashboard dans le dropdown pour les admins */}
+                        {isAdmin && (
+                          <a href="/admin/dashboard" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">
+                            Dashboard Admin
                           </a>
                         )}
                         <hr className="border-green-500/10" />
@@ -221,8 +237,12 @@ export const Header = () => {
                       </>
                     ) : (
                       <>
-                        <a href="/connexion" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">Connexion</a>
-                        <a href="/inscription" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">Inscription</a>
+                        <a href="/connexion" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">
+                          Connexion
+                        </a>
+                        <a href="/inscription" className="block text-[10px] uppercase tracking-widest text-slate-400 hover:text-green-400 transition-colors">
+                          Inscription
+                        </a>
                       </>
                     )}
                   </div>
@@ -230,15 +250,17 @@ export const Header = () => {
               )}
             </div>
 
-            {/* Panier */}
-            <a href="/panier" className="relative p-2 text-slate-300 hover:text-green-400 transition-colors">
-              <ShoppingCart size={20} className={cartBump ? 'text-green-400' : ''} />
-              {cart.length > 0 && (
-                <span className={`absolute -top-1 -right-1 bg-green-500 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-black transition-transform duration-300 ${cartBump ? 'scale-125' : 'scale-100'}`}>
-                  {cart.length}
-                </span>
-              )}
-            </a>
+            {/* ✅ Panier — masqué pour les admins */}
+            {!isAdmin && (
+              <a href="/panier" className="relative p-2 text-slate-300 hover:text-green-400 transition-colors">
+                <ShoppingCart size={20} className={cartBump ? 'text-green-400' : ''} />
+                {cart.length > 0 && (
+                  <span className={`absolute -top-1 -right-1 bg-green-500 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-black transition-transform duration-300 ${cartBump ? 'scale-125' : 'scale-100'}`}>
+                    {cart.length}
+                  </span>
+                )}
+              </a>
+            )}
 
             {/* Menu mobile */}
             <button type="button" aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
@@ -256,7 +278,7 @@ export const Header = () => {
               className="flex-shrink-0 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-sm transition-colors">
               Tous
             </a>
-            {categories.map((cat: {_id: string; name: string}) => (
+            {categories.map((cat: { _id: string; name: string }) => (
               <a key={cat._id} href={`/produits?category=${cat._id}`}
                 className="flex-shrink-0 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-sm transition-colors whitespace-nowrap">
                 {cat.name}
@@ -280,20 +302,40 @@ export const Header = () => {
                   }}
                   className="bg-transparent text-white text-sm outline-none placeholder-slate-600 w-full" />
               </div>
-              <a href="/" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">Accueil</a>
-              <a href="/produits" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">Produits</a>
-              <a href="/contact" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">Contact</a>
-              {user?.role === 'admin' && (
-                <a href="/admin/dashboard" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">Dashboard Admin</a>
-              )}
-              {user?.role === 'client' && (
-                <a href="/commandes" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">Commandes</a>
-              )}
-              <a href="/panier" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
-                Panier {cart.length > 0 && (
-                  <span className="ml-2 bg-green-500 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">{cart.length}</span>
-                )}
+
+              <a href="/" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                Accueil
               </a>
+              <a href="/produits" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                Produits
+              </a>
+              <a href="/contact" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                Contact
+              </a>
+
+              {/* ✅ Admin : lien dashboard dans menu mobile */}
+              {isAdmin && (
+                <a href="/admin/dashboard" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                  Dashboard Admin
+                </a>
+              )}
+
+              {/* ✅ Client : commandes + panier dans menu mobile */}
+              {isClient && (
+                <>
+                  <a href="/commandes" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                    Commandes
+                  </a>
+                  <a href="/panier" className="block px-4 py-3 text-slate-300 rounded-sm hover:bg-green-500/10 hover:text-green-400 transition-colors text-sm uppercase tracking-wider">
+                    Panier
+                    {cart.length > 0 && (
+                      <span className="ml-2 bg-green-500 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        {cart.length}
+                      </span>
+                    )}
+                  </a>
+                </>
+              )}
             </div>
           </div>
         )}
