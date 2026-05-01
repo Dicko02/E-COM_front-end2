@@ -120,7 +120,7 @@ export const PanierPage = () => {
               >
                 {/* Image produit */}
                 <div className="w-24 h-24 flex-shrink-0">
-                  <ProductImage image={item.product.image} nom={item.product.nom} />
+                  <ProductImage image={item.product.imageUrl} nom={item.product.nom} />
                 </div>
 
                 {/* Détails produit */}

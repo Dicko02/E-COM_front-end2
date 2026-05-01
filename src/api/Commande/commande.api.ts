@@ -12,6 +12,11 @@ export const commandeApi = {
     return apiUsers.request(`/orders/${orderId}`);
   },
 
+  // obtenir toutes les commandes d'une session Wave (multi-produits)
+  getByWaveSession: async (sessionId: string) => {
+    return apiUsers.request(`/orders/wave/${sessionId}`);
+  },
+
   // obtenir les commandes d'un utilisateur par son email
   getByUser: async (email: string) => {
     return apiUsers.request(`/orders/user/${email}`);

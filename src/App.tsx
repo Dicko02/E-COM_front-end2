@@ -20,6 +20,7 @@ import { PanierPage } from "./pages/Panier.page";
 import { CommandesPage } from "./pages/Commandes.page";
 import { CommandeDetailPage } from "./pages/CommandeDetail.page";
 import { CommandeConfirmationPage } from "./pages/CommandeConfirmation.page";
+import { PaiementConfirmationPage } from "./pages/PaiementConfirmation.page";
 
 // Pages Admin
 import { DashboardPage } from "./pages/Admin/Dashboard.page";
@@ -65,6 +66,7 @@ const AppLayout = () => {
             <Route path="/panier" element={<PrivateRoute><PanierPage /></PrivateRoute>} />
             <Route path="/commandes" element={<PrivateRoute><CommandesPage /></PrivateRoute>} />
             <Route path="/commandes/confirmation/:id" element={<PrivateRoute><CommandeConfirmationPage /></PrivateRoute>} />
+            <Route path="/paiement/confirmation/:orderId" element={<PrivateRoute><PaiementConfirmationPage /></PrivateRoute>} />
             <Route path="/commandes/:id" element={<PrivateRoute><CommandeDetailPage /></PrivateRoute>} />
 
             {/* Admin */}

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { CheckCircle, Package, ArrowRight, Home, ShoppingBag } from 'lucide-react';
 import { commandeApi } from '../api/Commande/commande.api';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { ProductImage } from '../components/Produit/ProductImage';
 
 export const CommandeConfirmationPage: React.FC = () => {
   const { id: orderId } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const isWavePayment = searchParams.get('wave') === 'true';
+  
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +61,37 @@ export const CommandeConfirmationPage: React.FC = () => {
               #{orderId.slice(-8).toUpperCase()}
             </p>
 
-            {/* Récap articles si disponible */}
+            {/* Message pour paiements Wave avec plusieurs produits */}
+            {isWavePayment && (
+              <div className="mt-3 pt-3 border-t border-amber-500/10">
+                <p className="text-xs text-slate-400">
+                  💳 Paiement Wave confirmé. Si votre panier contenait plusieurs produits, 
+                  vous pouvez voir toutes vos commandes dans <a href="/commandes" className="text-amber-500 hover:underline">Mes Commandes</a>.
+                </p>
+              </div>
+            )}
+
+            {/* Récap commande si disponible (ancien schéma avec produitId direct) */}
+            {!loading && order?.produitId && (
+              <div className="mt-4 pt-4 border-t border-amber-500/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 flex-shrink-0">
+                    <ProductImage image={order.produitId?.imageUrl} nom={order.produitId?.nom || 'Produit'} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">
+                      {order.produitId?.nom || 'Produit'}
+                    </p>
+                    <p className="text-xs text-slate-500">Qté : {order.quantity}</p>
+                  </div>
+                  <p className="text-sm font-bold text-amber-500 whitespace-nowrap">
+                    {order.totalAmount?.toFixed(2)}€
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Récap articles si disponible (nouveau schéma avec items[]) */}
             {!loading && order?.items && order.items.length > 0 && (
               <div className="mt-4 pt-4 border-t border-amber-500/10 space-y-3">
                 {order.items.map((item: any, idx: number) => (
