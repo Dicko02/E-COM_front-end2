@@ -4,7 +4,7 @@ export const LegalPage = () => {
     name: "WAYNE ENTERPRIZE",
     legalForm: "SUARL", // Type de société courant au Sénégal pour un indépendant
     capital: "1.000.000 FCFA", // À ajuster selon tes statuts
-    ninea: "[TON_NUMERO_NINEA]", // À remplir (9 chiffres + 1 lettre + 1 chiffre)
+    ninea: "[NUMERO_NINEA]", // À remplir (9 chiffres + 1 lettre + 1 chiffre)
     rccm: "SN-DKR-2026-B-[NUMERO]", // À remplir (Format Registre du Commerce Dakar)
     address: "Dakar, Sénégal", 
     email: "contact@wayne-enterprize.com",

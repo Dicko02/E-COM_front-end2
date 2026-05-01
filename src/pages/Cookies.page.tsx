@@ -47,11 +47,11 @@ export const CookiesPage = () => {
                 <p className="mb-2"><strong>Cookies utilisés :</strong></p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
                   <li>
-                    <code className="text-green-300 bg-black/30 px-2 py-1 rounded">jwt</code> — Token d'authentification JWT
+                    Token d'authentification JWT
                     <p className="text-sm text-slate-400 ml-6">Permet de vous maintenir connecté de manière sécurisée</p>
                   </li>
                   <li>
-                    <code className="text-green-300 bg-black/30 px-2 py-1 rounded">sessionId</code> — Identifiant de session
+                    Identifiant de session
                     <p className="text-sm text-slate-400 ml-6">Identifie votre session de navigation</p>
                   </li>
                 </ul>
@@ -66,11 +66,11 @@ export const CookiesPage = () => {
                 <p className="mb-2"><strong>Données stockées :</strong></p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
                   <li>
-                    <code className="text-green-300 bg-black/30 px-2 py-1 rounded">cart</code> — Contenu de votre panier
+                    Contenu de votre panier
                     <p className="text-sm text-slate-400 ml-6">Sauvegarde vos formations ajoutées au panier</p>
                   </li>
                   <li>
-                    <code className="text-green-300 bg-black/30 px-2 py-1 rounded">theme</code> — Thème du dashboard admin
+                    Thème du dashboard admin
                     <p className="text-sm text-slate-400 ml-6">Mémorise votre choix de couleur (vert/bleu/violet)</p>
                   </li>
                 </ul>

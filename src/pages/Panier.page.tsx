@@ -3,7 +3,7 @@ import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { commandeApi } from '../api/Commande/commande.api';
+import { paymentApi } from '../api/Payment/payment.api';
 import { EmptyState } from '../components/Complements/EmptyState';
 import { ProductImage } from '../components/Produit/ProductImage';
 
@@ -27,29 +27,36 @@ export const PanierPage = () => {
     
     setLoading(true);
     try {
-      const orderData = {
-        clientId: user?._id,
-        cartItems: cart,
+      // Préparer les données pour Wave
+      const paymentData = {
+        cartItems: cart.map(item => ({
+          productId: item.product._id,
+          quantity: item.quantity,
+          price: item.product.prix
+        })),
         customerInfo: {
-          nom: user?.nom,
-          prenom: user?.prenom,
+          userId: user?._id,
+          firstName: user?.prenom,
+          lastName: user?.nom,
           email: user?.email,
-          number: (user as any)?.number,
+          phone: (user as any)?.number || '',
         },
         totalAmount: totalPrice
       };
 
-      const result = await commandeApi.createFromCart(orderData);
-      await clearCart();
-      toast.success('Commande créée avec succès !');
-      // Redirection vers la page de confirmation
-      const orderId = result?.order?._id;
-      window.location.href = orderId
-        ? `/commandes/confirmation/${orderId}`
-        : '/commandes';
+      // Initier le paiement Wave
+      const result = await paymentApi.initiateWave(paymentData);
+
+      if (result.success && result.checkoutUrl) {
+        // Rediriger vers la page de paiement Wave
+        window.location.href = result.checkoutUrl;
+      } else {
+        throw new Error('Erreur lors de la création de la session de paiement');
+      }
+
     } catch (error) {
-      console.error('Erreur création commande:', error);
-      toast.error('Erreur lors de la création de la commande');
+      console.error('Erreur création paiement:', error);
+      toast.error('Erreur lors de l\'initiation du paiement');
     } finally {
       setLoading(false);
     }
