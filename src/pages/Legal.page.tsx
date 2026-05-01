@@ -7,17 +7,33 @@ export const LegalPage = () => {
     ninea: "[TON_NUMERO_NINEA]", // À remplir (9 chiffres + 1 lettre + 1 chiffre)
     rccm: "SN-DKR-2026-B-[NUMERO]", // À remplir (Format Registre du Commerce Dakar)
     address: "Dakar, Sénégal", 
-    email: "contact@wayne-enterprize.com", // Optionnel, peut être ton mail perso
+    email: "contact@wayne-enterprize.com",
     phone: "+221 77 193 88 74",
     manager: "Wayne",
     tribunal: "Tribunal de Commerce Hors Classe de Dakar",
   };
 
   const hostInfo = {
-    name: "Vercel Inc.", // Très probable vu ton stack React
-    address: "440 N Barranca Ave #4133, Covina, CA 91723",
-    phone: "+1 (559) 288-7060",
-    url: "https://vercel.com"
+    frontend: {
+      name: "Vercel Inc.",
+      address: "440 N Barranca Ave #4133, Covina, CA 91723",
+      url: "https://vercel.com"
+    },
+    backend: {
+      name: "Render Services Inc.",
+      address: "525 Brannan Street, San Francisco, CA 94107, USA",
+      url: "https://render.com"
+    },
+    database: {
+      name: "MongoDB Inc. (MongoDB Atlas)",
+      address: "1633 Broadway, 38th Floor, New York, NY 10019, USA",
+      url: "https://www.mongodb.com"
+    },
+    images: {
+      name: "Cloudinary Ltd.",
+      address: "3400 Central Expressway, Suite 110, Santa Clara, CA 95051, USA",
+      url: "https://cloudinary.com"
+    }
   };
 
   return (
@@ -59,22 +75,60 @@ export const LegalPage = () => {
 
           {/* 3. Hébergement */}
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4 uppercase tracking-wider">3. Hébergement</h2>
-            <div className="bg-green-500/5 p-6 rounded-sm border border-green-500/20">
-              <p><strong>Hébergeur :</strong> {hostInfo.name}</p>
-              <p><strong>Siège social :</strong> {hostInfo.address}</p>
-              <p><strong>Site web :</strong> <a href={hostInfo.url} target="_blank" rel="noreferrer" className="text-green-500 hover:underline">{hostInfo.url}</a></p>
+            <h2 className="text-2xl font-bold text-white mb-4 uppercase tracking-wider">3. Hébergement et Infrastructure</h2>
+            <div className="bg-green-500/5 p-6 rounded-sm border border-green-500/20 space-y-4">
+              <div>
+                <p className="font-bold text-green-400 mb-1">Interface Web (Front-end)</p>
+                <p><strong>Hébergeur :</strong> {hostInfo.frontend.name}</p>
+                <p><strong>Adresse :</strong> {hostInfo.frontend.address}</p>
+                <p><strong>Site :</strong> <a href={hostInfo.frontend.url} target="_blank" rel="noreferrer" className="text-green-500 hover:underline">{hostInfo.frontend.url}</a></p>
+              </div>
+              
+              <div>
+                <p className="font-bold text-green-400 mb-1">Serveur API (Back-end)</p>
+                <p><strong>Hébergeur :</strong> {hostInfo.backend.name}</p>
+                <p><strong>Adresse :</strong> {hostInfo.backend.address}</p>
+                <p><strong>Site :</strong> <a href={hostInfo.backend.url} target="_blank" rel="noreferrer" className="text-green-500 hover:underline">{hostInfo.backend.url}</a></p>
+              </div>
+
+              <div>
+                <p className="font-bold text-green-400 mb-1">Base de données</p>
+                <p><strong>Hébergeur :</strong> {hostInfo.database.name}</p>
+                <p><strong>Adresse :</strong> {hostInfo.database.address}</p>
+                <p><strong>Site :</strong> <a href={hostInfo.database.url} target="_blank" rel="noreferrer" className="text-green-500 hover:underline">{hostInfo.database.url}</a></p>
+              </div>
+
+              <div>
+                <p className="font-bold text-green-400 mb-1">Stockage Images</p>
+                <p><strong>Hébergeur :</strong> {hostInfo.images.name}</p>
+                <p><strong>Adresse :</strong> {hostInfo.images.address}</p>
+                <p><strong>Site :</strong> <a href={hostInfo.images.url} target="_blank" rel="noreferrer" className="text-green-500 hover:underline">{hostInfo.images.url}</a></p>
+              </div>
             </div>
           </section>
 
           {/* 4. Protection des données (Sénégal - CDP) */}
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 uppercase tracking-wider">4. Données Personnelles</h2>
-            <p>
-              Les informations collectées lors de vos achats (via Wave ou Orange Money) sont traitées conformément à la 
-              <strong> Loi n° 2008-12 du 25 janvier 2008</strong> relative à la protection des données personnelles au Sénégal. 
-              Wayne Enterprize s'engage à ne jamais céder vos données à des tiers. Vous pouvez exercer votre droit de rectification 
-              en contactant le support via WhatsApp au {companyInfo.phone}.
+            <p className="mb-4">
+              Les informations collectées lors de vos achats de formations (via Wave ou Orange Money) sont traitées conformément à la 
+              <strong> Loi n° 2008-12 du 25 janvier 2008</strong> relative à la protection des données personnelles au Sénégal.
+            </p>
+            <div className="bg-green-500/5 p-6 rounded-sm border border-green-500/20">
+              <p className="mb-2"><strong>Données collectées :</strong></p>
+              <ul className="list-disc list-inside space-y-1 ml-4">
+                <li>Nom, prénom, email, numéro de téléphone</li>
+                <li>Numéro Wave/Orange Money (pour paiement)</li>
+                <li>Historique des formations achetées</li>
+                <li>Adresse IP et logs de connexion (sécurité)</li>
+              </ul>
+              <p className="mt-4"><strong>Utilisation :</strong> Gestion de votre compte, accès aux formations, support client, facturation</p>
+              <p className="mt-2"><strong>Conservation :</strong> Durée de votre compte + 5 ans (obligations comptables)</p>
+              <p className="mt-2"><strong>Vos droits :</strong> Accès, rectification, suppression de vos données</p>
+            </div>
+            <p className="mt-4">
+              Wayne Enterprize s'engage à ne jamais céder vos données à des tiers à des fins commerciales. 
+              Vous pouvez exercer vos droits en contactant : <a href={`mailto:${companyInfo.email}`} className="text-green-500 hover:underline">{companyInfo.email}</a>
             </p>
           </section>
 

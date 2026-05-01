@@ -17,14 +17,14 @@ const ADMIN_MENU = [
 
 const CLIENT_MENU = [
   { label: 'Accueil',       href: '/',          icon: Home },
-  { label: 'Formations',    href: '/produits',  icon: Package },
+  { label: 'Produits',    href: '/produits',  icon: Package },
   { label: 'Mon panier',    href: '/panier',    icon: ShoppingCart },
   { label: 'Mes commandes', href: '/commandes', icon: Tag },
 ];
 
 const GUEST_MENU = [
   { label: 'Accueil',    href: '/',         icon: Home },
-  { label: 'Formations', href: '/produits', icon: Package },
+  { label: 'Produits', href: '/produits', icon: Package },
 ];
 
 export const Sidebar = () => {
