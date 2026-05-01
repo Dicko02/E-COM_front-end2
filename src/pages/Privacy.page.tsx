@@ -1,8 +1,8 @@
 export const PrivacyPage = () => {
   const companyInfo = {
     name: "WAYNE ENTERPRIZE",
-    email: "contact@wayne-enterprize.com",
-    dpo: "dpo@wayne-enterprize.com",
+    email: "tradewithwayne1@gmail.com",
+    dpo: "tradewithwayne1@gmail.com",
     address: "Dakar, Sénégal"
   };
 

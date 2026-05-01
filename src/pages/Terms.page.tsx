@@ -1,7 +1,7 @@
 export const TermsPage = () => {
   const companyInfo = {
     name: "WAYNE ENTERPRIZE",
-    email: "contact@wayne-enterprize.com",
+    email: "tradewithwayne1@gmail.com",
     phone: "+221 77 193 88 74",
     address: "Dakar, Sénégal"
   };

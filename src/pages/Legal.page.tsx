@@ -7,7 +7,7 @@ export const LegalPage = () => {
     ninea: "[NUMERO_NINEA]", // À remplir (9 chiffres + 1 lettre + 1 chiffre)
     rccm: "SN-DKR-2026-B-[NUMERO]", // À remplir (Format Registre du Commerce Dakar)
     address: "Dakar, Sénégal", 
-    email: "contact@wayne-enterprize.com",
+    email: "tradewithwayne1@gmail.com",
     phone: "+221 77 193 88 74",
     manager: "Wayne",
     tribunal: "Tribunal de Commerce Hors Classe de Dakar",
