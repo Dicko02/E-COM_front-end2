@@ -132,7 +132,7 @@ export const InscriptionPage = () => {
             <form className="space-y-6">
               {/* Nom */}
               <div>
-                <label className="block text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-2">Nom complet</label>
+                <label className="block text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-2">Nom</label>
                 <div className="relative">
                   <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500/40" />
                   <input
