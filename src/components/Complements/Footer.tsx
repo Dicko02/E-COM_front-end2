@@ -51,7 +51,6 @@ export const Footer = () => (
           <ul className="space-y-2">
             {[
               { label: 'Nous Contacter', href: '/contact' },
-              { label: 'FAQ', href: '/contact' },
               { label: 'WhatsApp Direct', href: 'https://wa.me/221771938874' },
             ].map(({ label, href }) => (
               <li key={label}>
