@@ -53,30 +53,34 @@ export const Header = () => {
 
   return (
     <>
-      {/* ── Panneau recherche ancré à droite ───────────────────────────
-          ✅ NE PAS TOUCHER : justifyContent flex-end + marginTop 64px
-          sont la combinaison qui fonctionne (confirmé en prod).
+      {/* ── Panneau recherche ─────────────────────────────────────────
+          ✅ SEUL CHANGEMENT PAR RAPPORT À LA VERSION PRÉCÉDENTE :
+          Le conteneur est toujours fixed inset-0 pour le fond sombre,
+          mais le panneau lui-même utilise position:absolute + right/top
+          au lieu de flex-end (qui était annulé par le div absolute du fond).
       ──────────────────────────────────────────────────────────────── */}
       {searchOpen && (
         <div
           className="fixed inset-0 z-[70]"
-          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}
+          onClick={() => setSearchOpen(false)}
+          style={{ backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}
         >
+          {/* Panneau ancré en haut à droite via position absolute */}
           <div
-            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
-            onClick={() => setSearchOpen(false)}
-          />
-
-          <div
-            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60"
+            onClick={e => e.stopPropagation()}
             style={{
-              marginTop: '64px',
-              marginRight: '16px',
-              width: '100%',
-              maxWidth: '420px',
-              height: 'fit-content',
+              position:        'absolute',
+              top:             '72px',   // juste sous le header (64px) + petit gap
+              right:           '16px',   // aligné avec le bord droit du header
+              width:           '420px',
+              maxWidth:        'calc(100vw - 32px)', // responsive mobile
+              backgroundColor: '#0a0a14',
+              border:          '1px solid rgba(34,197,94,0.25)',
+              borderRadius:    '4px',
+              boxShadow:       '0 25px 50px rgba(0,0,0,0.6)',
             }}
           >
+            {/* Barre de saisie */}
             <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
               <Search size={18} className="text-green-500 flex-shrink-0" />
               <input
@@ -97,6 +101,7 @@ export const Header = () => {
               </button>
             </div>
 
+            {/* Résultats */}
             <div className="px-3 py-3 max-h-[60vh] overflow-y-auto">
               {searchLoading && (
                 <p className="text-slate-500 text-xs py-4 text-center animate-pulse uppercase tracking-widest">
@@ -142,16 +147,7 @@ export const Header = () => {
         </div>
       )}
 
-      {/* ── Topbar ──────────────────────────────────────────────────────
-          Structure : [spacer 56px] [logo flex:1 centré] [actions fixe]
-          
-          ✅ RÈGLE CLÉ :
-          - Le logo a flex:1 → il prend tout l'espace disponible au milieu
-          - Le bloc actions a flexShrink:0 SANS marginLeft:auto
-            (ml:auto est inutile quand le voisin a déjà flex:1)
-          - Le header utilise UNIQUEMENT style= pour le display flex,
-            pas className, pour éviter les conflits Tailwind
-      ──────────────────────────────────────────────────────────────── */}
+      {/* ── Topbar — NE PAS TOUCHER (fonctionne déjà correctement) ── */}
       <header
         style={{
           position: 'fixed',
@@ -168,45 +164,22 @@ export const Header = () => {
           borderBottom: '1px solid rgba(34,197,94,0.15)',
         }}
       >
-        {/* Espace gauche — réservé au bouton ☰ de la Sidebar */}
         <div style={{ width: '56px', flexShrink: 0 }} />
 
-        {/* Logo — flex:1 = prend tout le milieu, justify-center = texte centré dedans */}
-        <a
-          href="/"
-          style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            textDecoration: 'none',
-          }}
-        >
+        <a href="/" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', textDecoration: 'none' }}>
           <div style={{ textAlign: 'center' }}>
-            <p style={{
-              color: '#fff', fontWeight: 900, fontSize: '0.85rem',
-              letterSpacing: '0.2em', textTransform: 'uppercase',
-              lineHeight: 1, margin: 0,
-            }}>
+            <p style={{ color: '#fff', fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.2em', textTransform: 'uppercase', lineHeight: 1, margin: 0 }}>
               Wayne
             </p>
-            <p style={{
-              color: '#22c55e', fontWeight: 700, fontSize: '0.5rem',
-              letterSpacing: '0.35em', textTransform: 'uppercase', margin: 0,
-            }}>
+            <p style={{ color: '#22c55e', fontWeight: 700, fontSize: '0.5rem', letterSpacing: '0.35em', textTransform: 'uppercase', margin: 0 }}>
               Enterprize
             </p>
           </div>
         </a>
 
-        {/* Actions — flexShrink:0 = ne rétrécit pas, reste à droite naturellement */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-
-          {/* Panier — masqué pour les admins */}
           {!isAdmin && (
-            <a
-              href="/panier"
-              aria-label="Mon panier"
+            <a href="/panier" aria-label="Mon panier"
               style={{ position: 'relative', padding: '10px', color: '#94a3b8', display: 'flex', alignItems: 'center', borderRadius: '4px', textDecoration: 'none' }}
               onMouseOver={e => (e.currentTarget as HTMLElement).style.color = '#22c55e'}
               onMouseOut={e  => (e.currentTarget as HTMLElement).style.color = '#94a3b8'}
@@ -220,8 +193,7 @@ export const Header = () => {
                   fontSize: '9px', fontWeight: 900,
                   borderRadius: '9999px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  border: '2px solid #000',
-                  padding: '0 2px',
+                  border: '2px solid #000', padding: '0 2px',
                   transform: cartBump ? 'scale(1.25)' : 'scale(1)',
                   transition: 'transform 0.3s',
                 }}>
@@ -231,11 +203,7 @@ export const Header = () => {
             </a>
           )}
 
-          {/* Bouton recherche */}
-          <button
-            type="button"
-            onClick={() => setSearchOpen(true)}
-            aria-label="Rechercher"
+          <button type="button" onClick={() => setSearchOpen(true)} aria-label="Rechercher"
             style={{
               display: 'flex', alignItems: 'center', gap: '6px',
               padding: '8px 12px', borderRadius: '4px',
@@ -259,12 +227,10 @@ export const Header = () => {
             }}
           >
             <Search size={18} style={{ flexShrink: 0 }} />
-            <span style={{ display: 'none' }} className="sm-show">Rechercher</span>
           </button>
         </div>
       </header>
 
-      {/* Spacer */}
       <div style={{ height: '64px', flexShrink: 0 }} />
     </>
   );
