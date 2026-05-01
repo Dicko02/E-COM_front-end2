@@ -22,19 +22,24 @@ const CLIENT_MENU = [
   { label: 'Mes commandes', href: '/commandes', icon: Tag },
 ];
 
+const GUEST_MENU = [
+  { label: 'Accueil',    href: '/',         icon: Home },
+  { label: 'Formations', href: '/produits', icon: Package },
+];
+
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
   const { cart } = useCart();
   const navigate = useNavigate();
 
-  if (!user) return null;
 
-  const isAdmin     = user.role === 'admin';
-  const menuItems   = isAdmin ? ADMIN_MENU : CLIENT_MENU;
-  const accent      = isAdmin ? '#22c55e' : '#f59e0b';
-  const accentFaint = isAdmin ? 'rgba(34,197,94,0.08)' : 'rgba(245,158,11,0.08)';
-  const displayName = user.nom ? `${user.prenom ?? ''} ${user.nom}`.trim() : user.email;
+  const isAdmin   = user?.role === 'admin';
+  const isGuest   = !user;
+  const menuItems = isGuest ? GUEST_MENU : (isAdmin ? ADMIN_MENU : CLIENT_MENU);
+  const accent      = isGuest ? '#3b82f6' : (isAdmin ? '#22c55e' : '#f59e0b');
+  const accentFaint = isGuest ? 'rgba(59,130,246,0.08)' : (isAdmin ? 'rgba(34,197,94,0.08)' : 'rgba(245,158,11,0.08)');
+  const displayName = user?.nom ? `${user.prenom ?? ''} ${user.nom}`.trim() : (user?.email ?? 'Visiteur');
 
   const handleLogout = async () => { setIsOpen(false); await logout(); };
   const handleNav    = (href: string) => { navigate(href); setIsOpen(false); };
@@ -92,8 +97,8 @@ export const Sidebar = () => {
               <p style={{ color: '#fff', fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase', margin: 0 }}>
                 Wayne
               </p>
-              <p style={{ color: accent, fontWeight: 700, fontSize: '0.58rem', letterSpacing: '0.3em', textTransform: 'uppercase', margin: 0 }}>
-                {isAdmin ? 'Admin Panel' : 'Mon Espace'}
+              <p style={{ color: accent, fontWeight: 700, fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+                {isGuest ? 'Menu' : (isAdmin ? 'Admin Panel' : 'Mon Espace')}
               </p>
             </div>
             <button type="button" aria-label="Fermer" onClick={() => setIsOpen(false)}
@@ -108,7 +113,7 @@ export const Sidebar = () => {
           {/* Navigation */}
           <nav style={{ display: 'flex', flexDirection: 'column', padding: '0.6rem', gap: '0.1rem' }}>
             {menuItems.map(({ label, href, icon: Icon }) => {
-              const isPanier = href === '/panier' && !isAdmin;
+              const isPanier = href === '/panier' && !isAdmin && !isGuest;
               return (
                 <a key={href} href={href}
                   onClick={e => { e.preventDefault(); handleNav(href); }}
@@ -173,33 +178,69 @@ export const Sidebar = () => {
               <Settings size={15} /> Paramètres
             </button>
           )}
-
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '0.65rem',
-            padding: '0.65rem 0.75rem',
-            backgroundColor: accentFaint, border: `1px solid ${accent}20`, borderRadius: '4px',
-          }}>
-            <img
-              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=111&color=${isAdmin ? '22c55e' : 'f59e0b'}&bold=true&size=64`}
-              alt="avatar"
-              style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-            />
-            <div style={{ flexGrow: 1, minWidth: 0 }}>
-              <p style={{ color: '#e2e8f0', fontWeight: 600, fontSize: '0.73rem', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {displayName}
-              </p>
-              <p style={{ color: accent, fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
-                {isAdmin ? 'Admin' : 'Client'}
-              </p>
+          {isGuest ? (
+            // Boutons Connexion / Inscription pour les visiteurs
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <button
+                onClick={() => { navigate('/connexion'); setIsOpen(false); }}
+                style={{
+                  width: '100%', padding: '0.65rem',
+                  backgroundColor: accent, color: '#fff',
+                  border: 'none', borderRadius: '4px',
+                  fontSize: '0.75rem', fontWeight: 700,
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  cursor: 'pointer', transition: 'opacity 0.2s',
+                }}
+                onMouseOver={e => (e.currentTarget.style.opacity = '0.85')}
+                onMouseOut={e => (e.currentTarget.style.opacity = '1')}
+              >
+                Connexion
+              </button>
+              <button
+                onClick={() => { navigate('/inscription'); setIsOpen(false); }}
+                style={{
+                  width: '100%', padding: '0.65rem',
+                  backgroundColor: 'transparent', color: accent,
+                  border: `1px solid ${accent}`, borderRadius: '4px',
+                  fontSize: '0.75rem', fontWeight: 700,
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  cursor: 'pointer', transition: 'background 0.2s',
+                }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = accentFaint)}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+              >
+                Inscription
+              </button>
             </div>
-            <button type="button" aria-label="Déconnexion" onClick={handleLogout}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0, flexShrink: 0 }}
-              onMouseOver={e => (e.currentTarget.style.color = '#fca5a5')}
-              onMouseOut={e  => (e.currentTarget.style.color = '#ef4444')}
-            >
-              <LogOut size={17} />
-            </button>
-          </div>
+          ) : (
+            // Avatar + déconnexion pour les connectés (code existant)
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '0.65rem',
+              padding: '0.65rem 0.75rem',
+              backgroundColor: accentFaint, border: `1px solid ${accent}20`, borderRadius: '4px',
+            }}>
+            <img
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=111&color=${isAdmin ? '22c55e' : 'f59e0b'}&bold=true&size=64`}
+              alt="avatar"
+              style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+            />
+            <div style={{ flexGrow: 1, minWidth: 0 }}>
+              <p style={{ color: '#e2e8f0', fontWeight: 600, fontSize: '0.73rem', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {displayName}
+              </p>
+              <p style={{ color: accent, fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+                {isAdmin ? 'Admin' : 'Client'}
+              </p>
+            </div>
+            <button type="button" aria-label="Déconnexion" onClick={handleLogout}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0, flexShrink: 0 }}
+              onMouseOver={e => (e.currentTarget.style.color = '#fca5a5')}
+              onMouseOut={e  => (e.currentTarget.style.color = '#ef4444')}
+            >
+              <LogOut size={17} />
+            </button>
+          </div>
+          )}
         </div>
       </div>
     </>

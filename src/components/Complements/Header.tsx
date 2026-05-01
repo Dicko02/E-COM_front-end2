@@ -88,7 +88,7 @@ export const Header = () => {
                   if (e.key === 'Enter' && searchQuery.trim())
                     window.location.href = `/produits?search=${encodeURIComponent(searchQuery)}`;
                 }}
-                placeholder="Rechercher une formation..."
+                placeholder="Rechercher un produit..."
                 className="flex-1 bg-transparent text-white text-base outline-none placeholder-slate-600"
               />
               <button type="button" onClick={() => setSearchOpen(false)}
@@ -130,11 +130,6 @@ export const Header = () => {
               {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
                 <p className="text-slate-500 text-sm py-4 text-center">
                   Aucun résultat pour «&nbsp;<span className="text-white">{searchQuery}</span>&nbsp;»
-                </p>
-              )}
-              {!searchQuery && (
-                <p className="text-slate-700 text-[10px] py-3 text-center uppercase tracking-widest">
-                  Entrée pour rechercher · Échap pour fermer
                 </p>
               )}
             </div>
