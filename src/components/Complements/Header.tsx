@@ -58,17 +58,24 @@ export const Header = () => {
           sont la combinaison qui fonctionne (confirmé en prod).
       ──────────────────────────────────────────────────────────────── */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[70] flex items-start justify-end">
-          {/* Overlay */}
+        <div
+          className="fixed inset-0 z-[70]"
+          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}
+        >
           <div
             className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           />
 
-          {/* Panneau de recherche */}
           <div
-            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60 mt-16 mr-4 w-full max-w-[420px]"
-            style={{ height: 'fit-content' }}
+            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60"
+            style={{
+              marginTop: '64px',
+              marginRight: '16px',
+              width: '420px', // 100%
+              maxWidth: '90vw', // 420px
+              height: 'fit-content',
+            }}
           >
             <div className="flex items-center gap-3 px-5 py-4 border-b border-green-500/15">
               <Search size={18} className="text-green-500 flex-shrink-0" />
