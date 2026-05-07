@@ -27,7 +27,7 @@ export const PanierPage = () => {
     
     setLoading(true);
     try {
-      // Préparer les données pour Wave
+      // Préparer les données pour le paiement
       const paymentData = {
         cartItems: cart.map(item => ({
           productId: item.product._id,
@@ -44,11 +44,11 @@ export const PanierPage = () => {
         totalAmount: totalPrice
       };
 
-      // Initier le paiement Wave
-      const result = await paymentApi.initiateWave(paymentData);
+      // Initier le paiement SenePay
+      const result = await paymentApi.initiate(paymentData);
 
       if (result.success && result.checkoutUrl) {
-        // Rediriger vers la page de paiement Wave
+        // Rediriger vers la page de paiement SenePay
         window.location.href = result.checkoutUrl;
       } else {
         throw new Error('Erreur lors de la création de la session de paiement');
