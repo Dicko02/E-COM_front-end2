@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Menu, X, LogOut, LayoutDashboard, Package, Settings,
+  Menu, X, LogOut, LayoutDashboard, Package, /*Settings,*/
   ShoppingBag, Users, FolderOpen, Home, ShoppingCart, Tag
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
