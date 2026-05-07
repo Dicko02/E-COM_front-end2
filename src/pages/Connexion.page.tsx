@@ -215,7 +215,7 @@ export const ConnexionPage = () => {
           </div>
 
           {/* Google */}
-          <button type="button"
+          {/* <button type="button"
             style={{
               width: '100%', padding: '0.75rem',
               backgroundColor: '#fff',
@@ -235,7 +235,7 @@ export const ConnexionPage = () => {
             </svg>
             Continuer avec Google
           </button>
-        </div>
+        </div> */}
 
         <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.8rem', color: '#888' }}>
           Nouveau ici ?{' '}

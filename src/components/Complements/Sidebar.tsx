@@ -157,7 +157,7 @@ export const Sidebar = () => {
 
         {/* Bas */}
         <div style={{ borderTop: `1px solid ${accent}20`, padding: '0.75rem' }}>
-          {isAdmin && (
+          {/* {isAdmin && (
             <button type="button" style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
               padding: '0.6rem 0.75rem', borderRadius: '4px',
@@ -177,7 +177,7 @@ export const Sidebar = () => {
             >
               <Settings size={15} /> Paramètres
             </button>
-          )}
+          )} */}
           {isGuest ? (
             // Boutons Connexion / Inscription pour les visiteurs
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -215,31 +215,31 @@ export const Sidebar = () => {
           ) : (
             // Avatar + déconnexion pour les connectés (code existant)
             <div style={{
-              display: 'flex', alignItems: 'center', gap: '0.65rem',
-              padding: '0.65rem 0.75rem',
-              backgroundColor: accentFaint, border: `1px solid ${accent}20`, borderRadius: '4px',
-            }}>
-            <img
-              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=111&color=${isAdmin ? '22c55e' : 'f59e0b'}&bold=true&size=64`}
-              alt="avatar"
-              style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-            />
-            <div style={{ flexGrow: 1, minWidth: 0 }}>
-              <p style={{ color: '#e2e8f0', fontWeight: 600, fontSize: '0.73rem', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {displayName}
-              </p>
-              <p style={{ color: accent, fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
-                {isAdmin ? 'Admin' : 'Client'}
-              </p>
-            </div>
-            <button type="button" aria-label="Déconnexion" onClick={handleLogout}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0, flexShrink: 0 }}
-              onMouseOver={e => (e.currentTarget.style.color = '#fca5a5')}
-              onMouseOut={e  => (e.currentTarget.style.color = '#ef4444')}
-            >
-              <LogOut size={17} />
-            </button>
-          </div>
+              display: 'flex', alignItems: 'center', gap: '0.65rem',
+              padding: '0.65rem 0.75rem',
+              backgroundColor: accentFaint, border: `1px solid ${accent}20`, borderRadius: '4px',
+            }}>
+            <img
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=111&color=${isAdmin ? '22c55e' : 'f59e0b'}&bold=true&size=64`}
+              alt="avatar"
+              style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+            />
+            <div style={{ flexGrow: 1, minWidth: 0 }}>
+              <p style={{ color: '#e2e8f0', fontWeight: 600, fontSize: '0.73rem', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {displayName}
+              </p>
+              <p style={{ color: accent, fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+                {isAdmin ? 'Admin' : 'Client'}
+              </p>
+            </div>
+            <button type="button" aria-label="Déconnexion" onClick={handleLogout}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0, flexShrink: 0 }}
+              onMouseOver={e => (e.currentTarget.style.color = '#fca5a5')}
+              onMouseOut={e  => (e.currentTarget.style.color = '#ef4444')}
+            >
+              <LogOut size={17} />
+            </button>
+          </div>
           )}
         </div>
       </div>
