@@ -50,7 +50,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* ── Image ── */}
       <a href={`/produits/${product._id}`} className="block">
-        <div className="relative overflow-hidden rounded-[20px] border border-white/5 group-hover:border-amber-500/30 transition-all duration-500">
+        <div className="relative overflow-hidden rounded-[20px] transition-all duration-500">
 
           {/* ProductImage gère déjà le ratio aspect-square */}
           <ProductImage image={product.imageUrl} nom={product.nom} />
