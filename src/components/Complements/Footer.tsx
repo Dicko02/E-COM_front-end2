@@ -40,13 +40,6 @@ export const Footer = () => (
           <p className="text-slate-600 text-xs leading-relaxed mb-8 font-light">
             Real Experience. Proven SMC Strategy. Total Transparency.
           </p>
-
-          {/* Avertissement */}
-          <div className="p-4 rounded" style={{ background: 'rgba(34,197,94,0.03)', border: '1px solid rgba(34,197,94,0.08)' }}>
-            <p className="text-[10px] text-slate-600 leading-relaxed">
-              ⚠️ Le trading comporte un niveau élevé de risque. Les performances passées ne garantissent pas les résultats futurs.
-            </p>
-          </div>
         </div>
 
         {/* Spacer */}
