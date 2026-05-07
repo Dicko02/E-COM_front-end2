@@ -101,8 +101,8 @@ export const PanierPage = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-        {/* Header */}
-        <div className="mb-12 pb-8 border-b border-amber-500/20">
+        {/* Header avec animation */}
+        <div className="mb-12 pb-8 border-b border-amber-500/20 animate-fadeInDown">
           <p className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-2">Étape 1 de 3</p>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight uppercase">Votre Panier</h1>
           <p className="text-slate-400 mt-4">
@@ -111,12 +111,13 @@ export const PanierPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Liste des produits */}
+          {/* Liste des produits avec animations */}
           <div className="lg:col-span-2 space-y-6">
-            {cart.map((item: any) => (
+            {cart.map((item: any, idx: number) => (
               <div 
                 key={item.product._id} 
-                className="group flex flex-col sm:flex-row gap-6 p-6 rounded-sm bg-slate-900/30 border border-amber-500/20 hover:border-amber-500/40 transition-all shadow-lg hover:shadow-amber-500/10"
+                className="group flex flex-col sm:flex-row gap-6 p-6 rounded-sm bg-slate-900/30 border border-amber-500/20 hover:border-amber-500/40 transition-all shadow-lg hover:shadow-amber-500/10 animate-fadeInUp hover:scale-[1.01]"
+                style={{ animationDelay: (idx * 100) + 'ms' }}
               >
                 {/* Image produit */}
                 <div className="w-24 h-24 flex-shrink-0">
@@ -208,16 +209,18 @@ export const PanierPage = () => {
               <button
                 onClick={handleCheckout}
                 disabled={loading || cart.length === 0}
-                className="w-full bg-amber-500 hover:bg-white text-black py-4 rounded-sm font-bold uppercase tracking-widest text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-amber-500 hover:bg-white text-black py-4 rounded-sm font-bold uppercase tracking-widest text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
               >
-                {loading ? 'Traitement...' : 'Valider la Commande'}
+                <span className="relative z-10">{loading ? 'Traitement...' : 'Valider la Commande'}</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </button>
 
               <button
                 onClick={clearCart}
-                className="w-full border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 rounded-sm font-bold uppercase tracking-widest text-sm transition-colors"
+                className="w-full border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 rounded-sm font-bold uppercase tracking-widest text-sm transition-colors relative overflow-hidden group"
               >
-                Vider le Panier
+                <span className="relative z-10">Vider le Panier</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </button>
 
               <div className="text-center pt-4">
@@ -230,20 +233,18 @@ export const PanierPage = () => {
                 </a>
               </div>
 
-              {/* Avantages */}
+              {/* Avantages avec animations */}
               <div className="space-y-3 pt-6 border-t border-amber-500/10 text-xs text-slate-400">
-                <div className="flex gap-2">
-                  <span className="text-amber-500">✓</span>
-                  <span>Paiement 100% sécurisé</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-amber-500">✓</span>
-                  <span>Livraison express gratuite</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-amber-500">✓</span>
-                  <span>Retour 30 jours gratuit</span>
-                </div>
+                {[
+                  'Paiement 100% sécurisé',
+                  'Livraison express gratuite',
+                  'Retour 30 jours gratuit'
+                ].map((text, idx) => (
+                  <div key={text} className="flex gap-2 animate-fadeInUp" style={{ animationDelay: (idx * 100) + 'ms' }}>
+                    <span className="text-amber-500">✓</span>
+                    <span>{text}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

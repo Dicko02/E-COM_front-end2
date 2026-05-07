@@ -196,7 +196,7 @@ export const CommandeDetailPage: React.FC = () => {
           </div>
         )}
 
-        {/* Action annulation */}
+        {/* Action annulation avec effet shimmer */}
         {order.status === 'pending' && (
           <div className="text-center animate-fadeInUp delay-400">
             <button
@@ -213,10 +213,13 @@ export const CommandeDetailPage: React.FC = () => {
                   }
                 }
               }}
-              className="inline-flex items-center gap-2 border-2 border-red-500/40 hover:border-red-500 text-red-400 hover:text-red-300 font-bold uppercase tracking-widest text-sm px-6 py-3 rounded-sm transition-all"
+              className="inline-flex items-center gap-2 border-2 border-red-500/40 hover:border-red-500 text-red-400 hover:text-red-300 font-bold uppercase tracking-widest text-sm px-6 py-3 rounded-sm transition-all relative overflow-hidden group"
             >
-              <XCircle size={16} />
-              Annuler la commande
+              <span className="relative z-10 flex items-center gap-2">
+                <XCircle size={16} />
+                Annuler la commande
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </button>
           </div>
         )}

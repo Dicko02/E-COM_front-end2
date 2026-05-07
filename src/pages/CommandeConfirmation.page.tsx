@@ -122,17 +122,17 @@ export const CommandeConfirmationPage: React.FC = () => {
           </div>
         )}
 
-        {/* Étapes suivantes */}
+        {/* Étapes suivantes avec animations */}
         <div className="grid grid-cols-3 gap-4 mb-10">
           {[
             { icon: CheckCircle, label: 'Commande\nreçue', done: true },
             { icon: Package,      label: 'Préparation\nen cours', done: false },
             { icon: ShoppingBag,  label: 'Livraison\nà venir', done: false },
           ].map(({ icon: Icon, label, done }, idx) => (
-            <div key={idx} className="flex flex-col items-center gap-2">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
+            <div key={idx} className="flex flex-col items-center gap-2 animate-fadeInUp" style={{ animationDelay: (idx * 100) + 'ms' }}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
                 done
-                  ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-400'
+                  ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-400 animate-pulse-gold'
                   : 'bg-slate-900 border-slate-700 text-slate-600'
               }`}>
                 <Icon size={18} />
@@ -146,21 +146,27 @@ export const CommandeConfirmationPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Actions */}
+        {/* Actions avec effets shimmer */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="/commandes"
-            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-white text-black font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-white text-black font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 hover:scale-105 relative overflow-hidden group"
           >
-            Suivre ma commande
-            <ArrowRight size={16} />
+            <span className="relative z-10 flex items-center gap-2">
+              Suivre ma commande
+              <ArrowRight size={16} />
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </a>
           <a
             href="/"
-            className="inline-flex items-center justify-center gap-2 border-2 border-amber-500/40 hover:border-amber-500 text-amber-500 font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 border-2 border-amber-500/40 hover:border-amber-500 text-amber-500 font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 relative overflow-hidden group"
           >
-            <Home size={16} />
-            Retour à l'accueil
+            <span className="relative z-10 flex items-center gap-2">
+              <Home size={16} />
+              Retour à l'accueil
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </a>
         </div>
       </div>

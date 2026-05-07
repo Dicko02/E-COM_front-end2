@@ -21,11 +21,11 @@ export const Button: React.FC<ButtonProps> = ({
   className = ''
 }) => {
   const variants = {
-    primary: 'bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-widest transition-all duration-300 hover:shadow-lg',
-    secondary: 'bg-slate-700 text-slate-100 hover:bg-slate-600 uppercase tracking-widest transition-all duration-300',
-    outline: 'border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black uppercase tracking-widest transition-all duration-300',
-    danger: 'bg-red-600 text-white hover:bg-red-700 uppercase tracking-widest transition-all duration-300',
-    ghost: 'text-amber-500 hover:text-amber-400 uppercase tracking-widest transition-all duration-300'
+    primary: 'bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-widest transition-all duration-300 hover:shadow-lg hover:scale-105 relative overflow-hidden group',
+    secondary: 'bg-slate-700 text-slate-100 hover:bg-slate-600 uppercase tracking-widest transition-all duration-300 hover:scale-105 relative overflow-hidden group',
+    outline: 'border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black uppercase tracking-widest transition-all duration-300 hover:scale-105 relative overflow-hidden group',
+    danger: 'bg-red-600 text-white hover:bg-red-700 uppercase tracking-widest transition-all duration-300 hover:scale-105 relative overflow-hidden group',
+    ghost: 'text-amber-500 hover:text-amber-400 uppercase tracking-widest transition-all duration-300 hover:scale-105'
   };
 
   const sizes = {
@@ -40,7 +40,10 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={`${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
     >
-      {children}
+      {variant !== 'ghost' && (
+        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+      )}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 };

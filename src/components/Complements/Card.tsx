@@ -12,7 +12,7 @@ export const Card: React.FC<CardProps> = ({ children, className = '', hover = fa
     <div 
       className={`
         bg-slate-900 border border-amber-500/10 rounded-sm p-6 
-        ${hover ? 'hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300' : ''}
+        ${hover ? 'hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:scale-[1.02]' : ''}
         ${className}
       `}
     >

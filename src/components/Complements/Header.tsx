@@ -59,7 +59,7 @@ export const Header = () => {
       ──────────────────────────────────────────────────────────────── */}
       {searchOpen && (
         <div
-          className="fixed inset-0 z-[70]"
+          className="fixed inset-0 z-[70] animate-fadeIn"
           style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}
         >
           <div
@@ -68,7 +68,7 @@ export const Header = () => {
           />
 
           <div
-            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60"
+            className="relative z-10 bg-slate-950 border border-green-500/25 rounded-sm shadow-2xl shadow-black/60 animate-slideInRight"
             style={{
               marginTop: '64px',
               marginRight: '16px',

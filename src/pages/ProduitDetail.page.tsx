@@ -71,9 +71,9 @@ export const ProduitDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Breadcrumb */}
+      {/* Breadcrumb avec animation */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-12">
+        <div className="flex items-center gap-2 text-sm text-slate-500 mb-12 animate-fadeInDown">
           <a href="/" className="hover:text-amber-500 transition-colors">Accueil</a>
           <span>/</span>
           <a href="/produits" className="hover:text-amber-500 transition-colors">Produits</a>
@@ -81,18 +81,18 @@ export const ProduitDetailPage: React.FC = () => {
           <span className="text-amber-500">{product.nom}</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-slate-900/40 border border-amber-500/20 rounded-3xl p-8 backdrop-blur">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-slate-900/40 border border-amber-500/20 rounded-3xl p-8 backdrop-blur animate-fadeInUp">
           {/* Galerie */}
           <div className="lg:col-span-2 flex gap-4 max-w-2xl">
-            {/* Thumbnails */}
+            {/* Thumbnails avec animation hover */}
             {allImages.length > 1 && (
               <div className="flex flex-col gap-3 overflow-y-auto scrollbar-hide w-16">
                 {allImages.map((img: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index ? 'border-amber-500' : 'border-amber-500/20'
+                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-300 hover:scale-110 ${
+                      selectedImage === index ? 'border-amber-500 shadow-lg shadow-amber-500/50' : 'border-amber-500/20 hover:border-amber-500/60'
                     }`}
                   >
                     <ProductImage image={img} nom={`${product.nom} ${index + 1}`} />
@@ -101,9 +101,11 @@ export const ProduitDetailPage: React.FC = () => {
               </div>
             )}
 
-            {/* Image principale */}
+            {/* Image principale avec effet hover */}
             <div className="flex-1 relative group">
-              <ProductImage image={allImages[selectedImage]} nom={product.nom} className="rounded-2xl" />
+              <div className="transition-transform duration-500 group-hover:scale-[1.02]">
+                <ProductImage image={allImages[selectedImage]} nom={product.nom} className="rounded-2xl" />
+              </div>
 
               <div className="absolute top-3 left-3">
                 <ProductBadges discount={discount} nombreDisponible={product.nombreDisponible} />
@@ -176,16 +178,18 @@ export const ProduitDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleAddToCart}
                 disabled={product.nombreDisponible === 0}
-                className="w-full bg-amber-500 hover:bg-white text-black py-4 font-bold uppercase tracking-widest text-sm rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-amber-500 hover:bg-white text-black py-4 font-bold uppercase tracking-widest text-sm rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
               >
-                Ajouter au Panier
+                <span className="relative z-10">Ajouter au Panier</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </button>
 
               <a 
                 href="/panier"
-                className="block w-full text-center border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 font-bold uppercase tracking-widest text-sm rounded-lg transition-all"
+                className="block w-full text-center border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black py-3 font-bold uppercase tracking-widest text-sm rounded-lg transition-all relative overflow-hidden group"
               >
-                Voir le Panier
+                <span className="relative z-10">Voir le Panier</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </a>
             </div>
 
@@ -250,32 +254,22 @@ export const ProduitDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Complimentary Section */}
+        {/* Complimentary Section avec animations */}
         <section className="mt-24 pt-24 border-t border-amber-500/20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
-                <Zap size={32} className="text-amber-500" />
+            {[
+              { icon: Zap, title: 'Excellence Garantie', desc: 'Chaque produit est sélectionné avec soin pour vous garantir la qualité premium.' },
+              { icon: Package, title: 'Livraison Express', desc: 'Vos commandes sont préparées et expédiées dans les meilleurs délais.' },
+              { icon: Shield, title: 'Service Premium', desc: 'Un support client dédié pour répondre à toutes vos questions.' }
+            ].map(({ icon: Icon, title, desc }, idx) => (
+              <div key={title} className="text-center space-y-4 animate-fadeInUp group" style={{ animationDelay: (idx * 100) + 'ms' }}>
+                <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:border-amber-500/60">
+                  <Icon size={32} className="text-amber-500" />
+                </div>
+                <h3 className="font-bold uppercase tracking-widest text-sm group-hover:text-amber-500 transition-colors">{title}</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
               </div>
-              <h3 className="font-bold uppercase tracking-widest text-sm">Excellence Garantie</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">Chaque produit est sélectionné avec soin pour vous garantir la qualité premium.</p>
-            </div>
-
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
-                <Package size={32} className="text-amber-500" />
-              </div>
-              <h3 className="font-bold uppercase tracking-widest text-sm">Livraison Express</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">Vos commandes sont préparées et expédiées dans les meilleurs délais.</p>
-            </div>
-
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
-                <Shield size={32} className="text-amber-500" />
-              </div>
-              <h3 className="font-bold uppercase tracking-widest text-sm">Service Premium</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">Un support client dédié pour répondre à toutes vos questions.</p>
-            </div>
+            ))}
           </div>
         </section>
       </div>

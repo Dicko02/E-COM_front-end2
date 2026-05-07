@@ -10,8 +10,8 @@ export const NotFoundPage = () => {
       </div>
 
       <div className="relative z-10 text-center animate-fadeInUp">
-        {/* Numéro 404 */}
-        <p className="text-[10rem] md:text-[14rem] font-black leading-none tracking-tighter text-amber-500/60 select-none">
+        {/* Numéro 404 avec animation pulse */}
+        <p className="text-[10rem] md:text-[14rem] font-black leading-none tracking-tighter text-amber-500/60 select-none animate-pulse-gold">
           404
         </p>
 
@@ -29,17 +29,23 @@ export const NotFoundPage = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="/"
-            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-white text-black font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-white text-black font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 hover:scale-105 relative overflow-hidden group"
           >
-            <Home size={18} />
-            Retour à l'accueil
+            <span className="relative z-10 flex items-center gap-2">
+              <Home size={18} />
+              Retour à l'accueil
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </a>
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center gap-2 border-2 border-amber-500/40 hover:border-amber-500 text-amber-500 font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 border-2 border-amber-500/40 hover:border-amber-500 text-amber-500 font-bold px-8 py-4 rounded-sm uppercase tracking-widest text-sm transition-all duration-300 relative overflow-hidden group"
           >
-            <ArrowLeft size={18} />
-            Page précédente
+            <span className="relative z-10 flex items-center gap-2">
+              <ArrowLeft size={18} />
+              Page précédente
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </button>
         </div>
       </div>

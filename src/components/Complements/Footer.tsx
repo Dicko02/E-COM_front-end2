@@ -1,10 +1,18 @@
 export const Footer = () => (
   <footer
-    className="w-full mt-24"
+    className="w-full mt-24 relative overflow-hidden"
     style={{ backgroundColor: '#080808', borderTop: '1px solid rgba(34,197,94,0.08)' }}
   >
-    {/* ── Bande verte fine tout en haut ── */}
-    <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(34,197,94,0.4), transparent)' }} />
+    {/* ── Bande verte fine tout en haut avec animation shimmer ── */}
+    <div className="h-px w-full relative overflow-hidden" style={{ background: 'linear-gradient(90deg, transparent, rgba(34,197,94,0.4), transparent)' }}>
+      <div 
+        className="absolute inset-0 w-1/3 h-full"
+        style={{
+          background: 'linear-gradient(90deg, transparent, rgba(34,197,94,0.6), transparent)',
+          animation: 'shimmer 3s infinite'
+        }}
+      />
+    </div>
 
     <div className="max-w-6xl mx-auto px-6 pt-16 pb-12">
 
@@ -13,21 +21,24 @@ export const Footer = () => (
 
         {/* Brand — prend 5 colonnes */}
         <div className="md:col-span-5">
-          {/* Logo */}
-          <a href="/" className="inline-block mb-6">
+          {/* Logo avec effet hover */}
+          <a href="/" className="inline-block mb-6 group">
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{
-                width: 40, height: 40,
-                background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))',
-                border: '1px solid rgba(34,197,94,0.25)',
-                borderRadius: 8,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
+              <div 
+                className="transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                style={{
+                  width: 40, height: 40,
+                  background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))',
+                  border: '1px solid rgba(34,197,94,0.25)',
+                  borderRadius: 8,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
                 <span style={{ color: '#22c55e', fontWeight: 900, fontSize: '1.1rem', letterSpacing: '-0.05em' }}>W</span>
               </div>
               <div>
-                <p style={{ margin: 0, color: '#fff', fontWeight: 900, fontSize: '1rem', letterSpacing: '0.15em', textTransform: 'uppercase', lineHeight: 1 }}>Wayne</p>
+                <p className="transition-colors duration-300 group-hover:text-green-400" style={{ margin: 0, color: '#fff', fontWeight: 900, fontSize: '1rem', letterSpacing: '0.15em', textTransform: 'uppercase', lineHeight: 1 }}>Wayne</p>
                 <p style={{ margin: 0, color: '#22c55e', fontWeight: 700, fontSize: '0.5rem', letterSpacing: '0.35em', textTransform: 'uppercase' }}>Enterprize</p>
               </div>
             </div>
@@ -58,11 +69,14 @@ export const Footer = () => (
               <li key={label}>
                 <a
                   href={href}
-                  className="text-sm text-slate-500 hover:text-green-400 transition-colors duration-200"
+                  className="text-sm text-slate-500 hover:text-green-400 transition-all duration-300 inline-block hover:translate-x-1 relative group"
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 >
-                  {label}
+                  <span className="relative">
+                    {label}
+                    <span className="absolute bottom-0 left-0 w-0 h-px bg-green-400 transition-all duration-300 group-hover:w-full" />
+                  </span>
                 </a>
               </li>
             ))}
@@ -82,8 +96,14 @@ export const Footer = () => (
               { label: 'Mentions Légales',     href: '/mentions-legales' },
             ].map(({ label, href }) => (
               <li key={label}>
-                <a href={href} className="text-sm text-slate-500 hover:text-green-400 transition-colors duration-200">
-                  {label}
+                <a 
+                  href={href} 
+                  className="text-sm text-slate-500 hover:text-green-400 transition-all duration-300 inline-block hover:translate-x-1 relative group"
+                >
+                  <span className="relative">
+                    {label}
+                    <span className="absolute bottom-0 left-0 w-0 h-px bg-green-400 transition-all duration-300 group-hover:w-full" />
+                  </span>
                 </a>
               </li>
             ))}
@@ -111,7 +131,7 @@ export const Footer = () => (
         {/* Réseaux + paiements */}
         <div className="flex items-center gap-6">
 
-          {/* Réseaux sociaux */}
+          {/* Réseaux sociaux avec effet shine */}
           <div className="flex items-center gap-2">
             {[
               {
@@ -143,9 +163,10 @@ export const Footer = () => (
             ].map(({ label, href, icon }) => (
               <a key={label} href={href} aria-label={label}
                 target="_blank" rel="noopener noreferrer"
-                className="w-7 h-7 flex items-center justify-center rounded text-slate-600 hover:text-green-400 transition-colors duration-200"
+                className="w-7 h-7 flex items-center justify-center rounded text-slate-600 hover:text-green-400 transition-all duration-300 hover:scale-110 hover:rotate-6 relative overflow-hidden group"
                 style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-                {icon}
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-green-400/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                <span className="relative z-10">{icon}</span>
               </a>
             ))}
           </div>
@@ -153,7 +174,7 @@ export const Footer = () => (
           {/* Séparateur vertical */}
           <div className="w-px h-5 bg-white/5" />
 
-          {/* Modes de paiement */}
+          {/* Modes de paiement avec effet shimmer */}
           <div className="flex items-center gap-2">
             {[
               { label: 'Wave',         color: '#1a6fff' },
@@ -161,9 +182,10 @@ export const Footer = () => (
               { label: 'Livraison',    color: '#166534' },
             ].map(({ label, color }) => (
               <div key={label} title={label}
-                className="text-white text-[8px] font-black px-2 py-1 rounded-sm uppercase tracking-wider"
+                className="text-white text-[8px] font-black px-2 py-1 rounded-sm uppercase tracking-wider relative overflow-hidden group"
                 style={{ backgroundColor: color, opacity: 0.85 }}>
-                {label}
+                <span className="relative z-10">{label}</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </div>
             ))}
           </div>

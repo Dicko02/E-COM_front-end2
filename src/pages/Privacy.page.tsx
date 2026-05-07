@@ -9,7 +9,7 @@ export const PrivacyPage = () => {
   return (
     <div className="min-h-screen text-white pt-32 pb-16" style={{ backgroundColor: '#050a05' }}>
       <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-12">
+        <div className="mb-12 animate-fadeInDown">
           <h1 className="text-5xl font-black text-green-500 mb-2 uppercase tracking-tight">Politique de Confidentialité</h1>
           <div className="h-1 w-20 bg-green-500"></div>
           <p className="mt-4 text-slate-400 text-sm italic">
@@ -17,7 +17,7 @@ export const PrivacyPage = () => {
           </p>
         </div>
 
-        <div className="space-y-8 text-slate-300 leading-relaxed">
+        <div className="space-y-8 text-slate-300 leading-relaxed animate-fadeInUp delay-100">
           
           {/* Intro */}
           <section>

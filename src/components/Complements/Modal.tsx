@@ -21,19 +21,19 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
       <div 
         className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       ></div>
 
-      <div className={`relative bg-slate-900 border border-amber-500/20 rounded-sm shadow-2xl shadow-amber-500/10 ${sizes[size]} w-full max-h-[90vh] overflow-hidden`}>
+      <div className={`relative bg-slate-900 border border-amber-500/20 rounded-sm shadow-2xl shadow-amber-500/10 ${sizes[size]} w-full max-h-[90vh] overflow-hidden animate-scaleIn`}>
         <div className="flex items-center justify-between p-6 border-b border-amber-500/10">
           <h2 className="text-2xl font-light text-white">{title}</h2>
           <button
             aria-label="Fermer le modal"
             onClick={onClose}
-            className="text-slate-400 hover:text-amber-500 transition-colors"
+            className="text-slate-400 hover:text-amber-500 transition-all duration-300 hover:rotate-90"
           >
             <X className="w-6 h-6" />
           </button>

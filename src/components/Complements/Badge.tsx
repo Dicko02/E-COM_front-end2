@@ -24,7 +24,7 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', siz
   };
 
   return (
-    <span className={`inline-block rounded-sm font-medium uppercase tracking-wider ${variants[variant]} ${sizes[size]}`}>
+    <span className={`inline-block rounded-sm font-medium uppercase tracking-wider transition-all duration-300 hover:scale-105 ${variants[variant]} ${sizes[size]}`}>
       {children}
     </span>
   );

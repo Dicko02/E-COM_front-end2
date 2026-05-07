@@ -153,7 +153,7 @@ export const AccueilPage = () => {
               className="p-6 rounded-sm border border-green-500/15 hover:border-green-500/40 transition-all duration-300 group relative overflow-hidden"
               style={{ 
                 backgroundColor: 'rgba(13,26,13,0.6)',
-                transitionDelay: `${idx * 100}ms`
+                transitionDelay: (idx * 100) + 'ms'
               }}
             >
               {/* Shine effect on hover */}
@@ -198,14 +198,14 @@ export const AccueilPage = () => {
               <div 
                 key={product._id} 
                 className="w-full animate-fadeInUp"
-                style={{ animationDelay: `${idx * 100}ms` }}
+                style={{ animationDelay: (idx * 100) + 'ms' }}
               >
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
         ) : (
-          /* Affichage de l'image des formations en attendant */}
+          /* Affichage de l'image des formations en attendant */
           <div className="text-center">
             <img
               src="/formations.jpeg"
@@ -309,7 +309,7 @@ export const AccueilPage = () => {
               <div 
                 key={p._id} 
                 className="w-full animate-fadeInUp"
-                style={{ animationDelay: `${idx * 50}ms` }}
+                style={{ animationDelay: (idx * 50) + 'ms' }}
               >
                 <ProductCard product={p} />
               </div>
