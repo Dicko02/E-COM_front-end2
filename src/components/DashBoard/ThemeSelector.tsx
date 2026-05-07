@@ -15,8 +15,9 @@ export const ThemeSelector: React.FC = () => {
   return (
     <div className="flex items-center gap-2">
       <button
+        type="button"
         title="Sélectionner thème"
-        className="p-2 text-slate-400 hover:text-amber-500 transition-colors"
+        className="p-2 text-slate-400 hover:text-green-500 transition-all hover:scale-110"
       >
         <Palette size={20} />
       </button>
@@ -25,11 +26,12 @@ export const ThemeSelector: React.FC = () => {
         {availableThemes.map(themeKey => (
           <button
             key={themeKey}
+            type="button"
             onClick={() => setTheme(themeKey)}
-            className={`px-3 py-1 text-xs font-bold uppercase rounded-sm transition-all ${
+            className={`px-3 py-1 text-xs font-bold uppercase rounded-sm transition-all hover:scale-105 active:scale-95 ${
               themeName === themeKey
-                ? 'bg-amber-500 text-black'
-                : 'bg-slate-900/50 text-slate-400 hover:text-white border border-amber-500/20'
+                ? 'bg-green-500 text-black'
+                : 'bg-slate-900/50 text-slate-400 hover:text-white border border-green-500/20'
             }`}
             title={themeLabels[themeKey]}
           >

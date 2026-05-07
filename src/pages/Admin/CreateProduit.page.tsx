@@ -98,7 +98,7 @@ export const CreateProduitPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-8">
+      <div className="mb-8 animate-fadeInDown">
         <h1 className="text-4xl font-light text-white mb-2 flex items-center gap-3">
           <Plus className="w-8 h-8 text-amber-500" />
           Nouveau produit
@@ -106,7 +106,7 @@ export const CreateProduitPage = () => {
         <p className="text-slate-400 text-sm uppercase tracking-widest">Ajouter un nouveau produit à votre catalogue</p>
       </div>
 
-      <div className="bg-gradient-to-b from-slate-900/40 to-slate-900/20 backdrop-blur-md border border-amber-500/10 rounded-sm p-8">
+      <div className="bg-gradient-to-b from-slate-900/40 to-slate-900/20 backdrop-blur-md border border-amber-500/10 rounded-sm p-8 animate-fadeInUp delay-100">
         <div className="space-y-6">
           {/* Image */}
           <div>
@@ -217,20 +217,22 @@ export const CreateProduitPage = () => {
             />
           </div>
 
-          {/* Boutons */}
+          {/* Boutons avec effets shimmer */}
           <div className="flex gap-3 pt-6 border-t border-amber-500/10">
             <button 
               onClick={() => window.history.back()} 
-              className="flex-1 px-6 py-3 bg-slate-900/40 border border-amber-500/10 rounded-sm text-white hover:bg-slate-900/60 hover:border-amber-500/20 transition font-bold uppercase tracking-widest"
+              className="flex-1 px-6 py-3 bg-slate-900/40 border border-amber-500/10 rounded-sm text-white hover:bg-slate-900/60 hover:border-amber-500/20 transition font-bold uppercase tracking-widest relative overflow-hidden group"
             >
-              Annuler
+              <span className="relative z-10">Annuler</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </button>
             <button 
               onClick={handleSubmit} 
               disabled={loading} 
-              className="flex-1 px-6 py-3 bg-amber-500 rounded-sm text-black hover:bg-amber-400 disabled:bg-amber-500/50 disabled:cursor-not-allowed transition font-bold uppercase tracking-widest"
+              className="flex-1 px-6 py-3 bg-amber-500 rounded-sm text-black hover:bg-amber-400 disabled:bg-amber-500/50 disabled:cursor-not-allowed transition font-bold uppercase tracking-widest relative overflow-hidden group"
             >
-              {loading ? 'Création...' : 'Créer le produit'}
+              <span className="relative z-10">{loading ? 'Création...' : 'Créer le produit'}</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </button>
           </div>
         </div>

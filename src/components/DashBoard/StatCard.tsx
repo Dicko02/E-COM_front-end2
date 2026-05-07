@@ -19,18 +19,21 @@ export const StatCard: React.FC<StatCardProps> = ({
   trend,
   trendLabel = 'vs mois dernier',
   backgroundColor = 'bg-slate-900/40',
-  accentColor = 'text-amber-500'
+  accentColor = 'text-green-500'
 }) => {
   const isTrendPositive = trend ? trend > 0 : false;
   const trendAbsolute = trend ? Math.abs(trend) : 0;
 
   return (
-    <div className={`${backgroundColor} border border-amber-500/20 p-6 rounded-sm hover:border-amber-500/40 transition-all group`}>
+    <div className={`${backgroundColor} border border-green-500/20 p-6 rounded-sm hover:border-green-500/40 transition-all duration-300 group animate-fadeInUp hover:scale-[1.02] relative overflow-hidden`}>
+      {/* Shine effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+      
       <div className="flex justify-between items-start mb-4">
         <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
           {title}
         </p>
-        <span className={`text-2xl group-hover:scale-110 transition-transform ${accentColor}`}>
+        <span className={`text-2xl group-hover:scale-125 transition-transform duration-300 ${accentColor}`}>
           {icon}
         </span>
       </div>

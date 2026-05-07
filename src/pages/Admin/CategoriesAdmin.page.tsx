@@ -138,9 +138,9 @@ export const CategoriesAdminPage = () => {
   return (
     <div className="min-h-screen bg-black text-white p-8 space-y-8">
 
-      {/* Modal création catégorie */}
+      {/* Modal création catégorie avec animation */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowModal(false)} />
           <div className="relative bg-slate-900 border border-green-500/30 rounded-sm shadow-2xl w-full max-w-md p-6 animate-scaleIn">
             <div className="flex items-center justify-between mb-6">
@@ -178,42 +178,28 @@ export const CategoriesAdminPage = () => {
           </div>
         </div>
       )}
-      {/* Stats Overview */}
+      {/* Stats Overview avec animations */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="text-6xl">📊</span>
+        {[
+          { emoji: '📊', label: 'Catégories Totales', value: stats.total, sub: '+2 ce mois', icon: TrendingUp, color: 'text-emerald-400' },
+          { emoji: '📦', label: 'Catégories Vides', value: stats.empty, sub: 'Nécessite attention', icon: null, color: 'text-slate-400' },
+          { emoji: '⭐', label: 'Top Performance', value: stats.topPerformer, sub: '💰 Leader des revenus', icon: null, color: 'text-amber-400' }
+        ].map((stat, idx) => (
+          <div key={stat.label} className="bg-slate-900/40 border border-green-500/20 p-6 rounded-sm relative overflow-hidden group hover:border-green-500/40 transition-all duration-300 animate-fadeInUp" style={{ animationDelay: (idx * 100) + 'ms' }}>
+            <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span className="text-6xl">{stat.emoji}</span>
+            </div>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">{stat.label}</p>
+            <h3 className={`${stat.label === 'Top Performance' ? 'text-xl' : 'text-3xl'} font-black text-white mb-2 ${stat.label === 'Top Performance' ? 'uppercase tracking-tight' : ''}`}>{stat.value}</h3>
+            <div className={`flex items-center gap-2 text-xs ${stat.color}`}>
+              {stat.icon && <stat.icon size={14} />} {stat.sub}
+            </div>
           </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Catégories Totales</p>
-          <h3 className="text-3xl font-black text-white mb-2">{stats.total}</h3>
-          <div className="flex items-center gap-2 text-xs text-emerald-400">
-            <TrendingUp size={14} /> +2 ce mois
-          </div>
-        </div>
-
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="text-6xl">📦</span>
-          </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Catégories Vides</p>
-          <h3 className="text-3xl font-black text-white mb-2">{stats.empty}</h3>
-          <div className="text-xs text-slate-400">Nécessite attention</div>
-        </div>
-
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="text-6xl">⭐</span>
-          </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Top Performance</p>
-          <h3 className="text-xl font-black text-white uppercase tracking-tight mb-2">{stats.topPerformer}</h3>
-          <div className="flex items-center gap-2 text-xs text-amber-400">
-            💰 Leader des revenus
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Filter Bar */}
-      <div className="bg-slate-900/40 border border-amber-500/20 p-4 rounded-sm flex flex-col md:flex-row gap-4 items-center">
+      {/* Filter Bar avec animation */}
+      <div className="bg-slate-900/40 border border-green-500/20 p-4 rounded-sm flex flex-col md:flex-row gap-4 items-center animate-fadeInUp" style={{ animationDelay: '300ms' }}>
         <div className="relative flex-1 w-full">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
@@ -221,7 +207,7 @@ export const CategoriesAdminPage = () => {
             placeholder="Rechercher par nom, ID ou tags..."
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full bg-black/40 border border-amber-500/20 rounded-sm pl-10 pr-4 py-2 text-xs focus:ring-1 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-slate-600 outline-none transition-all"
+            className="w-full bg-black/40 border border-green-500/20 rounded-sm pl-10 pr-4 py-2 text-xs focus:ring-1 focus:ring-green-500 focus:border-green-500 text-white placeholder-slate-600 outline-none transition-all"
           />
         </div>
         
@@ -232,7 +218,7 @@ export const CategoriesAdminPage = () => {
             setStatusFilter(e.target.value);
             handleSearch(searchTerm);
           }}
-          className="bg-black/40 border border-amber-500/20 rounded-sm px-4 py-2 text-xs font-bold text-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all cursor-pointer"
+          className="bg-black/40 border border-green-500/20 rounded-sm px-4 py-2 text-xs font-bold text-white focus:ring-1 focus:ring-green-500 focus:border-green-500 outline-none transition-all cursor-pointer"
         >
           <option>All Statuses</option>
           <option>active</option>
@@ -247,7 +233,7 @@ export const CategoriesAdminPage = () => {
             setSortOrder(e.target.value);
             handleSearch(searchTerm);
           }}
-          className="bg-black/40 border border-amber-500/20 rounded-sm px-4 py-2 text-xs font-bold text-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all cursor-pointer"
+          className="bg-black/40 border border-green-500/20 rounded-sm px-4 py-2 text-xs font-bold text-white focus:ring-1 focus:ring-green-500 focus:border-green-500 outline-none transition-all cursor-pointer"
         >
           <option>Sort: Newest</option>
           <option>Sort: Oldest</option>
@@ -258,18 +244,18 @@ export const CategoriesAdminPage = () => {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-black bg-green-500 rounded-sm hover:bg-green-400 transition-all uppercase tracking-widest"
+          className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-black bg-green-500 rounded-sm hover:bg-green-400 transition-all uppercase tracking-widest hover:scale-105 active:scale-95"
         >
           <Plus size={14} /> + ADD NEW
         </button>
       </div>
 
       {/* Table Container */}
-      <div className="bg-slate-900/40 border border-amber-500/20 rounded-sm overflow-hidden">
+      <div className="bg-slate-900/40 border border-green-500/20 rounded-sm overflow-hidden animate-fadeInUp" style={{ animationDelay: '400ms' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="bg-black/20 border-b border-amber-500/10">
+              <tr className="bg-black/20 border-b border-green-500/10">
                 <th className="px-6 py-4 font-bold uppercase tracking-widest text-xs text-slate-400">Image</th>
                 <th className="px-6 py-4 font-bold uppercase tracking-widest text-xs text-slate-400">Catégorie</th>
                 <th className="px-6 py-4 font-bold uppercase tracking-widest text-xs text-slate-400">Produits</th>
@@ -277,18 +263,18 @@ export const CategoriesAdminPage = () => {
                 <th className="px-6 py-4 font-bold uppercase tracking-widest text-xs text-slate-400 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-amber-500/10">
+            <tbody className="divide-y divide-green-500/10">
               {filteredCategories.length > 0 ? (
                 filteredCategories.map((category) => {
                   const statusBadge = getStatusBadge(category.status);
                   return (
-                    <tr key={category._id} className="hover:bg-amber-500/5 transition-colors">
+                    <tr key={category._id} className="hover:bg-green-500/5 transition-all duration-300 hover:scale-[1.01]">
                       <td className="px-6 py-4">
-                        <div className="w-12 h-12 rounded border border-amber-500/20 overflow-hidden bg-slate-800">
+                        <div className="w-12 h-12 rounded border border-green-500/20 overflow-hidden bg-slate-800 hover:border-green-500/40 transition-colors">
                           {category.image ? (
                             <img src={category.image} alt={category.nom} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-500/5">
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-500/20 to-green-500/5">
                               🏷️
                             </div>
                           )}
@@ -301,7 +287,7 @@ export const CategoriesAdminPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-bold bg-green-500/10 text-green-400 border border-green-500/20">
                           {category.productCount} Produits
                         </span>
                       </td>
@@ -315,7 +301,7 @@ export const CategoriesAdminPage = () => {
                         <div className="flex justify-end gap-2">
                           <a
                             href={`/admin/categories/edit/${category._id}`}
-                            className="w-8 h-8 flex items-center justify-center rounded border border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-black transition-all"
+                            className="w-8 h-8 flex items-center justify-center rounded border border-green-500/20 text-green-500 hover:bg-green-500 hover:text-black transition-all hover:scale-110"
                             title="Éditer"
                           >
                             <Edit size={16} />
@@ -324,7 +310,7 @@ export const CategoriesAdminPage = () => {
                             type="button"
                             aria-label={`Supprimer ${category.nom}`}
                             onClick={() => handleDelete(category._id)}
-                            className="w-8 h-8 flex items-center justify-center rounded border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                            className="w-8 h-8 flex items-center justify-center rounded border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all hover:scale-110"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -346,8 +332,8 @@ export const CategoriesAdminPage = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-sm">
-        <h3 className="text-sm font-bold text-amber-400 mb-2">💡 Pro Tip: Taxonomie</h3>
+      <div className="bg-green-500/10 border border-green-500/20 p-6 rounded-sm animate-fadeInUp" style={{ animationDelay: '500ms' }}>
+        <h3 className="text-sm font-bold text-green-400 mb-2">💡 Pro Tip: Taxonomie</h3>
         <p className="text-xs text-slate-400 leading-relaxed">
           Maintenez une structure hiérarchique propre pour améliorer le SEO. Les catégories imbriquées (ex: Accessories {'>'}  Montres) améliorent la navigation utilisateur et l'efficacité des filtres sur la vitrine.
         </p>

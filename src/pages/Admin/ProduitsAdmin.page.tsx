@@ -137,38 +137,23 @@ export const ProduitsAdminPage = () => {
   return (
     <div className="min-h-screen bg-black text-white p-8 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Stock Total</p>
-          <h3 className="text-3xl font-black text-white mb-4">{stats.total}</h3>
-          <div className="flex items-center gap-2 text-xs text-emerald-400">
-            <TrendingUp size={14} /> +8% ce mois
+        {[
+          { label: "Stock Total", value: stats.total, icon: TrendingUp, text: "+8% ce mois", color: "text-emerald-400" },
+          { label: "Produits Actifs", value: stats.active, icon: null, text: "Actuellement actifs", color: "text-slate-400" },
+          { label: "Stock Faible", value: stats.lowStock, icon: AlertTriangle, text: "Réapprovisionner", color: "text-amber-400", valueColor: "text-amber-500" },
+          { label: "Rupture", value: stats.outOfStock, icon: AlertTriangle, text: "Critique", color: "text-red-400", valueColor: "text-red-500" }
+        ].map((stat, idx) => (
+          <div key={stat.label} className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm hover:border-amber-500/40 transition-all duration-300 hover:scale-105 animate-fadeInUp" style={{ animationDelay: (idx * 100) + 'ms' }}>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">{stat.label}</p>
+            <h3 className={`text-3xl font-black mb-4 ${stat.valueColor || 'text-white'}`}>{stat.value}</h3>
+            <div className={`flex items-center gap-2 text-xs ${stat.color}`}>
+              {stat.icon && <stat.icon size={14} />} {stat.text}
+            </div>
           </div>
-        </div>
-
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Produits Actifs</p>
-          <h3 className="text-3xl font-black text-white mb-4">{stats.active}</h3>
-          <div className="text-xs text-slate-400">Actuellement actifs</div>
-        </div>
-
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Stock Faible</p>
-          <h3 className="text-3xl font-black text-amber-500 mb-4">{stats.lowStock}</h3>
-          <div className="flex items-center gap-2 text-xs text-amber-400">
-            <AlertTriangle size={14} /> Réapprovisionner
-          </div>
-        </div>
-
-        <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Rupture</p>
-          <h3 className="text-3xl font-black text-red-500 mb-4">{stats.outOfStock}</h3>
-          <div className="flex items-center gap-2 text-xs text-red-400">
-            <AlertTriangle size={14} /> Critique
-          </div>
-        </div>
+        ))}
       </div>
 
-      <div className="bg-slate-900/40 border border-amber-500/20 rounded-sm overflow-hidden">
+      <div className="bg-slate-900/40 border border-amber-500/20 rounded-sm overflow-hidden animate-fadeInUp delay-400">
         <div className="p-6 border-b border-amber-500/10 space-y-4 md:space-y-0 md:flex flex-col lg:flex-row gap-4 justify-between items-center">
           <div className="relative w-full lg:w-96">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -188,8 +173,11 @@ export const ProduitsAdminPage = () => {
             <button className="flex-1 lg:flex-initial flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-slate-300 bg-black/40 border border-amber-500/20 rounded-sm hover:border-amber-500/40 transition-all uppercase">
               <Download size={14} /> Export
             </button>
-            <a href="/admin/produits/nouveau" className="flex-1 lg:flex-initial flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-black bg-amber-500 rounded-sm hover:bg-white transition-all uppercase tracking-widest">
-              <Plus size={14} /> Ajouter
+            <a href="/admin/produits/nouveau" className="flex-1 lg:flex-initial flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-black bg-amber-500 rounded-sm hover:bg-white transition-all uppercase tracking-widest relative overflow-hidden group">
+              <span className="relative z-10 flex items-center gap-2">
+                <Plus size={14} /> Ajouter
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </a>
           </div>
         </div>
@@ -211,7 +199,7 @@ export const ProduitsAdminPage = () => {
                 paginatedProducts.map((product) => {
                   const statusBadge = getStatusBadge(product.status);
                   return (
-                    <tr key={product._id} className="hover:bg-amber-500/5 transition-colors">
+                    <tr key={product._id} className="hover:bg-amber-500/5 transition-all duration-300 hover:scale-[1.01]">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 min-w-[64px] flex-shrink-0">

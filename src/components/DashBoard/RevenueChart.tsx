@@ -34,7 +34,10 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
   const formatCurrency = (value: number) => `€${(value / 1000).toFixed(1)}k`;
 
   return (
-    <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
+    <div className="bg-slate-900/40 border border-green-500/20 p-6 rounded-sm animate-fadeInUp hover:border-green-500/30 transition-all duration-300 group relative overflow-hidden">
+      {/* Shine effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+      
       <div className="mb-6">
         <h3 className="text-sm font-bold uppercase tracking-widest text-white mb-2">
           Revenus Mensuels
@@ -54,8 +57,8 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#f59e0b" stopOpacity={0.3} />
+                <stop offset="0%" stopColor="#22c55e" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity={0.3} />
               </linearGradient>
               <linearGradient id="targetGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#64748b" stopOpacity={0.5} />
@@ -80,13 +83,13 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
             <Tooltip
               contentStyle={{
                 backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
+                border: '1px solid rgba(34, 197, 94, 0.3)',
                 borderRadius: '4px',
                 color: '#f1f5f9'
               }}
               formatter={(value) => formatCurrency(value as number)}
               labelStyle={{ color: '#f1f5f9' }}
-              cursor={{ fill: 'rgba(245, 158, 11, 0.1)' }}
+              cursor={{ fill: 'rgba(34, 197, 94, 0.1)' }}
             />
 
             <Legend

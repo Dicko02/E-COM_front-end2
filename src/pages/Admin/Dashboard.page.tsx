@@ -139,10 +139,13 @@ export const DashboardPage = () => {
             <button
               onClick={handleExportPDF}
               disabled={exportingPDF}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-black font-bold rounded-sm hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs uppercase"
+              className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-black font-bold rounded-sm hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs uppercase relative overflow-hidden group"
             >
-              <Download size={16} />
-              {exportingPDF ? 'Export...' : 'Rapport PDF'}
+              <span className="relative z-10 flex items-center gap-2">
+                <Download size={16} />
+                {exportingPDF ? 'Export...' : 'Rapport PDF'}
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </button>
 
             <button
@@ -155,73 +158,62 @@ export const DashboardPage = () => {
           </div>
         </header>
 
-        {/* Main Content */}
+        {/* Main Content avec animation */}
         <main className="p-8 space-y-8 max-w-7xl mx-auto">
-          {/* Stats Cards - 4 Colonnes */}
+          {/* Stats Cards - 4 Colonnes avec animations échelonnées */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard
-              icon="💰"
-              title="Revenu Total"
-              value={`€${stats.revenue.toLocaleString()}`}
-              trend={12.5}
-              trendLabel="vs mois dernier"
-              backgroundColor="bg-slate-900/40"
-              accentColor="text-amber-500"
-            />
-
-            <StatCard
-              icon="📦"
-              title="Commandes Actives"
-              value={stats.orders}
-              trend={4.2}
-              trendLabel="en traitement"
-              backgroundColor="bg-slate-900/40"
-              accentColor="text-emerald-500"
-            />
-
-            <StatCard
-              icon="👥"
-              title="Nouveaux Clients"
-              value={stats.users}
-              trend={8.1}
-              trendLabel="ce trimestre"
-              backgroundColor="bg-slate-900/40"
-              accentColor="text-blue-500"
-            />
-
-            <StatCard
-              icon="📊"
-              title="Produits"
-              value={stats.products}
-              trend={-2.3}
-              trendLabel="vs mois dernier"
-              backgroundColor="bg-slate-900/40"
-              accentColor="text-purple-500"
-            />
+            {[
+              { icon: "💰", title: "Revenu Total", value: `€${stats.revenue.toLocaleString()}`, trend: 12.5, label: "vs mois dernier", color: "text-amber-500" },
+              { icon: "📦", title: "Commandes Actives", value: stats.orders, trend: 4.2, label: "en traitement", color: "text-emerald-500" },
+              { icon: "👥", title: "Nouveaux Clients", value: stats.users, trend: 8.1, label: "ce trimestre", color: "text-blue-500" },
+              { icon: "📊", title: "Produits", value: stats.products, trend: -2.3, label: "vs mois dernier", color: "text-purple-500" }
+            ].map((stat, idx) => (
+              <div key={stat.title} className="animate-fadeInUp" style={{ animationDelay: (idx * 100) + 'ms' }}>
+                <StatCard
+                  icon={stat.icon}
+                  title={stat.title}
+                  value={stat.value}
+                  trend={stat.trend}
+                  trendLabel={stat.label}
+                  backgroundColor="bg-slate-900/40"
+                  accentColor={stat.color}
+                />
+              </div>
+            ))}
           </div>
 
-          {/* Charts Grid - 2 Colonnes */}
+          {/* Charts Grid - 2 Colonnes avec animations */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Revenue Chart - Takes 2 columns */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 animate-fadeInUp delay-400">
               <RevenueChart data={revenueData} loading={false} height={350} />
             </div>
 
             {/* Category Chart - 1 column */}
-            <CategoryChart data={categoryData} categories={categoryData} loading={false} />
+            <div className="animate-fadeInUp delay-500">
+              <CategoryChart data={categoryData} categories={categoryData} loading={false} />
+            </div>
           </div>
 
-          {/* Middle Row - Products & Order Status */}
+          {/* Middle Row - Products & Order Status avec animations */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <TopProducts products={topProdsData} loading={false} />
-            <OrderStatus orders={statusData} loading={false} />
+            <div className="animate-fadeInUp delay-600">
+              <TopProducts products={topProdsData} loading={false} />
+            </div>
+            <div className="animate-fadeInUp delay-700">
+              <OrderStatus orders={statusData} loading={false} />
+            </div>
           </div>
 
-          {/* Customer Trends - Full Width */}
-          <CustomerTrends data={customerData} loading={false} height={300} />
+          {/* Customer Trends - Full Width avec animation */}
+          <div className="animate-fadeInUp delay-800">
+            <CustomerTrends data={customerData} loading={false} height={300} />
+          </div>
 
-          {/* Quick Actions */}
-          <QuickActions />
+          {/* Quick Actions avec animation */}
+          <div className="animate-fadeInUp delay-900">
+            <QuickActions />
+          </div>
 
           {/* Footer Section */}
           <div className="flex flex-col md:flex-row gap-6 justify-between items-center py-6 border-t border-amber-500/10">

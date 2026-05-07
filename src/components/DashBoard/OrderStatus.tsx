@@ -50,7 +50,10 @@ export const OrderStatus: React.FC<OrderStatusProps> = ({
   const cancelledPercent = Math.round((stats.cancelled / stats.total) * 100);
 
   return (
-    <div className="bg-slate-900/40 border border-amber-500/20 p-6 rounded-sm">
+    <div className="bg-slate-900/40 border border-green-500/20 p-6 rounded-sm animate-fadeInUp hover:border-green-500/30 transition-all duration-300 group relative overflow-hidden">
+      {/* Shine effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+      
       <div className="mb-6">
         <h3 className="text-sm font-bold uppercase tracking-widest text-white mb-2">
           État des Commandes
@@ -60,27 +63,27 @@ export const OrderStatus: React.FC<OrderStatusProps> = ({
 
       <div className="space-y-6">
         {/* Pending */}
-        <div className="space-y-2">
+        <div className="space-y-2 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <AlertCircle size={18} className="text-amber-500" />
+              <AlertCircle size={18} className="text-yellow-500" />
               <span className="text-sm font-semibold text-slate-300">En Attente</span>
             </div>
             <div className="text-right">
-              <p className="text-lg font-bold text-amber-500">{stats.pending}</p>
+              <p className="text-lg font-bold text-yellow-500">{stats.pending}</p>
               <p className="text-xs text-slate-500">{pendingPercent}%</p>
             </div>
           </div>
           <div className="h-2 bg-black/40 rounded-full overflow-hidden">
             <div
-              className="h-full bg-amber-500 transition-all"
-              style={{ width: `${pendingPercent}%` }}
+              className="h-full bg-yellow-500 transition-all duration-500"
+              style={{ width: pendingPercent + '%' }}
             />
           </div>
         </div>
 
         {/* Completed */}
-        <div className="space-y-2">
+        <div className="space-y-2 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle size={18} className="text-emerald-500" />
@@ -93,14 +96,14 @@ export const OrderStatus: React.FC<OrderStatusProps> = ({
           </div>
           <div className="h-2 bg-black/40 rounded-full overflow-hidden">
             <div
-              className="h-full bg-emerald-500 transition-all"
-              style={{ width: `${completedPercent}%` }}
+              className="h-full bg-emerald-500 transition-all duration-500"
+              style={{ width: completedPercent + '%' }}
             />
           </div>
         </div>
 
         {/* Cancelled */}
-        <div className="space-y-2">
+        <div className="space-y-2 animate-fadeInUp" style={{ animationDelay: '300ms' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <XCircle size={18} className="text-red-500" />
@@ -113,15 +116,15 @@ export const OrderStatus: React.FC<OrderStatusProps> = ({
           </div>
           <div className="h-2 bg-black/40 rounded-full overflow-hidden">
             <div
-              className="h-full bg-red-500 transition-all"
-              style={{ width: `${cancelledPercent}%` }}
+              className="h-full bg-red-500 transition-all duration-500"
+              style={{ width: cancelledPercent + '%' }}
             />
           </div>
         </div>
       </div>
 
       {/* Total Summary */}
-      <div className="mt-6 pt-6 border-t border-amber-500/10 text-center">
+      <div className="mt-6 pt-6 border-t border-green-500/10 text-center animate-fadeInUp" style={{ animationDelay: '400ms' }}>
         <p className="text-3xl font-bold text-white mb-1">{stats.total}</p>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Commandes Totales</p>
       </div>

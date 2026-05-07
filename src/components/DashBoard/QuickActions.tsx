@@ -79,31 +79,36 @@ export const QuickActions: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-900/40 border border-amber-500/20 rounded-sm p-6">
+    <div className="bg-slate-900/40 border border-green-500/20 rounded-sm p-6 animate-fadeInUp hover:border-green-500/30 transition-all duration-300">
       <h2 className="text-lg font-bold mb-6 uppercase tracking-widest text-white">
         ⚡ Actions Rapides
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {actions.map((action, idx) => {
-          const colorClass = action.color || 'from-amber-500/20 to-amber-500/5 hover:from-amber-500/30';
-          const colorConfig = colorMap[colorClass] || colorMap['from-amber-500/20 to-amber-500/5 hover:from-amber-500/30'];
+          const colorClass = action.color || 'from-green-500/20 to-green-500/5 hover:from-green-500/30';
+          const colorConfig = colorMap[colorClass] || colorMap['from-emerald-500/20 to-emerald-500/5 hover:from-emerald-500/30'];
 
           const isClickable = action.href !== '#reports';
 
           return (
             <button
               key={idx}
+              type="button"
               onClick={() => isClickable && navigate(action.href)}
               disabled={!isClickable}
               className={`
                 group p-4 bg-gradient-to-br ${colorClass} border ${colorConfig.border} rounded-sm
-                transition-all duration-300 hover:border-amber-500/50 disabled:opacity-60 disabled:cursor-not-allowed
-                transform hover:scale-105 active:scale-95
+                transition-all duration-300 hover:border-green-500/50 disabled:opacity-60 disabled:cursor-not-allowed
+                transform hover:scale-105 active:scale-95 animate-fadeInUp relative overflow-hidden
                 flex flex-col items-center gap-3 text-center
               `}
+              style={{ animationDelay: (idx * 50) + 'ms' }}
             >
-              <span className={`${colorConfig.icon} group-hover:scale-125 transition-transform`}>
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+              
+              <span className={`${colorConfig.icon} group-hover:scale-125 transition-transform duration-300`}>
                 {action.icon}
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-slate-300 group-hover:text-white transition-colors">
@@ -115,8 +120,8 @@ export const QuickActions: React.FC = () => {
       </div>
 
       {/* Info Box */}
-      <div className="mt-6 p-4 border border-amber-500/20 bg-amber-500/5 rounded-sm">
-        <p className="text-xs text-amber-500/80 font-bold uppercase tracking-widest">💡 Conseil</p>
+      <div className="mt-6 p-4 border border-green-500/20 bg-green-500/5 rounded-sm animate-fadeInUp">
+        <p className="text-xs text-green-500/80 font-bold uppercase tracking-widest">💡 Conseil</p>
         <p className="text-xs mt-2 text-slate-400">
           Utilisez ces actions rapides pour naviguer efficacement dans votre administration.
         </p>
