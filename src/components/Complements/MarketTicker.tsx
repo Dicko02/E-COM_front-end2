@@ -144,49 +144,59 @@ export const MarketTicker = () => {
 
   return (
     <div
-      className="w-full bg-black border-b border-green-500/15 overflow-hidden relative"
+      className="w-full bg-black border-b border-green-500/10 overflow-hidden relative"
       style={{ height: TICKER_HEIGHT }}
     >
       {/* Gradient fade sur les bords */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
 
-      {/* Badge Live avec pulse */}
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center gap-2 bg-black/80 px-2 py-1 rounded-sm border border-green-500/20">
-        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-        <span className="text-green-500 text-[9px] font-bold uppercase tracking-widest">
+      {/* Badge Live avec pulse - Style FundingPips */}
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center gap-1.5 bg-green-500/10 backdrop-blur-sm px-2.5 py-1 rounded border border-green-500/30">
+        <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+        <span className="text-green-400 text-[10px] font-extrabold uppercase tracking-[0.15em]">
           Live
         </span>
       </div>
 
-      {/* Ticker défilant */}
+      {/* Ticker défilant - Style FundingPips */}
       <div className="flex items-center h-full">
         <div
-          className="flex items-center gap-8 whitespace-nowrap"
+          className="flex items-center gap-6 whitespace-nowrap"
           style={{
             animation: `ticker ${ANIMATION_DURATION} linear infinite`,
-            paddingLeft: '100px', // Espace pour le badge "Live"
+            paddingLeft: '110px', // Espace pour le badge "Live"
           }}
         >
           {doubledItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-2 text-sm">
-              <span className="text-slate-400 font-medium">{item.symbol}</span>
-              <span className="text-white font-semibold">{item.price}</span>
-              <span
-                className={`text-xs font-bold px-1.5 py-0.5 rounded ${
-                  item.change === 'Live'
-                    ? 'text-green-500'
-                    : item.isUp
-                    ? 'bg-green-500/15 text-green-500'
-                    : 'bg-red-500/15 text-red-500'
-                }`}
-              >
-                {item.change !== 'Live' && (item.isUp ? '▲ ' : '▼ ')}
-                {item.change}
+            <div key={index} className="flex items-center gap-2.5">
+              {/* Symbole en gras */}
+              <span className="text-slate-300 font-bold text-[13px] tracking-wide">
+                {item.symbol}
               </span>
-              {/* Séparateur */}
+              
+              {/* Prix */}
+              <span className="text-white font-extrabold text-[14px] tabular-nums">
+                {item.price}
+              </span>
+              
+              {/* Badge variation - Style FundingPips */}
+              {item.change !== 'Live' && (
+                <span
+                  className={`text-[11px] font-black px-2 py-0.5 rounded-sm tabular-nums ${
+                    item.isUp
+                      ? 'bg-green-500 text-black'
+                      : 'bg-red-500 text-white'
+                  }`}
+                >
+                  {item.isUp ? '▲ ' : '▼ '}
+                  {item.change}
+                </span>
+              )}
+              
+              {/* Séparateur vertical - Style FundingPips */}
               {index < doubledItems.length - 1 && (
-                <span className="w-1 h-1 bg-slate-700 rounded-full" />
+                <span className="w-px h-4 bg-slate-700/50" />
               )}
             </div>
           ))}
@@ -196,7 +206,7 @@ export const MarketTicker = () => {
       {/* Info dernière mise à jour (hover) */}
       {lastUpdate && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 z-20">
-          <span className="text-slate-600 text-[9px] uppercase tracking-wider bg-black/80 px-2 py-1 rounded-sm border border-slate-800">
+          <span className="text-slate-500 text-[9px] uppercase tracking-wider bg-black/90 backdrop-blur-sm px-2 py-1 rounded-sm border border-slate-800/50">
             Mis à jour : {lastUpdate.toLocaleTimeString('fr-FR')}
           </span>
         </div>
