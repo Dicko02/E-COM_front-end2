@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 // ═══════════════════════════════════════════════════════════════════════════
 // 🎨 PERSONNALISATION FACILE — Modifiez ces valeurs pour tester
 // ═══════════════════════════════════════════════════════════════════════════
-const TICKER_HEIGHT = '40px';      // Hauteur : '40px' (compact) | '55px' (confortable) | '60px' (large)
-const ANIMATION_DURATION = '30s';  // Vitesse : '15s' (rapide) | '20s' (moyenne) | '30s' (lente) | '40s' (très lente)
+const TICKER_HEIGHT = '42px';      // Hauteur : '40px' (compact) | '42px' (standard) | '48px' (confortable)
+const ANIMATION_DURATION = '30s';  // Vitesse : '20s' (rapide) | '30s' (standard) | '40s' (lente)
 const REFRESH_INTERVAL = 30000;    // Rafraîchissement auto en ms (30000 = 30 secondes)
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -19,7 +19,6 @@ interface MarketItem {
 export const MarketTicker = () => {
   const [items, setItems] = useState<MarketItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   // ── Fetch Forex (EUR/USD, GBP/USD, USD/JPY) ──────────────────────────────
   const fetchForex = async (): Promise<MarketItem[]> => {
@@ -110,7 +109,6 @@ export const MarketTicker = () => {
       // Ordre : Forex → Crypto
       const allItems = [...forexData, ...cryptoData];
       setItems(allItems);
-      setLastUpdate(new Date());
     } catch (error) {
       console.error('Erreur chargement données:', error);
     } finally {
@@ -144,73 +142,101 @@ export const MarketTicker = () => {
 
   return (
     <div
-      className="w-full bg-black border-b border-green-500/10 overflow-hidden relative"
+      className="w-full bg-[#090d1a] border-b border-white/[0.07] overflow-hidden relative"
       style={{ height: TICKER_HEIGHT }}
     >
-      {/* Gradient fade sur les bords */}
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
+      {/* Gradient fade sur les bords - Style FundingPips */}
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#090d1a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#090d1a] to-transparent z-10 pointer-events-none" />
 
-      {/* Badge Live avec pulse - Style FundingPips */}
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center gap-1.5 bg-green-500/10 backdrop-blur-sm px-2.5 py-1 rounded border border-green-500/30">
-        <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-        <span className="text-green-400 text-[10px] font-extrabold uppercase tracking-[0.15em]">
-          Live
-        </span>
-      </div>
-
-      {/* Ticker défilant - Style FundingPips */}
+      {/* Ticker défilant - Style FundingPips exact */}
       <div className="flex items-center h-full">
         <div
-          className="flex items-center gap-6 whitespace-nowrap"
+          className="flex items-center whitespace-nowrap"
           style={{
             animation: `ticker ${ANIMATION_DURATION} linear infinite`,
-            paddingLeft: '110px', // Espace pour le badge "Live"
+            gap: '44px', // Espacement FundingPips
           }}
         >
           {doubledItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-2.5">
-              {/* Symbole en gras */}
-              <span className="text-slate-300 font-bold text-[13px] tracking-wide">
+            <div key={index} className="flex items-center" style={{ gap: '10px' }}>
+              {/* Symbole - Style FundingPips */}
+              <span 
+                className="font-medium tabular-nums"
+                style={{ 
+                  color: '#6b738a',
+                  fontSize: '0.82rem',
+                  minWidth: '70px'
+                }}
+              >
                 {item.symbol}
               </span>
               
-              {/* Prix */}
-              <span className="text-white font-extrabold text-[14px] tabular-nums">
+              {/* Prix - Style FundingPips */}
+              <span 
+                className="font-semibold tabular-nums"
+                style={{ 
+                  color: '#ffffff',
+                  fontSize: '0.82rem',
+                  minWidth: '80px'
+                }}
+              >
                 {item.price}
               </span>
               
-              {/* Badge variation - Style FundingPips */}
+              {/* Badge variation - Style FundingPips exact */}
               {item.change !== 'Live' && (
                 <span
-                  className={`text-[11px] font-black px-2 py-0.5 rounded-sm tabular-nums ${
-                    item.isUp
-                      ? 'bg-green-500 text-black'
-                      : 'bg-red-500 text-white'
-                  }`}
+                  className="font-bold tabular-nums text-center"
+                  style={{
+                    fontSize: '0.72rem',
+                    padding: '2px 7px',
+                    borderRadius: '5px',
+                    minWidth: '65px',
+                    background: item.isUp 
+                      ? 'rgba(0, 229, 160, 0.15)' 
+                      : 'rgba(255, 77, 77, 0.12)',
+                    color: item.isUp ? '#00e5a0' : '#ff4d4d'
+                  }}
                 >
                   {item.isUp ? '▲ ' : '▼ '}
                   {item.change}
                 </span>
               )}
+
+              {/* Badge Live pour les items sans variation */}
+              {item.change === 'Live' && (
+                <span
+                  className="font-bold uppercase text-center"
+                  style={{
+                    fontSize: '0.68rem',
+                    padding: '2px 7px',
+                    borderRadius: '5px',
+                    minWidth: '65px',
+                    background: 'rgba(0, 229, 160, 0.15)',
+                    color: '#00e5a0',
+                    letterSpacing: '0.5px'
+                  }}
+                >
+                  Live
+                </span>
+              )}
               
-              {/* Séparateur vertical - Style FundingPips */}
+              {/* Séparateur - Style FundingPips exact */}
               {index < doubledItems.length - 1 && (
-                <span className="w-px h-4 bg-slate-700/50" />
+                <span 
+                  className="rounded-full flex-shrink-0"
+                  style={{ 
+                    width: '3px',
+                    height: '3px',
+                    background: 'rgba(255, 255, 255, 0.1)'
+                  }}
+                />
               )}
             </div>
           ))}
         </div>
       </div>
-
-      {/* Info dernière mise à jour (hover) */}
-      {lastUpdate && (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 z-20">
-          <span className="text-slate-500 text-[9px] uppercase tracking-wider bg-black/90 backdrop-blur-sm px-2 py-1 rounded-sm border border-slate-800/50">
-            Mis à jour : {lastUpdate.toLocaleTimeString('fr-FR')}
-          </span>
-        </div>
-      )}
 
       {/* Animation CSS */}
       <style>{`
