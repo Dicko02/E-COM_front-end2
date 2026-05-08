@@ -5,6 +5,7 @@ import { CartProvider } from "./context/CartContext";
 import { ToastProvider } from "./context/ToastContext";
 
 import { Header } from "./components/Complements/Header";
+import { MarketTicker } from "./components/Complements/MarketTicker";
 import { Footer } from "./components/Complements/Footer";
 import { CookieConsent } from "./components/Complements/CookieConsent";
 import { Sidebar } from "./components/Complements/Sidebar";
@@ -49,6 +50,7 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       {!isStandalone && <Header />}
+      {!isStandalone && <MarketTicker />}
 
       {/* Layout avec Sidebar pour les pages admin */}
       <div className="flex flex-1 min-h-0">
